@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>晨报仪表盘 · 2026-10-15</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg-primary:#FFF9F2;--bg-card:#FFFFFF;--bg-elevated:#FFF4E6;
+  --text-primary:#1A1A1A;--text-secondary:#5C5C5C;--text-muted:#8A8A8A;
+  --accent:#FF6B35;--accent-hover:#E85525;--accent-light:#FFE4D6;--gold:#F7B801;
+  --gradient:linear-gradient(135deg,#FF6B35 0%,#F7B801 100%);
+  --gradient-soft:linear-gradient(135deg,#FFE4D6 0%,#FFF4D6 100%);
+  --b-accent:#1D6FE0;--b-accent-deep:#1552A8;--b-light:#E3EEFF;--b-border:#D5E3FB;
+  --b-grad:linear-gradient(135deg,#1D6FE0 0%,#2BB3C0 100%);
+  --border:#F0E4D4;--border-hover:#FFB89A;
+  --radius:14px;--radius-sm:8px;
+  --shadow:0 4px 20px rgba(255,107,53,0.08);
+  --shadow-hover:0 8px 28px rgba(255,107,53,0.16);
+  --shadow-b:0 4px 20px rgba(29,111,224,0.10);
+  --font:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue","PingFang SC","Microsoft YaHei",sans-serif;
+  --font-mono:"SF Mono","Fira Code",Menlo,Consolas,monospace;
+  --transition:0.25s cubic-bezier(0.4,0,0.2,1);
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);background:var(--bg-primary);color:var(--text-primary);line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased;text-size-adjust:100%;-webkit-text-size-adjust:100%}
+a{color:inherit;text-decoration:none}
+button{font:inherit}
+code{font-family:var(--font-mono);font-size:.86em}
+img,svg{max-width:100%}
+/* 防止长 URL / 长英文词在窄屏撑破布局 */
+.card-summary,.lead p,.theme-row,.theme-row .src,.footer-source,.src-meta,.pair-row>span,.card-title,.date-badge{overflow-wrap:break-word}
+
+/* nav */
+.topnav{position:sticky;top:0;z-index:60;background:rgba(255,249,242,.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+.topnav-inner{max-width:1120px;margin:0 auto;padding:13px 24px;display:flex;align-items:center;gap:20px;overflow-x:auto;scrollbar-width:none}
+.topnav-inner::-webkit-scrollbar{display:none}
+.topnav-brand{font-weight:700;font-size:.92rem;display:flex;align-items:center;gap:8px;white-space:nowrap}
+.topnav-brand .dot{width:10px;height:10px;border-radius:50%;background:var(--gradient);box-shadow:0 0 0 3px var(--accent-light);animation:pulse 2.4s ease-in-out infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 3px var(--accent-light)}50%{box-shadow:0 0 0 6px rgba(255,107,53,.15)}}
+.topnav-links{display:flex;gap:4px;flex:1;align-items:center;padding-left:6px}
+.topnav-links .sep{width:1px;height:16px;background:var(--border);flex-shrink:0;margin:0 8px}
+.topnav-links button{appearance:none;border:0;background:transparent;cursor:pointer;font-size:.83rem;color:var(--text-secondary);padding:6px 12px;border-radius:999px;white-space:nowrap;transition:var(--transition)}
+.topnav-links button:hover{background:var(--accent-light);color:var(--accent)}
+.topnav-links button.active{background:var(--accent-light);color:var(--accent);font-weight:600}
+.topnav-links button.b:hover{background:var(--b-light);color:var(--b-accent)}
+.topnav-links button.b.active{background:var(--b-light);color:var(--b-accent)}
+.lang-toggle{appearance:none;border:1px solid var(--border);background:var(--bg-card);color:var(--text-secondary);font-weight:700;font-size:.74rem;padding:5px 11px;border-radius:999px;cursor:pointer;white-space:nowrap;transition:var(--transition);margin-left:auto;flex-shrink:0}
+.lang-toggle:hover{background:var(--accent-light);color:var(--accent);border-color:var(--border-hover)}
+
+/* hero */
+.hero{padding:72px 24px 54px;text-align:center;background:var(--gradient-soft);position:relative;overflow:hidden}
+.hero::before,.hero::after{content:"";position:absolute;border-radius:50%}
+.hero::before{top:-110px;right:-110px;width:320px;height:320px;background:radial-gradient(circle,rgba(255,107,53,.16) 0%,transparent 70%)}
+.hero::after{bottom:-90px;left:-90px;width:260px;height:260px;background:radial-gradient(circle,rgba(247,184,1,.18) 0%,transparent 70%)}
+.hero-inner{max-width:960px;margin:0 auto;position:relative;z-index:1}
+.date-badge{display:inline-flex;align-items:center;gap:9px;padding:6px 16px;border-radius:999px;background:var(--bg-card);border:1px solid var(--border);font-size:.85rem;color:var(--text-secondary);margin-bottom:20px;box-shadow:var(--shadow);flex-wrap:wrap;justify-content:center}
+.date-badge .live{width:8px;height:8px;border-radius:50%;background:#22C55E;animation:live-pulse 1.8s ease-out infinite;flex-shrink:0}
+@keyframes live-pulse{0%{box-shadow:0 0 0 0 rgba(34,197,94,.5)}100%{box-shadow:0 0 0 10px rgba(34,197,94,0)}}
+.hero h1{font-size:clamp(2.1rem,5.2vw,3.4rem);font-weight:800;letter-spacing:-1px;line-height:1.16;margin-bottom:14px}
+.hero h1 .accent{background:var(--gradient);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.hero-tagline{font-size:clamp(.98rem,1.5vw,1.1rem);color:var(--text-secondary);margin-bottom:30px}
+.hero-tagline b{color:var(--accent)}
+.leadband{display:grid;grid-template-columns:1fr;gap:12px;max-width:860px;margin:0 auto 32px;text-align:left}
+@media(min-width:760px){.leadband{grid-template-columns:1fr 1fr}}
+.lead{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:16px 18px;box-shadow:var(--shadow);position:relative}
+.lead.a{border-left:3px solid var(--accent)}
+.lead.b{border-left:3px solid var(--b-accent);box-shadow:var(--shadow-b)}
+.lead .tag{font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);display:inline-flex;align-items:center;gap:6px;margin-bottom:8px}
+.lead.b .tag{color:var(--b-accent)}
+.lead h3{font-size:.96rem;font-weight:700;line-height:1.45;margin-bottom:7px}
+.lead p{font-size:.83rem;color:var(--text-secondary);line-height:1.62}
+.lead .go{display:inline-flex;align-items:center;gap:5px;font-size:.78rem;font-weight:600;color:var(--accent);margin-top:10px}
+.lead .go:hover{color:var(--accent-hover)}
+.hero-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;max-width:860px;margin:0 auto}
+.stat-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:16px 12px;text-align:center;box-shadow:var(--shadow);transition:var(--transition)}
+.stat-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-hover);border-color:var(--border-hover)}
+.stat-card.primary{background:var(--gradient);border-color:transparent;box-shadow:0 8px 24px rgba(255,107,53,.28)}
+.stat-num{font-size:2rem;font-weight:800;font-family:var(--font-mono);line-height:1;background:var(--gradient);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.stat-card.primary .stat-num{background:none;-webkit-text-fill-color:#fff;color:#fff}
+.stat-label{font-size:.74rem;color:var(--text-muted);margin-top:7px;letter-spacing:.4px;line-height:1.35}
+.stat-card.primary .stat-label{color:rgba(255,255,255,.92)}
+.stat-label em{font-style:normal;font-family:var(--font-mono);color:var(--accent);font-weight:700}
+.stat-card.primary .stat-label em{color:#fff}
+
+/* panels */
+.navpanel{padding:44px 24px 10px}
+.navpanel-inner,.section-inner{max-width:1120px;margin:0 auto}
+.panel-title{font-size:.76rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--text-muted);margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.panel-title::after{content:"";flex:1;height:1px;background:var(--border)}
+.sources{display:grid;grid-template-columns:1fr;gap:12px;margin-bottom:22px}
+@media(min-width:820px){.sources{grid-template-columns:1fr 1fr 1fr}}
+.source-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:16px 18px;box-shadow:var(--shadow);transition:var(--transition)}
+.source-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-hover)}
+.source-card.b{box-shadow:var(--shadow-b);border-color:var(--b-border)}
+.source-card.m{box-shadow:0 4px 20px rgba(27,138,75,.10);border-color:#CFEBDA}
+.src-tag{display:inline-block;font-size:.68rem;font-weight:700;letter-spacing:.08em;padding:2px 9px;border-radius:999px;background:var(--accent-light);color:var(--accent);margin-bottom:9px}
+.source-card.b .src-tag{background:var(--b-light);color:var(--b-accent)}
+.source-card.m .src-tag{background:#E8F6EC;color:#1B8A4B}
+.source-card h3{font-size:1rem;font-weight:700;margin-bottom:6px;letter-spacing:-.2px}
+.source-card p{font-size:.83rem;color:var(--text-secondary);line-height:1.62}
+.src-meta{margin-top:10px;padding-top:9px;border-top:1px dashed var(--border);font-size:.75rem;color:var(--text-muted);font-family:var(--font-mono)}
+.anchors{display:grid;grid-template-columns:1fr;gap:14px}
+@media(min-width:760px){.anchors{grid-template-columns:1fr 1fr}}
+.anchor-group{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:15px 17px;box-shadow:var(--shadow)}
+.anchor-group.b{border-color:var(--b-border);box-shadow:var(--shadow-b)}
+.anchor-group h4{font-size:.78rem;font-weight:700;color:var(--accent);letter-spacing:.06em;margin-bottom:11px;display:flex;align-items:center;gap:8px}
+.anchor-group.b h4{color:var(--b-accent)}
+.anchor-group h4 .cn{margin-left:auto;font-family:var(--font-mono);font-size:.72rem;color:var(--text-muted);font-weight:400}
+.anchor-list{display:flex;flex-wrap:wrap;gap:7px}
+.anchor-list a{font-size:.8rem;color:var(--text-secondary);padding:5px 12px;border-radius:999px;background:var(--bg-elevated);transition:var(--transition);white-space:nowrap}
+.anchor-list a:hover{background:var(--accent-light);color:var(--accent)}
+.anchor-group.b .anchor-list a{background:#F1F6FF}
+.anchor-group.b .anchor-list a:hover{background:var(--b-light);color:var(--b-accent)}
+
+/* sections */
+.section{padding:56px 24px 12px;scroll-margin-top:66px}
+.section-head{display:flex;align-items:baseline;gap:13px;margin-bottom:26px;padding-bottom:13px;border-bottom:2px dashed var(--border);flex-wrap:wrap}
+.section-head .icon{width:34px;height:34px;border-radius:10px;background:var(--gradient);display:flex;align-items:center;justify-content:center;flex-shrink:0;align-self:center}
+.section-head .icon.b{background:var(--b-grad)}
+.section-head .icon svg{width:18px;height:18px;fill:#fff}
+.section-head h2{font-size:1.45rem;font-weight:700;letter-spacing:-.3px}
+.section-head .sub{font-size:.82rem;color:var(--text-muted);flex:1 1 220px}
+.section-head .count{font-size:.78rem;font-family:var(--font-mono);background:var(--accent-light);color:var(--accent);padding:3px 11px;border-radius:999px;align-self:center;white-space:nowrap}
+.section-head .count.b{background:var(--b-light);color:var(--b-accent)}
+.sub{margin-bottom:34px;scroll-margin-top:66px}
+.sub-head{display:flex;align-items:center;gap:10px;margin-bottom:15px}
+.sub-head .marker{width:4px;height:18px;border-radius:2px;background:var(--gradient);flex-shrink:0}
+.sub-head .marker.b{background:var(--b-grad)}
+.sub-head h3{font-size:1.06rem;font-weight:700;letter-spacing:-.2px}
+.sub-head .n{font-size:.74rem;font-family:var(--font-mono);color:var(--text-muted);background:var(--bg-elevated);padding:2px 9px;border-radius:6px}
+
+/* cards */
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(310px,100%),1fr));gap:15px}
+.card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:19px 20px;display:flex;flex-direction:column;position:relative;overflow:hidden;transition:var(--transition)}
+.card::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:var(--gradient);transform:scaleX(0);transform-origin:left;transition:transform .3s ease}
+.card:hover{border-color:var(--border-hover);box-shadow:var(--shadow-hover);transform:translateY(-3px)}
+.card:hover::before{transform:scaleX(1)}
+.card.b::before{background:var(--b-grad)}
+.card.b:hover{border-color:#B9D2F7;box-shadow:0 8px 28px rgba(29,111,224,.16)}
+.js-ready .card{opacity:0;transform:translateY(16px)}
+.js-ready .card.visible{opacity:1;transform:none}
+.card-num{position:absolute;top:13px;right:16px;font-family:var(--font-mono);font-size:.76rem;color:var(--text-muted);background:var(--bg-elevated);padding:2px 8px;border-radius:6px}
+.card.b .card-num{background:#F1F6FF;color:var(--b-accent)}
+.card-title{font-size:1rem;font-weight:600;line-height:1.45;margin-bottom:11px;padding-right:46px;letter-spacing:-.2px}
+.card-title a:hover{color:var(--accent)}
+.card.b .card-title a:hover{color:var(--b-accent)}
+.card-source{display:inline-flex;align-items:center;gap:6px;font-size:.73rem;color:var(--text-muted);margin-bottom:10px;padding:3px 10px;background:var(--bg-elevated);border-radius:999px;align-self:flex-start;max-width:100%}
+.card.b .card-source{background:#F1F6FF}
+.card-source svg{width:11px;height:11px;flex-shrink:0;opacity:.65}
+.card-source span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.card-summary{font-size:.87rem;color:var(--text-secondary);line-height:1.66;margin-bottom:13px;flex:1}
+.card-subitems{display:flex;flex-direction:column;gap:6px;margin-bottom:12px;padding-top:11px;border-top:1px dashed var(--border)}
+.card-subitems a{font-size:.8rem;color:var(--b-accent);line-height:1.5;display:flex;gap:7px;align-items:flex-start}
+.card-subitems a::before{content:"▸";flex-shrink:0;opacity:.6}
+.card-subitems a:hover{color:var(--b-accent-deep);text-decoration:underline}
+.card-link{display:inline-flex;align-items:center;gap:6px;font-size:.81rem;font-weight:600;color:var(--accent);margin-top:auto;align-self:flex-start;transition:var(--transition)}
+.card.b .card-link{color:var(--b-accent)}
+.card-link svg{width:14px;height:14px;transition:transform .2s ease}
+.card-link:hover{color:var(--accent-hover)}
+.card.b .card-link:hover{color:var(--b-accent-deep)}
+.card-link:hover svg{transform:translate(2px,-2px)}
+.card details{margin-top:11px;border-top:1px dashed var(--border);padding-top:9px}
+.card details summary{cursor:pointer;font-size:.78rem;color:var(--text-muted);list-style:none;display:flex;align-items:center;gap:5px;user-select:none}
+.card details summary::-webkit-details-marker{display:none}
+.card details summary::before{content:"＋";font-weight:700;color:var(--b-accent)}
+.card details[open] summary::before{content:"－"}
+.card details summary:hover{color:var(--text-secondary)}
+.card details .detail-body{font-size:.81rem;color:var(--text-secondary);line-height:1.72;margin-top:8px}
+.card details .detail-body b{color:var(--text-primary);font-weight:600}
+.empty-card{border:1px dashed var(--border);border-radius:var(--radius);padding:22px 20px;text-align:center;color:var(--text-muted);font-size:.85rem;background:rgba(255,255,255,.5)}
+.empty-card span{font-size:1.2rem;display:block;margin-bottom:6px;opacity:.6}
+
+/* cross panel */
+.insight-band{background:linear-gradient(180deg,#FFFDF9 0%,#FBF7FF 100%);border-top:1px solid #EFE6F6;border-bottom:1px solid #EFE6F6}
+.cross{display:grid;grid-template-columns:1fr;gap:14px;margin-bottom:26px}
+@media(min-width:820px){.cross{grid-template-columns:1fr 1fr 1fr}}
+.cross-block{background:var(--bg-card);border:1px solid #E6DFF5;border-radius:var(--radius);padding:16px 18px;box-shadow:var(--shadow);position:relative;overflow:hidden}
+.cross-block::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#FF6B35 0%,#B85CF0 50%,#1D6FE0 100%)}
+.cross-block h4{font-size:.88rem;font-weight:700;margin-bottom:11px;display:flex;align-items:center;gap:8px}
+.cross-block h4 .n{margin-left:auto;font-family:var(--font-mono);font-size:.72rem;color:var(--text-muted);font-weight:400}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font-size:.78rem;padding:4px 11px;border-radius:999px;background:linear-gradient(135deg,#FFE4D6 0%,#E3EEFF 100%);color:#5B3FA8;font-weight:600}
+.chip.only{background:var(--bg-elevated);color:var(--text-secondary);font-weight:400}
+.theme-row{font-size:.81rem;line-height:1.55;color:var(--text-secondary);padding:8px 0;border-bottom:1px dashed var(--border)}
+.theme-row:last-child{border-bottom:0;padding-bottom:0}
+.theme-row b{color:var(--text-primary);font-weight:600}
+.theme-row .src{font-family:var(--font-mono);font-size:.72rem;color:var(--text-muted);display:block;margin-top:3px}
+.cross-empty{font-size:.82rem;color:var(--text-muted);line-height:1.6}
+.insights{display:grid;grid-template-columns:1fr;gap:15px}
+@media(min-width:900px){.insights{grid-template-columns:repeat(auto-fill,minmax(330px,1fr))}}
+.insight{background:var(--bg-card);border:1px solid #E6DFF5;border-radius:var(--radius);padding:19px 20px;box-shadow:var(--shadow);display:flex;flex-direction:column;position:relative;overflow:hidden;transition:var(--transition)}
+.insight::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#FF6B35 0%,#B85CF0 50%,#1D6FE0 100%)}
+.insight:hover{transform:translateY(-3px);box-shadow:0 10px 30px rgba(122,90,248,.16);border-color:#D8CDF2}
+.insight-idx{font-family:var(--font-mono);font-size:.72rem;font-weight:700;letter-spacing:.1em;color:#7A5AF8;margin-bottom:9px}
+.insight h3{font-size:1.02rem;font-weight:700;line-height:1.42;margin-bottom:13px;letter-spacing:-.2px}
+.pair{display:grid;gap:9px;margin-bottom:13px}
+.pair-row{display:flex;gap:9px;font-size:.82rem;line-height:1.6;color:var(--text-secondary);padding:9px 11px;border-radius:var(--radius-sm);background:var(--bg-elevated)}
+.pair-row.b{background:#F1F6FF}
+.pair-row .who{flex-shrink:0;font-size:.68rem;font-weight:700;padding:2px 7px;border-radius:5px;background:var(--accent-light);color:var(--accent);height:fit-content;margin-top:2px}
+.pair-row.b .who{background:var(--b-light);color:var(--b-accent)}
+.insight .concl{margin-top:auto;padding-top:12px;border-top:1px dashed var(--border);font-size:.84rem;color:var(--text-primary);line-height:1.62}
+.insight .concl strong{color:#7A5AF8}
+
+/* morning band */
+.band-b{background:linear-gradient(180deg,#F8FBFF 0%,#FFF9F2 100%);border-top:1px solid var(--b-border)}
+.origin-note{display:flex;gap:11px;align-items:flex-start;background:var(--bg-card);border:1px solid var(--b-border);border-radius:var(--radius);padding:14px 17px;font-size:.83rem;color:var(--text-secondary);line-height:1.65;margin-bottom:26px;box-shadow:var(--shadow-b)}
+.origin-note .ico{flex-shrink:0;width:26px;height:26px;border-radius:8px;background:var(--b-grad);display:flex;align-items:center;justify-content:center;font-size:.8rem}
+.origin-note b{color:var(--b-accent)}
+.warn-note{display:flex;gap:11px;align-items:flex-start;background:#FFF8E6;border:1px solid #F5DFA8;border-radius:var(--radius);padding:14px 17px;font-size:.83rem;color:#7A5C10;line-height:1.65;margin-bottom:26px}
+
+/* footer */
+footer{margin-top:56px;padding:38px 24px 46px;text-align:center;border-top:1px solid var(--border);background:var(--bg-elevated)}
+.footer-stats{display:inline-flex;align-items:center;gap:14px;flex-wrap:wrap;justify-content:center;font-size:.85rem;color:var(--text-secondary)}
+.footer-stats .num{font-family:var(--font-mono);font-weight:700;color:var(--accent)}
+.footer-stats .sep{color:var(--border)}
+.footer-source{font-size:.78rem;color:var(--text-muted);margin-top:12px;line-height:1.9}
+.footer-source a{color:var(--accent);font-weight:500;border-bottom:1px solid var(--accent-light)}
+.footer-source a:hover{color:var(--accent-hover)}
+.footer-source .blue{color:var(--b-accent);border-bottom-color:var(--b-light)}
+.totop{position:fixed;right:20px;bottom:24px;z-index:70;width:42px;height:42px;border-radius:50%;border:1px solid var(--border);background:var(--bg-card);color:var(--accent);cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow);opacity:0;pointer-events:none;transition:var(--transition)}
+.totop.show{opacity:1;pointer-events:auto}
+.totop:hover{background:var(--gradient);color:#fff;border-color:transparent;transform:translateY(-2px)}
+
+@media (max-width:768px){
+  .hero{padding:50px 16px 40px}
+  .hero h1{font-size:1.9rem;letter-spacing:-.5px}
+  .hero-tagline{font-size:.95rem}
+  .date-badge{font-size:.78rem;padding:6px 12px;gap:7px}
+  .leadband{gap:10px}
+  .lead{padding:14px 15px}
+  .hero-stats{grid-template-columns:repeat(auto-fit,minmax(108px,1fr));gap:10px}
+  .stat-card{padding:13px 8px}
+  .stat-num{font-size:1.7rem}
+  .stat-label{font-size:.68rem}
+  .section{padding:42px 16px 8px}
+  .navpanel{padding:32px 16px 8px}
+  .cards{grid-template-columns:1fr;gap:13px}
+  .card{padding:16px 15px}
+  .card-title{font-size:.98rem}
+  .card-summary{font-size:.85rem}
+  .topnav-inner{padding:10px 14px;gap:10px}
+  .topnav-brand{position:sticky;left:0;z-index:5;background:rgba(255,249,242,.97);
+    padding-right:12px;box-shadow:16px 0 16px -8px rgba(255,249,242,.97);font-size:.84rem}
+  .topnav-links{padding-left:0;gap:3px}
+  .topnav-links button{padding:6px 9px;font-size:.76rem}
+  .lang-toggle{margin-left:8px;padding:5px 9px;font-size:.7rem}
+  .section-head{gap:9px}
+  .section-head h2{font-size:1.2rem}
+  .section-head .icon{width:30px;height:30px}
+  .section-head .sub{flex:1 1 100%;order:3;font-size:.78rem}
+  .insight,.cross-block{padding:16px 15px}
+  .insights{gap:13px}
+  footer{padding:30px 16px 38px}
+  .footer-stats{font-size:.78rem;gap:8px}
+  .footer-source{font-size:.72rem}
+  .totop{right:14px;bottom:16px;width:38px;height:38px}
+}
+@media (max-width:480px){
+  .hero{padding:42px 14px 34px}
+  .hero h1{font-size:1.62rem}
+  .stat-num{font-size:1.55rem}
+  .date-badge{font-size:.72rem}
+  .section-head h2{font-size:1.08rem}
+  .topnav-links button{padding:5px 8px;font-size:.72rem}
+  .card-title{font-size:.95rem;padding-right:42px}
+  .card{padding:15px 14px}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.js-ready .card{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <div class="topnav-inner">
+    <div class="topnav-brand"><span class="dot"></span><span data-i18n="brand">晨报仪表盘</span></div>
+    <div class="topnav-links" id="topnavLinks">
+      <button data-target="overview" class="active" data-i18n="nav_overview">概览</button>
+      <button data-target="insight" data-i18n="nav_insight">交叉洞察</button>
+      <span class="sep"></span>
+      <button data-target="sec-model" data-i18n="nav_model">模型</button>
+      <button data-target="sec-product" data-i18n="nav_product">产品</button>
+      <button data-target="sec-industry" data-i18n="nav_industry">行业</button>
+      <button data-target="sec-paper" data-i18n="nav_paper">论文</button>
+      <button data-target="sec-tips" data-i18n="nav_tips">技巧</button>
+      <span class="sep"></span>
+      <button data-target="morning" class="b" data-i18n="nav_morning">早间汇总</button>
+    </div>
+    <button id="langToggle" class="lang-toggle" aria-label="切换语言">EN</button>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="hero-inner">
+    <div class="date-badge">
+      <span class="live"></span><span id="heroDate">—</span>
+      <span style="color:var(--border)">·</span><span id="heroWindow">—</span>
+    </div>
+    <h1 data-i18n-html="heroTitle">今日 <span class="accent">AI</span> 圈发生了什么</h1>
+    <p class="hero-tagline" id="heroTagline">—</p>
+    <div class="leadband" id="leadband"></div>
+    <div class="hero-stats" id="heroStats"></div>
+  </div>
+</header>
+
+<section class="navpanel" id="overview">
+  <div class="navpanel-inner">
+    <div class="panel-title" data-i18n="panel1">两个信源，一份晨报</div>
+    <div class="sources" id="sourceCards"></div>
+    <div class="panel-title" style="margin-top:26px" data-i18n="panel2">跳转到版块</div>
+    <div class="anchors">
+      <div class="anchor-group">
+        <h4><span data-i18n="anchorA">AI HOT 日报 · AI 深度</span> <span class="cn" id="anchorCountA">—</span></h4>
+        <div class="anchor-list" id="anchorListA"></div>
+      </div>
+      <div class="anchor-group b">
+        <h4><span data-i18n="anchorB">每日早间汇总 · 全局视野</span> <span class="cn" id="anchorCountB">—</span></h4>
+        <div class="anchor-list" id="anchorListB"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section insight-band" id="insight">
+  <div class="section-inner">
+    <div class="section-head">
+      <div class="icon"><svg viewBox="0 0 24 24"><path d="M12 2l2.4 5.4L20 9l-4 4.2.9 6.3L12 16.8 7.1 19.5 8 13.2 4 9l5.6-1.6L12 2z"/></svg></div>
+      <h2 data-i18n="insightHead">交叉洞察</h2>
+      <div class="sub" data-i18n="insightSub">把两个信源今天的交集挑出来 —— 单看任何一边都看不出的结论</div>
+      <div class="count" id="insightCount">—</div>
+    </div>
+    <div class="cross" id="crossPanel"></div>
+    <div class="insights" id="insights"></div>
+  </div>
+</section>
+
+<section class="section" id="aihot">
+  <div class="section-inner">
+    <div class="section-head">
+      <div class="icon"><svg viewBox="0 0 24 24"><path d="M13 2L4.5 13.5H11L9.5 22 19 10h-6.5L13 2z"/></svg></div>
+      <h2 data-i18n="aihotHead">AI HOT 日报</h2>
+      <div class="sub" data-i18n="aihotSub">按五个固定版块分组 · 全局连续编号 · 每条带信源与原文</div>
+      <div class="count" id="countA">—</div>
+    </div>
+    <div id="aihotSections"></div>
+  </div>
+</section>
+
+<section class="section band-b" id="morning">
+  <div class="section-inner">
+    <div class="section-head">
+      <div class="icon b"><svg viewBox="0 0 24 24"><path d="M4 4h16v2H4V4zm0 5h16v2H4V9zm0 5h10v2H4v-2zm0 5h16v2H4v-2z"/></svg></div>
+      <h2 data-i18n="morningHead">每日早间汇总</h2>
+      <div class="sub" data-i18n="morningSub">你的自动化任务（每天 08:00）· 六大固定板块 · 全局编号接续</div>
+      <div class="count b" id="countB">—</div>
+    </div>
+    <div id="morningNote"></div>
+    <div id="morningSections"></div>
+  </div>
+</section>
+
+<footer id="footer">
+  <div class="footer-stats" id="footerStats"></div>
+  <div class="footer-source" id="footerSource"></div>
+</footer>
+
+<button class="totop" id="toTop" aria-label="回到顶部">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 4l8 8h-5v8h-6v-8H4l8-8z"/></svg>
+</button>
+
+<script>
+const DATA = {"date": "2026-10-15", "taskId": "86831eac", "runAtLocal": "08:00", "buildTimeLocal": "2026-10-15 08:07", "aihot": {"date": "2026-10-15", "generatedAt": "2026-10-15T00:00:30.649Z", "windowStart": "2026-10-14T00:00:00.000Z", "windowEnd": "2026-10-15T00:00:00.000Z", "dailyUrl": "https://aihot.news/daily/2026-10-15", "lead": {"title": "Gemini 4 Argon 向全球 Google AI Pro 和 Ultra 订阅者开放", "paragraph": "Gemini 官方宣布 Gemini 4 Argon 已向全球 Google AI Pro 和 Ultra 订阅者开放。该模型此前已在 Gemini 应用中逐步推出，定位为处理复杂任务的前沿模型，更多详情见官方推文线程 https://x.com/GeminiApp/status/2110039322229649783。", "digest": "Gemini 官方宣布 Gemini 4 Argon 已向全球 Google AI Pro 和 Ultra 订阅者开放。"}, "sections": [{"id": "sec-model", "label": "模型发布 / 更新", "label_en": "Model Releases / Updates", "items": [{"title": "Gemini 4 Argon 向全球 Google AI Pro 和 Ultra 订阅者开放", "digest": "Gemini 官方宣布 Gemini 4 Argon 已向全球 Google AI Pro 和 Ultra 订阅者开放。", "source": "X：Gemini (@GeminiApp)", "aihot": "https://aihot.news/items/rraljkr6dlbt4wabpcogmdlfv", "original": "https://x.com/GeminiApp/status/2110491358498865638"}]}, {"id": "sec-product", "label": "产品发布 / 更新", "label_en": "Product Launches / Updates", "items": [{"title": "xAI 发布 Grok Voice 3.0 语音模型", "digest": "xAI 发布 speech-to-speech 模型 Grok Voice 3.0，", "source": "xAI：News（网页）", "aihot": "https://aihot.news/items/qld0z3p2gztpolbmviizsm66u", "original": "https://x.ai/news/grok-voice-3"}, {"title": "Google 发布智能体审稿系统 Deep Review，支持多领域技术文档审查", "digest": "Google 公开发布智能体审阅系统 Deep Review，可对复杂技术文档提供反馈与验证，最初面向计算机科学论文，", "source": "Google Research：Blog（网页）", "aihot": "https://aihot.news/items/enqtz3wtz6khvf0m44z5a5jaz", "original": "https://research.google/blog/analyzing-technical-documents-with-deep-review/"}, {"title": "Lovable 推出增长工具，从同一聊天窗口帮你获客投广告和做 SEO", "digest": "Lovable 推出增长工具，在原有建应用聊天窗口中提供增长计划、广告投放和 SEO 能力。用户设定目标后，", "source": "Lovable Blog", "aihot": "https://aihot.news/items/ooiqiluy56g21ir2u4phxjqu7", "original": "https://lovable.dev/blog/introducing-growth-tools"}]}, {"id": "sec-industry", "label": "行业动态", "label_en": "Industry Moves", "items": [{"title": "Modal 年化收入突破 10 亿美元并完成 7.5 亿美元 D 轮融资", "digest": "Modal 宣布年化收入突破 10 亿美元，并完成 7.5 亿美元 D 轮融资，投后估值 157.5 亿美元，", "source": "Modal 官方工程博客（RSS）", "aihot": "https://aihot.news/items/x5umoaa0xhd8n76uysjppz2fa", "original": "https://modal.com/blog/1-billion-annualized-run-rate-series-d"}, {"title": "欧盟就模型越狱事件调查 OpenAI 和 Anthropic，最高可罚全球营业额 3%", "digest": "欧盟委员会人工智能办公室正式向 OpenAI 和 Anthropic 发出信息调取请求，", "source": "IT之家·人工智能", "aihot": "https://aihot.news/items/yq46ddqwq7ns4ilpaqh6k0kql", "original": "https://www.ithome.com/1/013/154.htm"}]}, {"id": "sec-paper", "label": "论文研究", "label_en": "Research Papers", "items": [{"title": "Visual Studio Copilot 与 SSMS 远程代码执行漏洞（CVE-2026-103572）技术分析", "digest": "Johann Rehberger 披露 Visual Studio Copilot 与 SQL Server Mana…", "source": "Johann Rehberger / Embrace The Red（RSS）", "aihot": "https://aihot.news/items/o8h7g7pscq0qrlenoadabbb96", "original": "https://embracethered.com/blog/posts/2026/visual-studio-copilot-remote-code-execution/"}, {"title": "MIT团队用机器学习修正误差，将两到六周天气预报准确率翻倍", "digest": "MIT研究人员团队在Nature发表论文，提出一个机器学习后处理层，通过从历史数据中学习现有预报模型的错误并修正其输出，", "source": "MIT News（RSS）", "aihot": "https://aihot.news/items/pqpqgxyiu4qyu86fbljd726v9", "original": "https://news.mit.edu/2026/researchers-improve-weather-forecasts-looking-two-six-weeks-out-1014"}]}, {"id": "sec-tips", "label": "技巧与观点", "label_en": "Tips & Opinions", "items": [{"title": "Claude Code 空闲压缩从摘要继续，可用 idleCompaction 关闭并自定义阈值", "digest": "Claude Code 的空闲压缩会让 Claude 从摘要而非完整上下文继续。", "source": "X：Lydia Hallie（Anthropic，Claude Code） (@lydiahallie)", "aihot": "https://aihot.news/items/whbmvotra7659u98jmj00oegi", "original": "https://x.com/lydiahallie/status/2110484841926152622"}, {"title": "Claude Code 云端会话介绍，支持手机发起和并行运行", "digest": "Claude 介绍 Claude Code 的云端会话功能，会话在云上独立虚拟机中运行，不在本地电脑上，可离开后继续、", "source": "Claude：YouTube（RSS）", "aihot": "https://aihot.news/items/a6ag9dzkvssd6zrcib7bhhsx0", "original": "https://www.youtube.com/shorts/nJMwXtD56mA"}, {"title": "OpenAI 团队分享如何用 GPT-6 系列模型维护大型代码库", "digest": "OpenAI Core Experimentation 团队发文介绍用 GPT-6 Astra 和 GPT-6.1 S…", "source": "OpenAI Developers：Blog（网页）", "aihot": "https://aihot.news/items/wn2lwzshkg8gt2sbjuj1qxd8y", "original": "https://developers.openai.com/blog/maintaining-software-with-the-gpt-6-family"}, {"title": "LangChain 详解 Deep Agents 的上下文工程：如何记住信息而不塞满上下文窗口", "digest": "LangChain 发布博客，介绍其开源 Agent 框架 Deep Agents 如何用 middleware 做上…", "source": "LangChain：Blog（RSS）", "aihot": "https://aihot.news/items/za03v9avbq4fpb2y5b1ql1t27", "original": "https://www.langchain.com/blog/context-engineering-deep-agents-remember"}]}], "flash": [{"title": "40 位总检察长介入 Character.AI 破产案，要求保护用户对话数据", "digest": "40 位总检察长介入 Character.AI 破产案，要求保护用户对话数据", "source": "The Verge：AI（RSS）", "publishedAt": "2026-10-14T18:47:54.000Z", "aihot": "https://aihot.news/items/gpgj8ws42xbs5zhbxfzvn2g6i", "original": "https://www.theverge.com/policy/1011417/new-york-ag-characterai-bankruptcy"}, {"title": "Meta 的 Muse Wonder (Max) 以 +6.4% 净提升进入 Agent Arena 第12名", "digest": "Meta 的 Muse Wonder (Max) 以 +6.4% 净提升进入 Agent Arena 第12名", "source": "X：Arena (@arena)", "publishedAt": "2026-10-14T20:19:17.000Z", "aihot": "https://aihot.news/items/uceolgbpttfw4cgmkqc8cvyw5", "original": "https://x.com/arena/status/2110465487914295770"}, {"title": "Anthropic 开设新加坡办公室并与新加坡政府签署 MOU", "digest": "Anthropic 开设新加坡办公室并与新加坡政府签署 MOU", "source": "Anthropic：Newsroom（网页）", "publishedAt": "2026-10-13T16:00:00.000Z", "aihot": "https://aihot.news/items/g31frmev0dp5r6yaypk44f49o", "original": "https://www.anthropic.com/news/singapore-office-opening"}, {"title": "vLLM 推出无需置信头的在线拟合接受估计器，让 EAGLE、MTP 等草稿模型可用 Adaptive Verification", "digest": "vLLM 推出无需置信头的在线拟合接受估计器，让 EAGLE、", "source": "vLLM 官方博客（RSS）", "publishedAt": "2026-10-14T00:00:00.000Z", "aihot": "https://aihot.news/items/fuzrhjjahftxj9xj36god3pcf", "original": "https://vllm.ai/blog/2026-10-14-adaptive-verification-online-estimator"}]}, "briefing": {"date": "2026-10-15", "headline": "⭐ 今日最值得关注：存储涨价进入「反噬期」——2026Q3全球智能手机出货同比-20%创2012年以来同期最低、终端集体涨价，而美光称紧缺要到2029年，AI算力狂欢的账单正摊给每一位消费者。", "headline_en": "Top pick: memory inflation enters its backlash phase - Q3 2026 global smartphone shipments fell 20% YoY, the weakest third quarter since 2012, and devices are raising prices, yet Micron says the shortage lasts until 2029: the AI compute bill is being handed to every consumer.", "sections": [{"id": "m-politics", "label": "时政速览", "label_en": "Politics Watch", "digest": "全球债市风暴延续：法10Y逼近5%、日30Y破4.2%创历史新高；中东互袭升级；广交会今日开幕、中朝大桥开通。", "digest_en": "Bond selloff deepens; Mideast escalation; Canton Fair opens.", "detail": "<b>中国：<\/b>第140届广交会今日开幕，习近平致贺信；前三季度进出口39.94万亿元、同比+18.8%；中朝新鸭绿江大桥今日开通；央行将开展7000亿元买断式逆回购，9月社融存量同比+7.1%、M2同比+7.2%；第33届世界大学生冬季运动会火种抵达长春。<br><b>欧洲：<\/b>法国10年期国债收益率报4.879%逼近5%，赤字率预计5.4%，拉加德称法国应通过财政整顿自行解决债务问题；欧元兑美元创17个月新低；英国财政大臣拟以加税或削支支撑本月预算；北溪天然气管道爆炸案今日在德国汉堡开庭。<br><b>日本：<\/b>路透警告高市早苗370万亿日元（约2.3万亿美元）投资计划恐成日本经济最大风险，日元兑美元贬值约7%、30年期国债收益率破4.2%创历史新高；农相辞职成其政权首次阁僚流失；9月日本机构净卖出海外债券2.5万亿日元。<br><b>美国：<\/b>CPI升至3.7%超预期推升加息预期；IMF总裁称美国经济增长不足以缩减债务；特朗普称将在格陵兰开展大规模油气与矿产勘探。", "detail_en": "<b>China:<\/b> The 140th Canton Fair opens today with a congratulatory letter from President Xi; Q1-Q3 trade hit RMB 39.94 trillion, +18.8% YoY; the new China-DPRK Yalu River bridge opens today; the PBoC will conduct RMB 700 billion of outright reverse repos, with September TSF stock +7.1% and M2 +7.2% YoY; the Winter Universiade flame arrived in Changchun.<br><b>Europe:<\/b> France's 10-year yield stands at 4.879%, nearing 5%, with the deficit ratio seen at 5.4%; ECB's Lagarde says Paris must fix its debt via fiscal consolidation; the euro hit a 17-month low against the dollar; the UK chancellor plans tax hikes or spending cuts for this month's budget; the Nord Stream pipeline bombing trial opened in Hamburg today.<br><b>Japan:<\/b> Reuters warns that PM Takaichi's JPY 370 trillion (about $2.3 trillion) investment plan may be Japan's biggest economic risk; the yen is down about 7% and the 30-year JGB yield broke 4.2%, a record; the farm minister resigned, her government's first cabinet departure; Japanese institutions net sold JPY 2.5 trillion of overseas bonds in September.<br><b>US:<\/b> CPI rose to 3.7%, above expectations, lifting rate-hike bets; the IMF chief says US growth is insufficient to shrink debt; Trump says the US will launch large-scale oil, gas and mineral exploration in Greenland.", "items": [{"title": "早啊!新闻来了〔2026.10.15〕", "title_en": "Morning news roundup, Oct 15, 2026", "source": "央视新闻", "url": "https://ysxw.cctv.cn/article.html?toc_style_id=feeds_default&item_id=5854306936806081183&channelId=1119"}, {"title": "欧债收益率多数上涨，法国10年期国债收益率涨4.4个基点", "title_en": "European yields mostly rise, France 10Y up 4.4bp", "source": "每日经济新闻", "url": "https://finance.eastmoney.com/a/202610153895900655.html"}, {"title": "路透社：高市早苗难甩「再通胀主义者」标签", "title_en": "Reuters: Takaichi cannot shake the reflationist label", "source": "新浪财经", "url": "https://finance.sina.com.cn/roll/2026-10-14/doc-inivezmk4533066.shtml"}, {"title": "10月15日财经早餐：通胀升温压制黄金，中东袭击升级，美油创三周新高", "title_en": "Oct 15 morning report: Mideast attacks escalate, US oil at 3-week high", "source": "汇通网", "url": "https://www.fx678.com/C/20261015/202610150529472467.html"}]}, {"id": "m-ai", "label": "AI", "label_en": "AI", "digest": "算苗科技一年融资近20亿元；超节点进入单柜144颗GPU密度竞赛；千问办公推电商版AI工具。", "digest_en": "Suanmiao raises RMB 2B; 144-GPU racks; Qwen Office AI tool.", "detail": "<b>芯片：<\/b>北京AI芯片创企算苗科技完成Pre-A2及A轮融资，一年内累计融资近20亿元，亦庄国投等北京市区两级国资领投，主推自研3D TokenPU大模型算力芯片，以3D混合键合将存储晶圆垂直堆叠于逻辑晶圆之上，突破传统架构「内存墙」。<br><b>算力：<\/b>工博会超节点密度竞赛开打——天数智芯天垓300 IXL144单柜集成144颗GPU（约10.1TB显存），为业界最高密度单机柜超节点；沐曦曦景S600单柜64卡全互连；万亿参数模型正倒逼服务器架构重构。<br><b>应用：<\/b>阿里千问办公发布电商版，提供跨平台经营看板、趋势洞察、爆款素材批量生成与跨平台ROI优化；全国首个算电协同央地合资平台在广州成立，2026年我国智能算力占比预计达73%。<br><b>资本：<\/b>华尔街见闻：AI科技巨头约1500亿美元债券融资窗口或于两个月内重开，高盛估算2027年AI相关投资级债券供给达2750亿美元。", "detail_en": "<b>Chips:<\/b> Beijing AI chip startup Suanmiao closed Pre-A2 and Series A rounds totaling nearly RMB 2 billion within a year, led by Beijing state-capital platforms, pushing its self-developed 3D TokenPU LLM compute chip that vertically stacks memory wafers on logic wafers via 3D hybrid bonding to break the memory wall.<br><b>Compute:<\/b> At the CIIF, superpods entered a density race - Iluvatar CoreX's TianGai 300 IXL144 packs 144 GPUs (about 10.1TB of memory) in a single rack, the industry's densest; MetaX's Xijing S600 integrates 64 fully interconnected cards per rack; trillion-parameter models are forcing a server architecture overhaul.<br><b>Applications:<\/b> Alibaba's Qwen Office launched an e-commerce edition with cross-platform dashboards, trend insights, bulk creative generation and cross-platform ROI optimization; China's first state-local JV platform for compute-power synergy was established in Guangzhou, with intelligent computing expected to reach 73% of China's total compute in 2026.<br><b>Capital:<\/b> Wallstreet CN: about $150 billion of AI-giant bond financing may reopen within two months; Goldman estimates $275 billion of AI-related investment-grade bond supply in 2027.", "items": [{"title": "AI芯片创企算苗科技融资近20亿，北京国资参投", "title_en": "AI chip startup Suanmiao raises nearly RMB 2B with Beijing state capital", "source": "DoNews", "url": "https://www.donews.com/news/detail/1/6741129.html"}, {"title": "超节点开启「密度竞赛」 单机柜迈向144颗GPU", "title_en": "Superpods enter a density race: 144 GPUs per rack", "source": "21世纪经济报道", "url": "https://www.toutiao.com/article/7696555665296343562"}, {"title": "华尔街见闻早餐FM-Radio 2026年10月15日", "title_en": "Wallstreet CN morning briefing, Oct 15, 2026", "source": "华尔街见闻", "url": "https://www.sohu.com/a/1087893226_130887"}]}, {"id": "m-military", "label": "军事", "label_en": "Military", "digest": "沙特与胡塞互袭能源设施升级，霍尔木兹多船遇袭；美以签阿帕奇采购协议；伊朗称全天候监控海峡。", "digest_en": "Saudi-Houthi strikes escalate; Hormuz hit; Apache deal.", "detail": "<b>也门-沙特：<\/b>胡塞武装14日宣布以弹道导弹、巡航导弹和无人机大规模打击利雅得哈立德国王国际机场、阿美宰赫兰设施及炼油厂，15日凌晨称击中一架沙特「台风」战斗机；沙特主导联军24小时内空袭也门42次，特朗普考虑拉土耳其入局。<br><b>霍尔木兹：<\/b>一艘载有2500个集装箱的货轮触雷爆炸沉没；两艘新加坡籍船只遭袭、一艘着火沉没；伊朗革命卫队称「全天候」监控海峡，任何船只通行「必须获得许可」。<br><b>其他：<\/b>美以正式签署12架AH-64E「阿帕奇」直升机采购协议；内塔尼亚胡称10月27日议会选举前不对伊朗动武；俄袭乌卢茨克致6死13伤；日本民众集会抗议驻日美军暴力犯罪；辽宁舰航母编队赴西太平洋训练。", "detail_en": "<b>Yemen-Saudi:<\/b> The Houthis announced large-scale strikes on Riyadh's King Khalid International Airport, Aramco facilities in Dhahran and oil refineries, and claimed in the early hours of the 15th to have hit a Saudi Typhoon fighter; the Saudi-led coalition conducted 42 airstrikes on Yemen within 24 hours, and Trump is weighing bringing Turkey into the fight.<br><b>Hormuz:<\/b> A cargo ship carrying 2,500 containers struck a mine, exploded and sank; two Singapore-registered ships were hit, one catching fire and sinking; the IRGC says it monitors the strait around the clock and any ship passing must obtain permission.<br><b>Elsewhere:<\/b> The US and Israel signed a deal for 12 AH-64E Apache helicopters; Netanyahu says no military action against Iran before the October 27 Knesset election; a Russian attack on Lutsk killed 6 and wounded 13; Japanese citizens protested violence by US troops stationed in Japan; the Liaoning carrier group conducted training in the western Pacific.", "items": [{"title": "沙特与胡塞互袭能源设施 美举棋未定之际拟推土耳其入局", "title_en": "Saudi, Houthis trade strikes on energy facilities as US mulls pulling in Turkey", "source": "央视新闻", "url": "https://news.qq.com/rain/a/20261015A02KND00"}, {"title": "国际新闻早知道丨胡塞武装称击中沙特战机 美军称在阿曼湾摧毁与伊关联帆船", "title_en": "Global morning briefing: Houthis claim Saudi jet hit; US destroys Iran-linked dhow", "source": "央视新闻", "url": "https://www.toutiao.com/article/7696648602537509376/"}, {"title": "美以伊局势：伊朗称全天候监控霍尔木兹海峡", "title_en": "US-Israel-Iran: Iran says it monitors Hormuz around the clock", "source": "澎湃新闻", "url": "https://www.thepaper.cn/newsDetail_forward_34253293"}]}, {"id": "m-semi", "label": "半导体与存储", "label_en": "Semiconductors & Storage", "digest": "DDR4三个月+24%反超DDR5；美光预警紧缺至2029；台积电今日发财报，2nm占比跳升至约11%。", "digest_en": "DDR4 +24% in 3mo beats DDR5; Micron: shortage to 2029; TSMC…", "detail": "<b>价格：<\/b>巴克莱报告显示，10月DDR4合约价环比+4%、三个月累计+24%，涨幅反超DDR5（三个月+20%）；10月DDR5现货价环比+8%。美光CEO预警2027-2028年供需比2026年更紧、紧缺或持续至2029年，已锁定超75%的2027年产能；其第四财季NAND价格环比涨约30%。<br><b>预期：<\/b>TrendForce预计Q4 DRAM合约价+10%~15%、NAND +15%~20%、HBM +15%~20%；花旗称DRAM缺口将在2027Q4达到13.9%峰值、NAND缺口2028Q1达8.3%。<br><b>代工：<\/b>台积电今日发布Q3业绩：营收1.494万亿新台币、同比+51%创单季新高，2nm营收占比从Q2的3%跃升至约11%，月产能上调至12万片、有望年内提前达成2027年目标。<br><b>传导：<\/b>2026Q3全球智能手机出货量同比-20%，创2012年以来同期最低；华为nova16涨价200-400元、小米17 Ultra全系+1000元；特斯拉AI5芯片内存配置改为96GB DDR5。", "detail_en": "<b>Prices:<\/b> Barclays: DDR4 contract prices rose 4% MoM in October, up 24% over three months, overtaking DDR5 (+20% over three months); DDR5 spot prices jumped 8% MoM. Micron's CEO warns supply will be tighter in 2027-2028 than in 2026 and the shortage may last until 2029, with over 75% of 2027 capacity already locked; its fiscal Q4 NAND prices rose about 30% QoQ.<br><b>Forecasts:<\/b> TrendForce expects Q4 DRAM contract prices +10-15%, NAND +15-20% and HBM +15-20%; Citi sees the DRAM gap peaking at 13.9% in Q4 2027 and the NAND gap at 8.3% in Q1 2028.<br><b>Foundry:<\/b> TSMC reports Q3 results today: revenue of NT$1.494 trillion, +51% YoY, a single-quarter record, with 2nm revenue share jumping from 3% in Q2 to about 11% and monthly 2nm capacity raised to 120k wafers, likely reaching its 2027 target early.<br><b>Pass-through:<\/b> Global smartphone shipments fell 20% YoY in Q3 2026, the lowest for any third quarter since 2012; Huawei's nova 16 rose RMB 200-400 and the Xiaomi 17 Ultra RMB 1,000 across the board; Tesla changed the AI5 chip's memory config to 96GB DDR5.", "items": [{"title": "涨幅反超DDR5！DDR4合约价三月暴涨24%", "title_en": "DDR4 contract prices up 24% in three months, overtaking DDR5", "source": "澎湃新闻", "url": "https://www.thepaper.cn/newsDetail_forward_34243455"}, {"title": "Micron警示：内存短缺或将持续至2028年", "title_en": "Micron warns the memory shortage may last until 2028", "source": "至顶科技", "url": "https://www.163.com/dy/article/L97HCGV805118UGF.html"}, {"title": "台积电有望提前完成明年产能目标 美银料2纳米制程营收贡献升至11%", "title_en": "TSMC may beat 2027 capacity target; BofA sees 2nm revenue share at 11%", "source": "财联社", "url": "https://news.qq.com/rain/a/20261014A08QJY00"}, {"title": "存储危机下的A股变局：这次逻辑不一样了", "title_en": "Memory crisis reshapes A-shares with new logic", "source": "今日头条", "url": "https://www.toutiao.com/a7696323970416525885"}]}, {"id": "m-digital", "label": "数码科技", "label_en": "Consumer Tech", "digest": "苹果HomeView 299美元11月13日发售；一加16首销1小时破7万台；智能体手机混战升级。", "digest_en": "Apple HomeView $299, Nov 13; OnePlus 16 sells 70k in 1hr.", "detail": "<b>苹果：<\/b>HomeView家庭中枢定价299美元（挂墙版同价）、11月13日发售：7英寸Liquid Retina屏、Siri AI（beta版）、最多6人面部识别、可同屏查看9路安防摄像头；联手LG与施耐德的Home Collection 12月上市；因Siri AI未在欧盟上线暂不在欧盟销售。<br><b>安卓旗舰：<\/b>一加16首销1小时破7万台（骁龙8第六代至尊版、165Hz高刷、9000mAh电池、2亿像素主摄）；iQOO Neo 12本月发布，行业首发2K 185Hz屏幕。<br><b>智能体手机：<\/b>阶跃STEPX Neo（3999元起、10月16日开售）以Step AOS 1.0重构系统，努比亚豆包二代（5999元起）走轻资产路线并放开第三方应用屏幕自动化权限；手机端侧生成式AI备案累计达10款。<br><b>AI终端：<\/b>阿里千问发布AI眼镜N1系列与AI耳夹耳机，百度推多款家庭AI终端；存储涨价推高整机成本成为行业共性。", "detail_en": "<b>Apple:<\/b> HomeView costs $299 (the wall-mounted version at the same price) and ships November 13: a 7-inch Liquid Retina display, Siri AI (beta), face recognition for up to six people and live feeds from up to nine cameras; the Home Collection with LG and Schneider arrives in December; it is not sold in the EU because Siri AI is unavailable there.<br><b>Android flagships:<\/b> The OnePlus 16 sold over 70,000 units in its first hour (Snapdragon 8 Gen 6 Elite, 165Hz, 9,000mAh battery, 200MP main camera); the iQOO Neo 12 launches this month with the industry's first 2K 185Hz display.<br><b>Agentic phones:<\/b> STEPX Neo (from RMB 3,999, on sale October 16) rebuilds the system with Step AOS 1.0, while the nubia Doubao 2 (from RMB 5,999) takes an asset-light route and now allows screen automation of third-party apps; 10 on-device generative AI services are now filed in China.<br><b>AI terminals:<\/b> Alibaba's Qwen released AI glasses (N1 series) and AI clip-on earbuds, and Baidu launched multiple family AI terminals; rising memory costs are lifting device prices across the board.", "items": [{"title": "Apple HomeView Review: Is Apple's $299 Smart Display Worth Buying?", "title_en": "Apple HomeView Review: Is Apple's $299 Smart Display Worth Buying?", "source": "Tech Times", "url": "https://www.techtimes.com/articles/329013/20261014/apple-homeview-review-apples-299-smart-display-worth-buying.htm"}, {"title": "首销1小时破7万台！一加16成FPS游戏玩家首选旗舰", "title_en": "OnePlus 16 tops 70,000 units in the first hour of sales", "source": "太平洋科技", "url": "https://mobile.pconline.com.cn/2183/21835865.html"}, {"title": "AI手机混战：阶跃、豆包分道，生态墙如何破?", "title_en": "AI phone race: STEPX and Doubao take different paths", "source": "21世纪经济报道", "url": "https://www.toutiao.com/article/7696555714530738722"}]}, {"id": "m-auto", "label": "汽车", "label_en": "Automotive", "digest": "「速成车」叙事海外发酵；中欧电动车贸易达成共识；69%用户将城市NOA视为购车标配。", "digest_en": "'Rush-job car' row; China-EU EV deal; NOA now standard.", "detail": "<b>质量争议：<\/b>尊界V800在懂车帝紧急制动测试中踏板支架三次全断裂，与奇瑞OMODA 5海外断后轴被并列传播，海外媒体借「速成车」叙事质疑中国制造；数据层面，中国品牌去年召回总量占比仅2.08%（日本品牌46%），Euro NCAP 2026更严苛规程下广汽AION UT、吉利E2、零跑B05均获五星。<br><b>贸易：<\/b>中欧就混动及电动汽车贸易问题达成共识，比亚迪、吉利、奇瑞及中汽协同日发声欢迎，稳定出海预期。<br><b>消费趋势：<\/b>麦肯锡调研显示69%的受访者已将城市NOA等高阶智驾功能视为购车标配；激光雷达下放至A00级车型（选装后9.79万元）。<br><b>售后：<\/b>J.D. Power称2026年新能源车事故维修均价达燃油车1.7倍，轻微剐蹭5000-15000元，「买得起修不起」成新焦虑。", "detail_en": "<b>Quality row:<\/b> The V800's brake pedal brackets broke in all three of Dongchedi's emergency braking tests, and the reports were amplified abroad alongside a Chery OMODA 5 rear-axle failure in Malaysia, feeding a rush-job car narrative; data shows Chinese brands accounted for only 2.08% of global recalls last year (Japanese brands 46%), and three Chinese models earned five-star Euro NCAP ratings under the stricter 2026 protocol.<br><b>Trade:<\/b> China and the EU reached consensus on hybrid and EV trade issues; BYD, Geely, Chery and the CAAM welcomed it the same day, stabilizing export expectations.<br><b>Consumer trends:<\/b> McKinsey finds 69% of respondents already treat city NOA-class smart driving as a standard feature; LiDAR has reached A00-segment cars (RMB 97,900 with the option).<br><b>After-sales:<\/b> J.D. Power says NEV accident repair costs averaged 1.7x those of ICE cars in 2026, with minor scrapes costing RMB 5,000-15,000, fueling a new cheap-to-buy, pricey-to-fix anxiety.", "items": [{"title": "「速成车」，正在消耗海外市场对中国汽车的信任", "title_en": "Rush-job cars are eroding overseas trust in Chinese autos", "source": "虎嗅APP", "url": "https://www.163.com/dy/article/L98BLKCQ051188EA.html"}, {"title": "中国汽车走得越远，越要敬畏质量", "title_en": "The farther Chinese cars go, the more quality matters", "source": "腾讯新闻", "url": "https://news.qq.com/rain/a/20261014A0E5FR00"}, {"title": "焦虑退潮 配置拉满 场景为王", "title_en": "Anxiety fades, configs max out, scenarios reign", "source": "新浪财经", "url": "https://finance.sina.com.cn/jjxw/2026-10-15/doc-inivfwqv8214481.shtml"}]}], "insights": [{"title": "AI 算力军备竞赛，账单由所有消费者分摊", "title_en": "The AI compute arms race is being billed to every consumer", "a": "算苗科技一年融资近20亿元加码3D TokenPU算力芯片，超节点冲上单柜144颗GPU，千问办公发布电商版AI工具——AI 军备竞赛全面提速。", "a_en": "Suanmiao raised nearly RMB 2 billion in a year for its 3D TokenPU compute chip, superpods race toward 144 GPUs per rack, and Qwen Office launched an e-commerce AI tool: the AI arms race is accelerating.", "b": "巴克莱：DDR4合约价三个月+24%；2026Q3全球智能手机出货量同比-20%创2012年以来同期最低；华为nova16、小米17 Ultra集体涨价。", "b_en": "Barclays: DDR4 contract prices up 24% in three months; Q3 2026 global smartphone shipments fell 20% YoY, the lowest third quarter since 2012; Huawei's nova 16 and Xiaomi 17 Ultra raised prices.", "concl": "AI 对产能的挤占正通过存储涨价转嫁给整个消费电子行业，<strong>「算力越智能、硬件越贵」将是未来两年的行业底色<\/strong>。", "concl_en": "AI's squeeze on capacity is being passed to the whole consumer electronics industry via memory prices: <strong>the smarter the compute, the pricier the hardware will be the industry backdrop for the next two years<\/strong>."}, {"title": "AI 影视从「能生成」到「能交付」，导演判断力成为分水岭", "title_en": "AI filmmaking moves from generation to delivery, making directorial judgment the dividing line", "a": "可灵 Kling 4.0 本月正式上线（3-30秒原生、4K、最多10个关键帧、21:9、立体声），釜山电影节行业焦点已转向「能不能交付」。", "a_en": "Kling 4.0 officially launches this month (3-30s native, 4K, up to 10 keyframes, 21:9, stereo audio), and the industry focus at Busan has shifted to whether AI work can be delivered.", "b": "博纳首部AI院线电影《三星堆：未来往事》10月23日上映，预售仅138元；同期「网红职业正被AI悄悄顶替」登热搜引发热议。", "b_en": "Bona's first AI theatrical film Sanxingdui: Future Memories opens October 23 with just RMB 138 in presales, while 'influencer jobs quietly replaced by AI' trended on Weibo.", "concl": "执行层工种加速塌陷，<strong>「懂 AI 的创作者」正在成为稀缺资源——对导演专业大一学生，现在就是把判断力和审美接进 AI 工作流的最佳窗口<\/strong>。", "concl_en": "Execution-layer jobs are collapsing fast: <strong>AI-literate creators are becoming scarce - for a first-year directing student, now is the best window to wire judgment and aesthetics into an AI workflow<\/strong>."}, {"title": "全球债市风暴遇上 AI 融资潮，流动性是明年最大变量", "title_en": "A global bond storm meets the AI financing wave; liquidity is next year's biggest variable", "a": "高盛估算2027年AI相关投资级债券供给达2750亿美元，约占短端投资级供给的20%-25%，AI巨头融资窗口或于两月内重开。", "a_en": "Goldman estimates $275 billion of AI-related investment-grade bond supply in 2027, about 20-25% of short-end IG supply, with AI giants' financing window possibly reopening within two months.", "b": "法国10年期国债收益率报4.879%逼近5%，日本30年期收益率破4.2%创历史新高，日元兑美元贬值约7%。", "b_en": "France's 10-year yield stands at 4.879%, near 5%, while Japan's 30-year JGB yield broke 4.2%, a record, with the yen down about 7% against the dollar.", "concl": "AI 资本开支恰逢全球高利率与财政紧缩周期，<strong>融资成本可能成为压平 AI 叙事的下一个变量<\/strong>。", "concl_en": "AI capex collides with a global high-rate, fiscal-tightening cycle: <strong>financing costs may be the next variable to flatten the AI narrative<\/strong>."}]}, "cross": {"entities": [], "themes": [{"name": "模型发布与评测", "aCount": 3, "bCount": 3, "aHits": ["xAI 发布 Grok Voic", "Google 发布智能体审稿系统", "LangChain 详解 Dee"], "bHits": ["AI", "半导体与存储", "数码科技"], "a": true, "b": true}, {"name": "融资与估值", "aCount": 1, "bCount": 3, "aHits": ["Modal 年化收入突破 10 "], "bHits": ["时政速览", "AI", "AI芯片创企算苗科技融资近20亿"], "a": true, "b": true}, {"name": "智能体与编排", "aCount": 3, "bCount": 1, "aHits": ["Google 发布智能体审稿系统", "LangChain 详解 Dee", "Meta 的 Muse Wond"], "bHits": ["数码科技"], "a": true, "b": true}, {"name": "算力与芯片", "aCount": 0, "bCount": 5, "aHits": [], "bHits": ["AI", "AI芯片创企算苗科技融资近20亿", "超节点开启「密度竞赛」 单机柜迈"], "a": false, "b": true}, {"name": "涨价与供应链", "aCount": 0, "bCount": 3, "aHits": [], "bHits": ["半导体与存储", "台积电有望提前完成明年产能目标 ", "数码科技"], "a": false, "b": true}, {"name": "终端与出货", "aCount": 0, "bCount": 3, "aHits": [], "bHits": ["半导体与存储", "数码科技", "汽车"], "a": false, "b": true}, {"name": "开源与生态", "aCount": 1, "bCount": 0, "aHits": ["LangChain 详解 Dee"], "bHits": [], "a": true, "b": false}], "onlyA": ["开源与生态"], "onlyB": ["算力与芯片", "涨价与供应链", "终端与出货"]}, "insights": [{"title": "AI 算力军备竞赛，账单由所有消费者分摊", "title_en": "The AI compute arms race is being billed to every consumer", "a": "算苗科技一年融资近20亿元加码3D TokenPU算力芯片，超节点冲上单柜144颗GPU，千问办公发布电商版AI工具——AI 军备竞赛全面提速。", "a_en": "Suanmiao raised nearly RMB 2 billion in a year for its 3D TokenPU compute chip, superpods race toward 144 GPUs per rack, and Qwen Office launched an e-commerce AI tool: the AI arms race is accelerating.", "b": "巴克莱：DDR4合约价三个月+24%；2026Q3全球智能手机出货量同比-20%创2012年以来同期最低；华为nova16、小米17 Ultra集体涨价。", "b_en": "Barclays: DDR4 contract prices up 24% in three months; Q3 2026 global smartphone shipments fell 20% YoY, the lowest third quarter since 2012; Huawei's nova 16 and Xiaomi 17 Ultra raised prices.", "concl": "AI 对产能的挤占正通过存储涨价转嫁给整个消费电子行业，<strong>「算力越智能、硬件越贵」将是未来两年的行业底色<\/strong>。", "concl_en": "AI's squeeze on capacity is being passed to the whole consumer electronics industry via memory prices: <strong>the smarter the compute, the pricier the hardware will be the industry backdrop for the next two years<\/strong>."}, {"title": "AI 影视从「能生成」到「能交付」，导演判断力成为分水岭", "title_en": "AI filmmaking moves from generation to delivery, making directorial judgment the dividing line", "a": "可灵 Kling 4.0 本月正式上线（3-30秒原生、4K、最多10个关键帧、21:9、立体声），釜山电影节行业焦点已转向「能不能交付」。", "a_en": "Kling 4.0 officially launches this month (3-30s native, 4K, up to 10 keyframes, 21:9, stereo audio), and the industry focus at Busan has shifted to whether AI work can be delivered.", "b": "博纳首部AI院线电影《三星堆：未来往事》10月23日上映，预售仅138元；同期「网红职业正被AI悄悄顶替」登热搜引发热议。", "b_en": "Bona's first AI theatrical film Sanxingdui: Future Memories opens October 23 with just RMB 138 in presales, while 'influencer jobs quietly replaced by AI' trended on Weibo.", "concl": "执行层工种加速塌陷，<strong>「懂 AI 的创作者」正在成为稀缺资源——对导演专业大一学生，现在就是把判断力和审美接进 AI 工作流的最佳窗口<\/strong>。", "concl_en": "Execution-layer jobs are collapsing fast: <strong>AI-literate creators are becoming scarce - for a first-year directing student, now is the best window to wire judgment and aesthetics into an AI workflow<\/strong>."}, {"title": "全球债市风暴遇上 AI 融资潮，流动性是明年最大变量", "title_en": "A global bond storm meets the AI financing wave; liquidity is next year's biggest variable", "a": "高盛估算2027年AI相关投资级债券供给达2750亿美元，约占短端投资级供给的20%-25%，AI巨头融资窗口或于两月内重开。", "a_en": "Goldman estimates $275 billion of AI-related investment-grade bond supply in 2027, about 20-25% of short-end IG supply, with AI giants' financing window possibly reopening within two months.", "b": "法国10年期国债收益率报4.879%逼近5%，日本30年期收益率破4.2%创历史新高，日元兑美元贬值约7%。", "b_en": "France's 10-year yield stands at 4.879%, near 5%, while Japan's 30-year JGB yield broke 4.2%, a record, with the yen down about 7% against the dollar.", "concl": "AI 资本开支恰逢全球高利率与财政紧缩周期，<strong>融资成本可能成为压平 AI 叙事的下一个变量<\/strong>。", "concl_en": "AI capex collides with a global high-rate, fiscal-tightening cycle: <strong>financing costs may be the next variable to flatten the AI narrative<\/strong>."}]};
+
+const TZ = 'Asia/Shanghai';
+const A = DATA.aihot || null;
+const B = DATA.briefing || null;
+const INSIGHTS = DATA.insights || [];
+
+/* ---------- 国际化 ---------- */
+const I18N = {
+  zh: {
+    brand:"晨报仪表盘",
+    nav_overview:"概览", nav_insight:"交叉洞察", nav_model:"模型", nav_product:"产品",
+    nav_industry:"行业", nav_paper:"论文", nav_tips:"技巧", nav_morning:"早间汇总",
+    heroTitle:'今日 <span class="accent">AI</span> 圈发生了什么',
+    panel1:"两个信源，一份晨报", panel2:"跳转到版块",
+    anchorA:"AI HOT 日报 · AI 深度", anchorB:"每日早间汇总 · 全局视野",
+    insightHead:"交叉洞察", insightSub:"把两个信源今天的交集挑出来 —— 单看任何一边都看不出的结论",
+    aihotHead:"AI HOT 日报", aihotSub:"按五个固定版块分组 · 全局连续编号 · 每条带信源与原文",
+    morningHead:"每日早间汇总", morningSub:"你的自动化任务（每天 08:00）· 六大固定板块 · 全局编号接续",
+    leadTagA:"◆ AI HOT 头条", leadTagB:"★ 早间汇总 · 今日最值得关注",
+    leadBdesc:"来自「每日早间新闻汇总」自动化任务，覆盖时政、军事、半导体与存储、数码、汽车等 AI HOT 之外的领域。",
+    jumpSix:"跳到六板块主线", viewDaily:"查看当日日报",
+    statAll:"全榜条数", statMorning:"早间汇总板块",
+    srcTagA:"源 A", srcTagB:"源 B", srcTagM:"结合点",
+    srcATitle:"AI HOT 日报", srcBTitle:"每日早间汇总", srcMTitle:"共同实体 · 主题共振",
+    srcADesc:"AI 圈内部视角：模型 / 产品 / 行业 / 论文 / 观点五个固定版块，每条都带信源 chip 与原文跳转。",
+    srcBDesc:"全局视野：时政 / AI / 军事 / 半导体与存储 / 数码 / 汽车六大板块，板块级主线 + 可展开细节。",
+    srcMDesc:"由脚本对两源正文做实体与主题匹配自动算出，每天变化。详见下方交叉洞察。",
+    crossEnt:"共同提到的实体", crossTheme:"主题共振", crossOnly:"各自独有",
+    crossEmptyEnt:"今天两源没有同时出现的实体。", crossEmptyTheme:"今天两源没有共同主题。",
+    crossOnlyA:"仅 AI HOT 覆盖", crossOnlyB:"仅早间汇总覆盖",
+    whoA:"AI 日报", whoB:"早间汇总",
+    flash:"⚡ 速报 Flash", noUpdate:"今日该版块无更新",
+    aihotEmpty:"今日未能取到 AI HOT 日报数据，本页仅展示早间汇总。",
+    morningEmptyPre:"今日没有找到结构化早间汇总数据（", morningEmptyPost:" 缺失）。请检查自动化任务是否已写入该文件。",
+    originNotePre:"这一部分不是 AI HOT 的数据，而是你的", originNoteMid:" 自动化任务（", originNotePost:"）在", originNoteTail:"生成的六大板块主线，覆盖 AI HOT 看不到的世界。展开卡片可看当日完整细节。",
+    expand:"展开当日细节", readOriginal:"阅读原文",
+    footerTotal:"本期共", footerAihot:"AI HOT 日报", footerFlash:"速报", footerMorning:"早间汇总",
+    footerGlobal:"全局编号", footerSrcA2:"；时间均为北京时间。",
+    footerSrcB:"数据源 ②：", footerBuild:"本页由本地脚本自动生成于",
+    footerBuildTail:"，单文件离线看板，样式与脚本全部内联，无任何外部资源请求。"
+  },
+  en: {
+    brand:"Morning Brief",
+    nav_overview:"Overview", nav_insight:"Insights", nav_model:"Models", nav_product:"Products",
+    nav_industry:"Industry", nav_paper:"Papers", nav_tips:"Tips", nav_morning:"Morning",
+    heroTitle:'What Happened in <span class="accent">AI</span> Today',
+    panel1:"Two Sources, One Brief", panel2:"Jump to Sections",
+    anchorA:"AI HOT Daily · AI Deep Dive", anchorB:"Daily Morning Brief · Global View",
+    insightHead:"Cross Insights", insightSub:"The overlap of today's two sources — conclusions invisible from either side alone",
+    aihotHead:"AI HOT Daily", aihotSub:"Five fixed sections · globally sequential numbering · every item links to its source",
+    morningHead:"Daily Morning Brief", morningSub:"Your automation task (daily 08:00) · six fixed sections · sequential numbering",
+    leadTagA:"◆ AI HOT Top", leadTagB:"★ Morning Brief · Today's Highlight",
+    leadBdesc:"From your “Daily Morning News Roundup” automation: politics, military, semiconductors & storage, consumer tech, autos — the world beyond AI HOT.",
+    jumpSix:"Jump to six sections", viewDaily:"View daily report",
+    statAll:"Total items", statMorning:"Morning sections",
+    srcTagA:"Src A", srcTagB:"Src B", srcTagM:"Overlap",
+    srcATitle:"AI HOT Daily", srcBTitle:"Daily Morning Brief", srcMTitle:"Shared Entities · Theme Resonance",
+    srcADesc:"The inside view of AI: five fixed sections (models / products / industry / papers / opinions), each item with a source chip and original link.",
+    srcBDesc:"A global view: six sections (politics / AI / military / semiconductors / tech / autos) with section-level leads and expandable details.",
+    srcMDesc:"Auto-computed by matching entities and themes across both sources; changes daily. See Cross Insights below.",
+    crossEnt:"Entities mentioned by both", crossTheme:"Theme resonance", crossOnly:"Unique to each",
+    crossEmptyEnt:"No shared entity between the two sources today.", crossEmptyTheme:"No shared theme between the two sources today.",
+    crossOnlyA:"Only in AI HOT", crossOnlyB:"Only in Morning Brief",
+    whoA:"AI Daily", whoB:"Morning Brief",
+    flash:"⚡ Flash", noUpdate:"No updates in this section today",
+    aihotEmpty:"Could not fetch AI HOT data today; this page shows the morning brief only.",
+    morningEmptyPre:"No structured morning-brief data found (", morningEmptyPost:" missing). Check whether the automation wrote that file.",
+    originNotePre:"This part is not from AI HOT, but from your", originNoteMid:" automation task (", originNotePost:") on", originNoteTail:" — six section leads covering the world AI HOT can't see. Expand a card for the full details of the day.",
+    expand:"Expand day's details", readOriginal:"Read original",
+    footerTotal:"This issue has", footerAihot:"AI HOT Daily", footerFlash:"Flash", footerMorning:"Morning Brief",
+    footerGlobal:"Global No.", footerSrcA2:"; all times are Beijing Time.",
+    footerSrcB:"Source ②:", footerBuild:"Generated locally by a script on",
+    footerBuildTail:", a single-file offline dashboard — styles and scripts are inlined, no external requests."
+  }
+};
+let LANG = 'zh';
+try { LANG = localStorage.getItem('dash_lang') || 'zh'; } catch(e) {}
+function t(key){ const v = I18N[LANG] && I18N[LANG][key]; return (v != null && v !== '') ? v : (I18N.zh[key] != null ? I18N.zh[key] : key); }
+function pick(o, key){
+  if(!o) return '';
+  if(LANG === 'en'){ const e = o[key + '_en']; if(e != null && e !== '') return e; }
+  return o[key] || '';
+}
+function setLang(l){ LANG = l; try{ localStorage.setItem('dash_lang', LANG); }catch(e){} applyAll(); }
+function applyStatic(){
+  document.querySelectorAll('[data-i18n]').forEach(el=>{ el.textContent = t(el.getAttribute('data-i18n')); });
+  document.querySelectorAll('[data-i18n-html]').forEach(el=>{ el.innerHTML = t(el.getAttribute('data-i18n-html')); });
+}
+
+const pad = n => String(n).padStart(2,'0');
+function bjDate(iso){
+  const p = new Intl.DateTimeFormat('zh-CN',{timeZone:TZ,month:'numeric',day:'numeric'}).format(new Date(iso));
+  return p.replace(/\//g,'月').replace(/月(\d+)$/,'月$1日');
+}
+function bjDateEN(iso){
+  return new Intl.DateTimeFormat('en-US',{timeZone:TZ,month:'short',day:'numeric',year:'numeric'}).format(new Date(iso));
+}
+function bjTime(iso){
+  return new Intl.DateTimeFormat('zh-CN',{timeZone:TZ,hour:'2-digit',minute:'2-digit',hour12:false}).format(new Date(iso));
+}
+function bjMDT(iso){ return (LANG==='en'? bjDateEN(iso)+' '+bjTime(iso) : bjDate(iso)+' '+bjTime(iso)); }
+function weekdayCN(y,m,d){
+  return new Intl.DateTimeFormat('zh-CN',{timeZone:TZ,weekday:'long'}).format(new Date(`${y}-${pad(m)}-${pad(d)}T12:00:00+08:00`));
+}
+function weekdayEN(y,m,d){
+  return new Intl.DateTimeFormat('en-US',{timeZone:TZ,weekday:'long'}).format(new Date(`${y}-${pad(m)}-${pad(d)}T12:00:00+08:00`));
+}
+const esc = s => String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+let SEQ = 0;
+const nextNo = () => pad(++SEQ);
+
+const ICON_SRC = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 4h16v2H4V4zm0 7h16v2H4v-2zm0 7h10v2H4v-2z"/></svg>';
+const ICON_GO  = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M7 17L17 7M17 7H9M17 7v8"/></svg>';
+
+function renderHero(){
+  const [y,m,d] = (A?A.date:DATA.date).split('-').map(Number);
+  if(LANG==='en'){
+    document.getElementById('heroDate').textContent = `${weekdayEN(y,m,d)}, ${bjDateEN(A?A.date:DATA.date)}`;
+  } else {
+    document.getElementById('heroDate').textContent = `${y}年${m}月${d}日 · ${weekdayCN(y,m,d)}`;
+  }
+  document.getElementById('heroWindow').textContent = A
+    ? (LANG==='en'
+        ? `Data window (Beijing Time) ${bjMDT(A.windowStart)} — ${bjMDT(A.windowEnd)} · generated ${bjTime(A.generatedAt)}`
+        : `数据窗口 北京时间 ${bjMDT(A.windowStart)} — ${bjMDT(A.windowEnd)} · 报告生成于 ${bjTime(A.generatedAt)}`)
+    : t('aihotEmpty');
+
+  const totalA = A ? A.sections.reduce((n,s)=>n+s.items.length,0) : 0;
+  const flashN = A ? A.flash.length : 0;
+  const totalM = B ? B.sections.length : 0;
+  const grand = totalA + flashN + totalM;
+
+  document.getElementById('heroTagline').innerHTML = LANG==='en'
+    ? `AI HOT picks <b>${totalA+flashN}</b>, plus <b>${totalM}</b> morning-brief sections — <b>${grand}</b> items in one read.`
+    : `AI HOT 精选 <b>${totalA+flashN}</b> 条，合上早间汇总 <b>${totalM}</b> 个板块 —— 共 <b>${grand}</b> 条，一份读完。`;
+
+  const leadA = A && A.lead ? `
+    <div class="lead a">
+      <div class="tag">${t('leadTagA')}</div>
+      <h3>${esc(pick(A.lead,'title'))}</h3>
+      <p>${esc(pick(A.lead,'paragraph') || pick(A.lead,'digest') || '')}</p>
+      <a class="go" href="${esc(A.dailyUrl)}" target="_blank" rel="noopener noreferrer">${t('viewDaily')} ${ICON_GO}</a>
+    </div>` : '';
+  const leadB = B ? `
+    <div class="lead b">
+      <div class="tag">${t('leadTagB')}</div>
+      <h3>${esc(pick(B,'headline') || '—')}</h3>
+      <p>${esc(t('leadBdesc'))}</p>
+      <a class="go" href="#morning" style="color:var(--b-accent)">${t('jumpSix')} ${ICON_GO}</a>
+    </div>` : '';
+  document.getElementById('leadband').innerHTML = leadA + leadB;
+
+  const stats = [{num:grand,label:t('statAll'),primary:true,note:`AI ${totalA+flashN} · ${t('statMorning')} ${totalM}`}];
+  if(A) A.sections.forEach(s=>stats.push({num:s.items.length,label:pick(s,'label'),note:''}));
+  stats.push({num:totalM,label:t('statMorning'),note:''});
+  document.getElementById('heroStats').innerHTML = stats.map(s=>`
+    <div class="stat-card${s.primary?' primary':''}">
+      <div class="stat-num">${s.num}</div>
+      <div class="stat-label">${esc(s.label)}${s.note?`<br><em>${esc(s.note)}</em>`:''}</div>
+    </div>`).join('');
+}
+
+function renderSources(){
+  const totalA = A ? A.sections.reduce((n,s)=>n+s.items.length,0)+A.flash.length : 0;
+  const srcCount = A ? new Set(A.sections.flatMap(s=>s.items.map(i=>i.source)).concat(A.flash.map(i=>i.source))).size : 0;
+  const cross = DATA.cross || {};
+  const ent = (cross.entities||[]).length, th = (cross.themes||[]).length;
+  document.getElementById('sourceCards').innerHTML = `
+    <div class="source-card">
+      <span class="src-tag">${t('srcTagA')}</span><h3>${t('srcATitle')}</h3>
+      <p>${t('srcADesc')}</p>
+      <div class="src-meta">${totalA} · 5 · ${srcCount} · auto</div>
+    </div>
+    <div class="source-card b">
+      <span class="src-tag">${t('srcTagB')}</span><h3>${t('srcBTitle')}</h3>
+      <p>${t('srcBDesc')}</p>
+      <div class="src-meta">${B?B.sections.length:0} · ${esc(DATA.runAtLocal||'08:00')} · ${esc(DATA.taskId||'')}</div>
+    </div>
+    <div class="source-card m">
+      <span class="src-tag">${t('srcTagM')}</span><h3>${t('srcMTitle')} ${ent} · ${th}</h3>
+      <p>${t('srcMDesc')}</p>
+      <div class="src-meta">${(A?A.sections.reduce((n,s)=>n+s.items.length,0)+A.flash.length:0)+(B?B.sections.length:0)}</div>
+    </div>`;
+}
+
+function renderAnchors(){
+  const totalA = A ? A.sections.reduce((n,s)=>n+s.items.length,0)+A.flash.length : 0;
+  document.getElementById('anchorCountA').textContent = `${totalA}`;
+  document.getElementById('anchorCountB').textContent = `${B?B.sections.length:0}`;
+  document.getElementById('anchorListA').innerHTML = A
+    ? A.sections.map(s=>`<a href="#${s.id}">${esc(pick(s,'label'))} <span style="opacity:.55">${s.items.length}</span></a>`).join('')
+      + `<a href="#flash">${t('flash')} <span style="opacity:.55">${A.flash.length}</span></a>`
+    : `<a href="#aihot">${t('aihotEmpty')}</a>`;
+  document.getElementById('anchorListB').innerHTML = B
+    ? B.sections.map(s=>`<a href="#${s.id}">${esc(pick(s,'label'))}</a>`).join('')
+    : `<a href="#morning">${t('morningEmptyPre')}${esc(DATA.date)}${t('morningEmptyPost')}</a>`;
+}
+
+function renderCross(){
+  const c = DATA.cross || {};
+  const ent = c.entities||[], th = (c.themes||[]).filter(x=>x.a&&x.b);
+  const onlyA = c.onlyA||[], onlyB = c.onlyB||[];
+  document.getElementById('insightCount').textContent =
+    `${ent.length} · ${th.length}${INSIGHTS.length?` · ${INSIGHTS.length}`:''}`;
+
+  const entHTML = ent.length
+    ? `<div class="chips">${ent.map(e=>`<span class="chip">${esc(pick(e,'name'))}</span>`).join('')}</div>`
+    : `<p class="cross-empty">${t('crossEmptyEnt')}</p>`;
+
+  const thHTML = th.length
+    ? th.map(x=>`<div class="theme-row"><b>${esc(pick(x,'name'))}</b> · AI ${x.aCount} / ${x.bCount}
+        <span class="src">${esc((x.aHits||[]).concat(x.bHits||[]).slice(0,3).join(' ｜ '))}</span></div>`).join('')
+    : `<p class="cross-empty">${t('crossEmptyTheme')}</p>`;
+
+  const onlyHTML = `
+    <div class="theme-row"><b>${t('crossOnlyA')}</b><span class="src">${esc(onlyA.slice(0,6).join(' · ')||'—')}</span></div>
+    <div class="theme-row"><b>${t('crossOnlyB')}</b><span class="src">${esc(onlyB.slice(0,6).join(' · ')||'—')}</span></div>`;
+
+  document.getElementById('crossPanel').innerHTML = `
+    <div class="cross-block"><h4>${t('crossEnt')} <span class="n">${ent.length}</span></h4>${entHTML}</div>
+    <div class="cross-block"><h4>${t('crossTheme')} <span class="n">${th.length}</span></h4>${thHTML}</div>
+    <div class="cross-block"><h4>${t('crossOnly')} <span class="n">${onlyA.length+onlyB.length}</span></h4>${onlyHTML}</div>`;
+
+  document.getElementById('insights').innerHTML = INSIGHTS.map((it,i)=>`
+    <article class="insight">
+      <div class="insight-idx">INSIGHT ${pad(i+1)}</div>
+      <h3>${esc(pick(it,'title'))}</h3>
+      <div class="pair">
+        <div class="pair-row"><span class="who">${t('whoA')}</span><span>${esc(pick(it,'a'))}</span></div>
+        <div class="pair-row b"><span class="who">${t('whoB')}</span><span>${esc(pick(it,'b'))}</span></div>
+      </div>
+      <div class="concl">${esc(pick(it,'concl'))}</div>
+    </article>`).join('');
+}
+
+function cardHTML(item, cls){
+  const inner = `
+      <div class="card-num">${nextNo()}</div>
+      <h3 class="card-title">${item.aihot?`<a href="${esc(item.aihot)}" target="_blank" rel="noopener noreferrer">${esc(pick(item,'title'))}</a>`:esc(pick(item,'title'))}</h3>
+      <span class="card-source">${ICON_SRC}<span>${esc(item.source)}</span></span>
+      <p class="card-summary">${esc(pick(item,'digest'))}</p>`;
+  const link = item.original
+    ? `<a class="card-link" href="${esc(item.original)}" target="_blank" rel="noopener noreferrer">${t('readOriginal')} ${ICON_GO}</a>` : '';
+  return `<article class="card${cls||''}">${inner}${link}</article>`;
+}
+
+function renderAIHOT(){
+  const totalA = A ? A.sections.reduce((n,s)=>n+s.items.length,0) : 0;
+  document.getElementById('countA').textContent = A ? `${totalA} · 01–${pad(totalA)}` : t('aihotEmpty');
+  if(!A){
+    document.getElementById('aihotSections').innerHTML =
+      `<div class="empty-card"><span>—</span>${t('aihotEmpty')}</div>`;
+    return;
+  }
+  const html = A.sections.map(s=>`
+    <div class="sub" id="${s.id}">
+      <div class="sub-head"><span class="marker"></span><h3>${esc(pick(s,'label'))}</h3><span class="n">${s.items.length}</span></div>
+      ${ s.items.length
+        ? `<div class="cards">${s.items.map(it=>cardHTML(it,'')).join('')}</div>`
+        : `<div class="empty-card"><span>—</span>${t('noUpdate')}</div>` }
+    </div>`).join('');
+  const flash = A.flash.length ? `
+    <div class="sub" id="flash">
+      <div class="sub-head"><span class="marker"></span><h3>${t('flash')}</h3><span class="n">${A.flash.length}</span></div>
+      <div class="cards">${A.flash.map(it=>`
+        <article class="card">
+          <div class="card-num">${nextNo()}</div>
+          <h3 class="card-title">${it.aihot?`<a href="${esc(it.aihot)}" target="_blank" rel="noopener noreferrer">${esc(pick(it,'title'))}</a>`:esc(pick(it,'title'))}</h3>
+          <span class="card-source">${ICON_SRC}<span>${esc(it.source)}${it.publishedAt?` · ${bjMDT(it.publishedAt)}`:''}</span></span>
+          <p class="card-summary">${esc(pick(it,'digest'))}</p>
+          ${it.original?`<a class="card-link" href="${esc(it.original)}" target="_blank" rel="noopener noreferrer">${t('readOriginal')} ${ICON_GO}</a>`:''}
+        </article>`).join('')}</div>
+    </div>` : '';
+  document.getElementById('aihotSections').innerHTML = html + flash;
+}
+
+function renderMorning(){
+  const box = document.getElementById('morningNote');
+  if(!B){
+    document.getElementById('countB').textContent = '—';
+    box.innerHTML = `<div class="warn-note"><div>⚠️</div><div>${t('morningEmptyPre')}<code>daily/${esc(DATA.date)}.json</code>${t('morningEmptyPost')}</div></div>`;
+    document.getElementById('morningSections').innerHTML = '';
+    return;
+  }
+  document.getElementById('countB').textContent = `${B.sections.length}`;
+  box.innerHTML = `
+    <div class="origin-note">
+      <div class="ico">🔗</div>
+      <div>${t('originNotePre')} <b>「${t('morningHead')}」</b> ${t('originNoteMid')}<code>${esc(DATA.taskId||'')}</code>${t('originNotePost')} <b>${esc(B.date)}</b> ${t('originNoteTail')}</div>
+    </div>`;
+  document.getElementById('morningSections').innerHTML = `<div class="cards">${B.sections.map(sec=>`
+    <article class="card b">
+      <div class="card-num">${nextNo()}</div>
+      <h3 class="card-title">${esc(pick(sec,'label'))}</h3>
+      <span class="card-source">${ICON_SRC}<span>${t('morningHead')} · ${esc(B.date)}</span></span>
+      <p class="card-summary">${esc(pick(sec,'digest'))}</p>
+      ${ (sec.items&&sec.items.length)
+        ? `<div class="card-subitems">${sec.items.filter(i=>i.url).map(i=>`<a href="${esc(i.url)}" target="_blank" rel="noopener noreferrer">${esc(pick(i,'title'))}${i.source?` <span style="opacity:.6">· ${esc(i.source)}</span>`:''}</a>`).join('')}</div>` : '' }
+      ${ sec.detail ? `<details><summary>${t('expand')}</summary><div class="detail-body">${esc(pick(sec,'detail'))}</div></details>` : '' }
+    </article>`).join('')}</div>`;
+}
+
+function renderFooter(){
+  const totalA = A ? A.sections.reduce((n,s)=>n+s.items.length,0) : 0;
+  const flashN = A ? A.flash.length : 0;
+  const totalM = B ? B.sections.length : 0;
+  const all = totalA + flashN + totalM;
+  document.getElementById('footerStats').innerHTML = `
+    <span>${t('footerTotal')} <span class="num">${all}</span></span><span class="sep">|</span>
+    <span>${t('footerAihot')} <span class="num">${totalA}</span></span><span class="sep">|</span>
+    <span>${t('footerFlash')} <span class="num">${flashN}</span></span><span class="sep">|</span>
+    <span>${t('footerMorning')} <span class="num">${totalM}</span></span><span class="sep">|</span>
+    <span>${t('footerGlobal')} <span class="num">01–${pad(all)}</span></span>`;
+  document.getElementById('footerSource').innerHTML = `
+    <div>①：${A?`<a href="${esc(A.dailyUrl)}" target="_blank" rel="noopener noreferrer">${t('footerAihot')} ${esc(A.date)}</a> · ${esc('aihot.news')} · ${esc('all rights reserved to original authors')}`:t('aihotEmpty')}${t('footerSrcA2')}</div>
+    <div>${t('footerSrcB')}<a class="blue" href="#morning">${t('morningHead')}</a> · WorkBuddy automation <code>${esc(DATA.taskId||'')}</code> (${esc(DATA.runAtLocal||'08:00')}), ${esc(DATA.date)}.</div>
+    <div style="margin-top:10px;opacity:.75">${t('footerBuild')} ${esc(DATA.buildTimeLocal)}${t('footerBuildTail')}</div>`;
+}
+
+function bindNav(){
+  const buttons = [...document.getElementById('topnavLinks').querySelectorAll('button')];
+  buttons.forEach(b=>b.addEventListener('click',()=>{
+    const el = document.getElementById(b.dataset.target);
+    if(el) el.scrollIntoView({behavior:'smooth',block:'start'});
+  }));
+  const map = new Map();
+  buttons.forEach(b=>{ const el=document.getElementById(b.dataset.target); if(el) map.set(el,b); });
+  const navBar = document.querySelector('.topnav');
+  const io = new IntersectionObserver(es=>{
+    es.forEach(e=>{
+      if(e.isIntersecting){
+        buttons.forEach(b=>b.classList.remove('active'));
+        const btn = map.get(e.target); if(btn) btn.classList.add('active');
+      }
+    });
+  },{rootMargin:`-${(navBar.offsetHeight||56)+8}px 0px -68% 0px`,threshold:0});
+  map.forEach((_,el)=>io.observe(el));
+
+  const cardIO = new IntersectionObserver((es,obs)=>{
+    es.forEach((e,i)=>{ if(e.isIntersecting){ setTimeout(()=>e.target.classList.add('visible'),Math.min(i,6)*40); obs.unobserve(e.target); } });
+  },{rootMargin:'0px 0px -8% 0px'});
+  document.querySelectorAll('.card').forEach(c=>cardIO.observe(c));
+
+  const top = document.getElementById('toTop');
+  top.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
+  window.addEventListener('scroll',()=>top.classList.toggle('show',window.scrollY>600),{passive:true});
+}
+
+function applyAll(){
+  document.documentElement.lang = (LANG==='en') ? 'en' : 'zh-CN';
+  applyStatic();
+  renderHero();renderSources();renderAnchors();renderCross();renderAIHOT();renderMorning();renderFooter();
+  const btn = document.getElementById('langToggle');
+  if(btn) btn.textContent = (LANG==='en') ? '中文' : 'EN';
+}
+
+document.documentElement.classList.add('js-ready');
+applyAll();
+const lt = document.getElementById('langToggle');
+if(lt) lt.addEventListener('click', ()=> setLang(LANG==='en'?'zh':'en'));
+requestAnimationFrame(bindNav);
+</script>
+</body>
+</html>
