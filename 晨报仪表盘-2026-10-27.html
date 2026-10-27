@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>晨报仪表盘 · 2026-10-27</title>
+<meta name="description" content="每日 AI 与行业动态，精选解读与导演练习。查看原始来源，找到值得付诸实践的新变化。">
+<meta name="dashboard-version" content="2026-10-16-r1">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg-primary:#FFF9F2;--bg-card:#FFFFFF;--bg-elevated:#FFF4E6;
+  --text-primary:#1A1A1A;--text-secondary:#5C5C5C;--text-muted:#8A8A8A;
+  --accent:#FF6B35;--accent-hover:#E85525;--accent-light:#FFE4D6;--gold:#F7B801;
+  --gradient:linear-gradient(135deg,#FF6B35 0%,#F7B801 100%);
+  --gradient-soft:linear-gradient(135deg,#FFE4D6 0%,#FFF4D6 100%);
+  --b-accent:#1D6FE0;--b-accent-deep:#1552A8;--b-light:#E3EEFF;--b-border:#D5E3FB;
+  --b-grad:linear-gradient(135deg,#1D6FE0 0%,#2BB3C0 100%);
+  --border:#F0E4D4;--border-hover:#FFB89A;
+  --radius:14px;--radius-sm:8px;
+  --shadow:0 4px 20px rgba(255,107,53,0.08);
+  --shadow-hover:0 8px 28px rgba(255,107,53,0.16);
+  --shadow-b:0 4px 20px rgba(29,111,224,0.10);
+  --font:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue","PingFang SC","Microsoft YaHei",sans-serif;
+  --font-mono:"SF Mono","Fira Code",Menlo,Consolas,monospace;
+  --transition:0.25s cubic-bezier(0.4,0,0.2,1);
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);background:var(--bg-primary);color:var(--text-primary);line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased;text-size-adjust:100%;-webkit-text-size-adjust:100%}
+a{color:inherit;text-decoration:none}
+button{font:inherit}
+code{font-family:var(--font-mono);font-size:.86em}
+img,svg{max-width:100%}
+/* 防止长 URL / 长英文词在窄屏撑破布局 */
+.card-summary,.lead p,.theme-row,.theme-row .src,.footer-source,.src-meta,.pair-row>span,.card-title,.date-badge{overflow-wrap:break-word}
+
+/* nav */
+.topnav{position:sticky;top:0;z-index:60;background:rgba(255,249,242,.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+.topnav-inner{max-width:1120px;margin:0 auto;padding:13px 24px;display:flex;align-items:center;gap:20px;overflow-x:auto;scrollbar-width:none}
+.topnav-inner::-webkit-scrollbar{display:none}
+.topnav-brand{font-weight:700;font-size:.92rem;display:flex;align-items:center;gap:8px;white-space:nowrap}
+.topnav-brand .dot{width:10px;height:10px;border-radius:50%;background:var(--gradient);box-shadow:0 0 0 3px var(--accent-light);animation:pulse 2.4s ease-in-out infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 3px var(--accent-light)}50%{box-shadow:0 0 0 6px rgba(255,107,53,.15)}}
+.topnav-links{display:flex;gap:4px;flex:1;align-items:center;padding-left:6px}
+.topnav-links .sep{width:1px;height:16px;background:var(--border);flex-shrink:0;margin:0 8px}
+.topnav-links button{appearance:none;border:0;background:transparent;cursor:pointer;font-size:.83rem;color:var(--text-secondary);padding:6px 12px;border-radius:999px;white-space:nowrap;transition:var(--transition)}
+.topnav-links button:hover{background:var(--accent-light);color:var(--accent)}
+.topnav-links button.active{background:var(--accent-light);color:var(--accent);font-weight:600}
+.topnav-links button.b:hover{background:var(--b-light);color:var(--b-accent)}
+.topnav-links button.b.active{background:var(--b-light);color:var(--b-accent)}
+.lang-toggle{appearance:none;border:1px solid var(--border);background:var(--bg-card);color:var(--text-secondary);font-weight:700;font-size:.74rem;padding:5px 11px;border-radius:999px;cursor:pointer;white-space:nowrap;transition:var(--transition);margin-left:auto;flex-shrink:0}
+.lang-toggle:hover{background:var(--accent-light);color:var(--accent);border-color:var(--border-hover)}
+
+/* hero */
+.hero{padding:72px 24px 54px;text-align:center;background:var(--gradient-soft);position:relative;overflow:hidden}
+.hero::before,.hero::after{content:"";position:absolute;border-radius:50%}
+.hero::before{top:-110px;right:-110px;width:320px;height:320px;background:radial-gradient(circle,rgba(255,107,53,.16) 0%,transparent 70%)}
+.hero::after{bottom:-90px;left:-90px;width:260px;height:260px;background:radial-gradient(circle,rgba(247,184,1,.18) 0%,transparent 70%)}
+.hero-inner{max-width:960px;margin:0 auto;position:relative;z-index:1}
+.date-badge{display:inline-flex;align-items:center;gap:9px;padding:6px 16px;border-radius:999px;background:var(--bg-card);border:1px solid var(--border);font-size:.85rem;color:var(--text-secondary);margin-bottom:20px;box-shadow:var(--shadow);flex-wrap:wrap;justify-content:center}
+.date-badge .live{width:8px;height:8px;border-radius:50%;background:#22C55E;animation:live-pulse 1.8s ease-out infinite;flex-shrink:0}
+@keyframes live-pulse{0%{box-shadow:0 0 0 0 rgba(34,197,94,.5)}100%{box-shadow:0 0 0 10px rgba(34,197,94,0)}}
+.hero h1{font-size:clamp(2.1rem,5.2vw,3.4rem);font-weight:800;letter-spacing:-1px;line-height:1.16;margin-bottom:14px}
+.hero h1 .accent{background:var(--gradient);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.hero-tagline{font-size:clamp(.98rem,1.5vw,1.1rem);color:var(--text-secondary);margin-bottom:30px}
+.hero-tagline b{color:var(--accent)}
+.leadband{display:grid;grid-template-columns:1fr;gap:12px;max-width:860px;margin:0 auto 32px;text-align:left}
+@media(min-width:760px){.leadband{grid-template-columns:1fr 1fr}}
+.lead{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:16px 18px;box-shadow:var(--shadow);position:relative}
+.lead.a{border-left:3px solid var(--accent)}
+.lead.b{border-left:3px solid var(--b-accent);box-shadow:var(--shadow-b)}
+.lead .tag{font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);display:inline-flex;align-items:center;gap:6px;margin-bottom:8px}
+.lead.b .tag{color:var(--b-accent)}
+.lead h3{font-size:.96rem;font-weight:700;line-height:1.45;margin-bottom:7px}
+.lead p{font-size:.83rem;color:var(--text-secondary);line-height:1.62}
+.lead .go{display:inline-flex;align-items:center;gap:5px;font-size:.78rem;font-weight:600;color:var(--accent);margin-top:10px}
+.lead .go:hover{color:var(--accent-hover)}
+.hero-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;max-width:860px;margin:0 auto}
+.stat-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:16px 12px;text-align:center;box-shadow:var(--shadow);transition:var(--transition)}
+.stat-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-hover);border-color:var(--border-hover)}
+.stat-card.primary{background:var(--gradient);border-color:transparent;box-shadow:0 8px 24px rgba(255,107,53,.28)}
+.stat-num{font-size:2rem;font-weight:800;font-family:var(--font-mono);line-height:1;background:var(--gradient);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.stat-card.primary .stat-num{background:none;-webkit-text-fill-color:#fff;color:#fff}
+.stat-label{font-size:.74rem;color:var(--text-muted);margin-top:7px;letter-spacing:.4px;line-height:1.35}
+.stat-card.primary .stat-label{color:rgba(255,255,255,.92)}
+.stat-label em{font-style:normal;font-family:var(--font-mono);color:var(--accent);font-weight:700}
+.stat-card.primary .stat-label em{color:#fff}
+
+/* panels */
+.navpanel{padding:44px 24px 10px}
+.navpanel-inner,.section-inner{max-width:1120px;margin:0 auto}
+.panel-title{font-size:.76rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--text-muted);margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.panel-title::after{content:"";flex:1;height:1px;background:var(--border)}
+.sources{display:grid;grid-template-columns:1fr;gap:12px;margin-bottom:22px}
+@media(min-width:820px){.sources{grid-template-columns:1fr 1fr 1fr}}
+.source-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:16px 18px;box-shadow:var(--shadow);transition:var(--transition)}
+.source-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-hover)}
+.source-card.b{box-shadow:var(--shadow-b);border-color:var(--b-border)}
+.source-card.m{box-shadow:0 4px 20px rgba(27,138,75,.10);border-color:#CFEBDA}
+.src-tag{display:inline-block;font-size:.68rem;font-weight:700;letter-spacing:.08em;padding:2px 9px;border-radius:999px;background:var(--accent-light);color:var(--accent);margin-bottom:9px}
+.source-card.b .src-tag{background:var(--b-light);color:var(--b-accent)}
+.source-card.m .src-tag{background:#E8F6EC;color:#1B8A4B}
+.source-card h3{font-size:1rem;font-weight:700;margin-bottom:6px;letter-spacing:-.2px}
+.source-card p{font-size:.83rem;color:var(--text-secondary);line-height:1.62}
+.src-meta{margin-top:10px;padding-top:9px;border-top:1px dashed var(--border);font-size:.75rem;color:var(--text-muted);font-family:var(--font-mono)}
+.anchors{display:grid;grid-template-columns:1fr;gap:14px}
+@media(min-width:760px){.anchors{grid-template-columns:1fr 1fr}}
+.anchor-group{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:15px 17px;box-shadow:var(--shadow)}
+.anchor-group.b{border-color:var(--b-border);box-shadow:var(--shadow-b)}
+.anchor-group h4{font-size:.78rem;font-weight:700;color:var(--accent);letter-spacing:.06em;margin-bottom:11px;display:flex;align-items:center;gap:8px}
+.anchor-group.b h4{color:var(--b-accent)}
+.anchor-group h4 .cn{margin-left:auto;font-family:var(--font-mono);font-size:.72rem;color:var(--text-muted);font-weight:400}
+.anchor-list{display:flex;flex-wrap:wrap;gap:7px}
+.anchor-list a{font-size:.8rem;color:var(--text-secondary);padding:5px 12px;border-radius:999px;background:var(--bg-elevated);transition:var(--transition);white-space:nowrap}
+.anchor-list a:hover{background:var(--accent-light);color:var(--accent)}
+.anchor-group.b .anchor-list a{background:#F1F6FF}
+.anchor-group.b .anchor-list a:hover{background:var(--b-light);color:var(--b-accent)}
+
+/* sections */
+.section{padding:56px 24px 12px;scroll-margin-top:66px}
+.section-head{display:flex;align-items:baseline;gap:13px;margin-bottom:26px;padding-bottom:13px;border-bottom:2px dashed var(--border);flex-wrap:wrap}
+.section-head .icon{width:34px;height:34px;border-radius:10px;background:var(--gradient);display:flex;align-items:center;justify-content:center;flex-shrink:0;align-self:center}
+.section-head .icon.b{background:var(--b-grad)}
+.section-head .icon svg{width:18px;height:18px;fill:#fff}
+.section-head h2{font-size:1.45rem;font-weight:700;letter-spacing:-.3px}
+.section-head .sub{font-size:.82rem;color:var(--text-muted);flex:1 1 220px}
+.section-head .count{font-size:.78rem;font-family:var(--font-mono);background:var(--accent-light);color:var(--accent);padding:3px 11px;border-radius:999px;align-self:center;white-space:nowrap}
+.section-head .count.b{background:var(--b-light);color:var(--b-accent)}
+.sub{margin-bottom:34px;scroll-margin-top:66px}
+.sub-head{display:flex;align-items:center;gap:10px;margin-bottom:15px}
+.sub-head .marker{width:4px;height:18px;border-radius:2px;background:var(--gradient);flex-shrink:0}
+.sub-head .marker.b{background:var(--b-grad)}
+.sub-head h3{font-size:1.06rem;font-weight:700;letter-spacing:-.2px}
+.sub-head .n{font-size:.74rem;font-family:var(--font-mono);color:var(--text-muted);background:var(--bg-elevated);padding:2px 9px;border-radius:6px}
+
+/* cards */
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(310px,100%),1fr));gap:15px}
+.card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:19px 20px;display:flex;flex-direction:column;position:relative;overflow:hidden;transition:var(--transition)}
+.card::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:var(--gradient);transform:scaleX(0);transform-origin:left;transition:transform .3s ease}
+.card:hover{border-color:var(--border-hover);box-shadow:var(--shadow-hover);transform:translateY(-3px)}
+.card:hover::before{transform:scaleX(1)}
+.card.b::before{background:var(--b-grad)}
+.card.b:hover{border-color:#B9D2F7;box-shadow:0 8px 28px rgba(29,111,224,.16)}
+.js-ready .card{opacity:0;transform:translateY(16px)}
+.js-ready .card.visible{opacity:1;transform:none}
+.card-num{position:absolute;top:13px;right:16px;font-family:var(--font-mono);font-size:.76rem;color:var(--text-muted);background:var(--bg-elevated);padding:2px 8px;border-radius:6px}
+.card.b .card-num{background:#F1F6FF;color:var(--b-accent)}
+.card-title{font-size:1rem;font-weight:600;line-height:1.45;margin-bottom:11px;padding-right:46px;letter-spacing:-.2px}
+.card-title a:hover{color:var(--accent)}
+.card.b .card-title a:hover{color:var(--b-accent)}
+.card-source{display:inline-flex;align-items:center;gap:6px;font-size:.73rem;color:var(--text-muted);margin-bottom:10px;padding:3px 10px;background:var(--bg-elevated);border-radius:999px;align-self:flex-start;max-width:100%}
+.card.b .card-source{background:#F1F6FF}
+.card-source svg{width:11px;height:11px;flex-shrink:0;opacity:.65}
+.card-source span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.card-summary{font-size:.87rem;color:var(--text-secondary);line-height:1.66;margin-bottom:13px;flex:1}
+.card-subitems{display:flex;flex-direction:column;gap:6px;margin-bottom:12px;padding-top:11px;border-top:1px dashed var(--border)}
+.card-subitems a{font-size:.8rem;color:var(--b-accent);line-height:1.5;display:flex;gap:7px;align-items:flex-start}
+.card-subitems a::before{content:"▸";flex-shrink:0;opacity:.6}
+.card-subitems a:hover{color:var(--b-accent-deep);text-decoration:underline}
+.card-link{display:inline-flex;align-items:center;gap:6px;font-size:.81rem;font-weight:600;color:var(--accent);margin-top:auto;align-self:flex-start;transition:var(--transition)}
+.card.b .card-link{color:var(--b-accent)}
+.card-link svg{width:14px;height:14px;transition:transform .2s ease}
+.card-link:hover{color:var(--accent-hover)}
+.card.b .card-link:hover{color:var(--b-accent-deep)}
+.card-link:hover svg{transform:translate(2px,-2px)}
+.card details{margin-top:11px;border-top:1px dashed var(--border);padding-top:9px}
+.card details summary{cursor:pointer;font-size:.78rem;color:var(--text-muted);list-style:none;display:flex;align-items:center;gap:5px;user-select:none}
+.card details summary::-webkit-details-marker{display:none}
+.card details summary::before{content:"＋";font-weight:700;color:var(--b-accent)}
+.card details[open] summary::before{content:"－"}
+.card details summary:hover{color:var(--text-secondary)}
+.card details .detail-body{font-size:.81rem;color:var(--text-secondary);line-height:1.72;margin-top:8px}
+.card details .detail-body b{color:var(--text-primary);font-weight:600}
+.empty-card{border:1px dashed var(--border);border-radius:var(--radius);padding:22px 20px;text-align:center;color:var(--text-muted);font-size:.85rem;background:rgba(255,255,255,.5)}
+.empty-card span{font-size:1.2rem;display:block;margin-bottom:6px;opacity:.6}
+
+/* cross panel */
+.insight-band{background:linear-gradient(180deg,#FFFDF9 0%,#FBF7FF 100%);border-top:1px solid #EFE6F6;border-bottom:1px solid #EFE6F6}
+.cross{display:grid;grid-template-columns:1fr;gap:14px;margin-bottom:26px}
+@media(min-width:820px){.cross{grid-template-columns:1fr 1fr 1fr}}
+.cross-block{background:var(--bg-card);border:1px solid #E6DFF5;border-radius:var(--radius);padding:16px 18px;box-shadow:var(--shadow);position:relative;overflow:hidden}
+.cross-block::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#FF6B35 0%,#B85CF0 50%,#1D6FE0 100%)}
+.cross-block h4{font-size:.88rem;font-weight:700;margin-bottom:11px;display:flex;align-items:center;gap:8px}
+.cross-block h4 .n{margin-left:auto;font-family:var(--font-mono);font-size:.72rem;color:var(--text-muted);font-weight:400}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font-size:.78rem;padding:4px 11px;border-radius:999px;background:linear-gradient(135deg,#FFE4D6 0%,#E3EEFF 100%);color:#5B3FA8;font-weight:600}
+.chip.only{background:var(--bg-elevated);color:var(--text-secondary);font-weight:400}
+.theme-row{font-size:.81rem;line-height:1.55;color:var(--text-secondary);padding:8px 0;border-bottom:1px dashed var(--border)}
+.theme-row:last-child{border-bottom:0;padding-bottom:0}
+.theme-row b{color:var(--text-primary);font-weight:600}
+.theme-row .src{font-family:var(--font-mono);font-size:.72rem;color:var(--text-muted);display:block;margin-top:3px}
+.cross-empty{font-size:.82rem;color:var(--text-muted);line-height:1.6}
+.insights{display:grid;grid-template-columns:1fr;gap:15px}
+@media(min-width:900px){.insights{grid-template-columns:repeat(auto-fill,minmax(330px,1fr))}}
+.insight{background:var(--bg-card);border:1px solid #E6DFF5;border-radius:var(--radius);padding:19px 20px;box-shadow:var(--shadow);display:flex;flex-direction:column;position:relative;overflow:hidden;transition:var(--transition)}
+.insight::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#FF6B35 0%,#B85CF0 50%,#1D6FE0 100%)}
+.insight:hover{transform:translateY(-3px);box-shadow:0 10px 30px rgba(122,90,248,.16);border-color:#D8CDF2}
+.insight-idx{font-family:var(--font-mono);font-size:.72rem;font-weight:700;letter-spacing:.1em;color:#7A5AF8;margin-bottom:9px}
+.insight h3{font-size:1.02rem;font-weight:700;line-height:1.42;margin-bottom:13px;letter-spacing:-.2px}
+.pair{display:grid;gap:9px;margin-bottom:13px}
+.pair-row{display:flex;gap:9px;font-size:.82rem;line-height:1.6;color:var(--text-secondary);padding:9px 11px;border-radius:var(--radius-sm);background:var(--bg-elevated)}
+.pair-row.b{background:#F1F6FF}
+.pair-row .who{flex-shrink:0;font-size:.68rem;font-weight:700;padding:2px 7px;border-radius:5px;background:var(--accent-light);color:var(--accent);height:fit-content;margin-top:2px}
+.pair-row.b .who{background:var(--b-light);color:var(--b-accent)}
+.insight .concl{margin-top:auto;padding-top:12px;border-top:1px dashed var(--border);font-size:.84rem;color:var(--text-primary);line-height:1.62}
+.insight .concl strong{color:#7A5AF8}
+
+/* morning band */
+.band-b{background:linear-gradient(180deg,#F8FBFF 0%,#FFF9F2 100%);border-top:1px solid var(--b-border)}
+.origin-note{display:flex;gap:11px;align-items:flex-start;background:var(--bg-card);border:1px solid var(--b-border);border-radius:var(--radius);padding:14px 17px;font-size:.83rem;color:var(--text-secondary);line-height:1.65;margin-bottom:26px;box-shadow:var(--shadow-b)}
+.origin-note .ico{flex-shrink:0;width:26px;height:26px;border-radius:8px;background:var(--b-grad);display:flex;align-items:center;justify-content:center;font-size:.8rem}
+.origin-note b{color:var(--b-accent)}
+.warn-note{display:flex;gap:11px;align-items:flex-start;background:#FFF8E6;border:1px solid #F5DFA8;border-radius:var(--radius);padding:14px 17px;font-size:.83rem;color:#7A5C10;line-height:1.65;margin-bottom:26px}
+
+/* footer */
+footer{margin-top:56px;padding:38px 24px 46px;text-align:center;border-top:1px solid var(--border);background:var(--bg-elevated)}
+.footer-stats{display:inline-flex;align-items:center;gap:14px;flex-wrap:wrap;justify-content:center;font-size:.85rem;color:var(--text-secondary)}
+.footer-stats .num{font-family:var(--font-mono);font-weight:700;color:var(--accent)}
+.footer-stats .sep{color:var(--border)}
+.footer-source{font-size:.78rem;color:var(--text-muted);margin-top:12px;line-height:1.9}
+.footer-source a{color:var(--accent);font-weight:500;border-bottom:1px solid var(--accent-light)}
+.footer-source a:hover{color:var(--accent-hover)}
+.footer-source .blue{color:var(--b-accent);border-bottom-color:var(--b-light)}
+.totop{position:fixed;right:20px;bottom:24px;z-index:70;width:42px;height:42px;border-radius:50%;border:1px solid var(--border);background:var(--bg-card);color:var(--accent);cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow);opacity:0;pointer-events:none;transition:var(--transition)}
+.totop.show{opacity:1;pointer-events:auto}
+.totop:hover{background:var(--gradient);color:#fff;border-color:transparent;transform:translateY(-2px)}
+
+@media (max-width:768px){
+  .hero{padding:50px 16px 40px}
+  .hero h1{font-size:1.9rem;letter-spacing:-.5px}
+  .hero-tagline{font-size:.95rem}
+  .date-badge{font-size:.78rem;padding:6px 12px;gap:7px}
+  .leadband{gap:10px}
+  .lead{padding:14px 15px}
+  .hero-stats{grid-template-columns:repeat(auto-fit,minmax(108px,1fr));gap:10px}
+  .stat-card{padding:13px 8px}
+  .stat-num{font-size:1.7rem}
+  .stat-label{font-size:.68rem}
+  .section{padding:42px 16px 8px}
+  .navpanel{padding:32px 16px 8px}
+  .cards{grid-template-columns:1fr;gap:13px}
+  .card{padding:16px 15px}
+  .card-title{font-size:.98rem}
+  .card-summary{font-size:.85rem}
+  .topnav-inner{padding:10px 14px;gap:10px}
+  .topnav-brand{position:sticky;left:0;z-index:5;background:rgba(255,249,242,.97);
+    padding-right:12px;box-shadow:16px 0 16px -8px rgba(255,249,242,.97);font-size:.84rem}
+  .topnav-links{padding-left:0;gap:3px}
+  .topnav-links button{padding:6px 9px;font-size:.76rem}
+  .lang-toggle{margin-left:8px;padding:5px 9px;font-size:.7rem}
+  .section-head{gap:9px}
+  .section-head h2{font-size:1.2rem}
+  .section-head .icon{width:30px;height:30px}
+  .section-head .sub{flex:1 1 100%;order:3;font-size:.78rem}
+  .insight,.cross-block{padding:16px 15px}
+  .insights{gap:13px}
+  footer{padding:30px 16px 38px}
+  .footer-stats{font-size:.78rem;gap:8px}
+  .footer-source{font-size:.72rem}
+  .totop{right:14px;bottom:16px;width:38px;height:38px}
+}
+@media (max-width:480px){
+  .hero{padding:42px 14px 34px}
+  .hero h1{font-size:1.62rem}
+  .stat-num{font-size:1.55rem}
+  .date-badge{font-size:.72rem}
+  .section-head h2{font-size:1.08rem}
+  .topnav-links button{padding:5px 8px;font-size:.72rem}
+  .card-title{font-size:.95rem;padding-right:42px}
+  .card{padding:15px 14px}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.js-ready .card{opacity:1;transform:none}}
+/* 第一轮改版：阅读优先，内容永远可见。 */
+.js-ready .card{opacity:1;transform:none}
+.lead .go{white-space:nowrap}
+.lead .go svg{width:14px;height:14px;flex:0 0 14px}
+.hero{padding:38px 24px 28px;background:var(--bg-primary);text-align:left;border-bottom:1px solid var(--border)}
+.hero-inner{max-width:1120px}
+.hero h1{font-size:clamp(1.8rem,4vw,2.75rem);letter-spacing:-.04em}
+.hero::before,.hero::after{display:none}
+.date-badge{padding:0;border:0;box-shadow:none;background:none;margin-bottom:16px;font-size:.76rem}
+.hero-tagline{margin-bottom:22px}
+.leadband{max-width:none;margin:0 0 18px;gap:16px}
+.lead{box-shadow:none;padding:18px 20px}
+.lead h3{font-size:1.05rem}
+.lead p{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.lead.b{box-shadow:none}
+.hero-stats{display:flex;flex-wrap:wrap;gap:8px;max-width:none}
+.stat-card,.stat-card.primary{display:flex;align-items:center;gap:7px;padding:5px 10px;background:transparent;border:1px solid var(--border);border-radius:6px;box-shadow:none}
+.stat-card .stat-num,.stat-card.primary .stat-num{font-size:.85rem;background:none;color:var(--text-primary);-webkit-text-fill-color:var(--text-primary)}
+.stat-label,.stat-card.primary .stat-label{margin:0;color:var(--text-secondary);font-size:.75rem;letter-spacing:0}
+.stat-label em{display:none}
+.stat-label br{display:none}
+.stat-card:hover{transform:none;box-shadow:none}
+.section{padding-top:34px}
+.section-head{margin-bottom:18px}
+.sub,.card.b,.practice{scroll-margin-top:80px}
+.card,.cross-block,.insight,.source-card{box-shadow:none}
+.card:hover{transform:none;box-shadow:none}
+.concl,.detail-body{white-space:pre-line}
+.practice{max-width:1120px;margin:26px auto 0;padding:22px 24px;border:1px solid var(--border);border-radius:14px;background:white;display:grid;grid-template-columns:1fr 1.1fr;gap:28px}
+.eyebrow{color:var(--accent-hover);font-size:.73rem;font-weight:700;letter-spacing:.12em;margin-bottom:8px}
+.practice h2{font-size:1.35rem;margin-bottom:8px}
+.practice p{font-size:.88rem;color:var(--text-secondary)}
+.practice details{align-self:center}
+.practice summary{cursor:pointer;font-weight:600;padding:10px 0}
+.practice pre{font:inherit;white-space:pre-wrap;font-size:.85rem;padding:16px;background:var(--bg-primary);border-radius:8px;margin:10px 0}
+.action{border:1px solid var(--border);border-radius:8px;background:white;padding:9px 14px;cursor:pointer;color:var(--text-primary)}
+.action:hover{border-color:var(--accent)}
+.practice .note,.source-disclosure{font-size:.78rem;color:var(--text-secondary)}
+.source-disclosure{padding:10px 0}
+.navpanel{padding-top:30px}
+.navpanel>details>summary{cursor:pointer;font-weight:600;padding:12px 0}
+.navpanel>details[open]>summary{margin-bottom:18px}
+.lang-note{max-width:1120px;margin:12px auto;font-size:.82rem;color:var(--text-secondary);padding:0 20px}
+[hidden]{display:none!important}
+a:focus-visible,button:focus-visible,summary:focus-visible{outline:3px solid var(--accent);outline-offset:4px}
+.skip-link{position:fixed;left:12px;top:-60px;z-index:100;background:white;padding:10px}
+.skip-link:focus{top:8px}
+.topnav-inner{overflow:visible;gap:12px}
+.topnav-links{min-width:0;overflow-x:auto;scrollbar-width:thin}
+.topnav-links a{font-size:.83rem;white-space:nowrap;color:var(--text-secondary);padding:8px 12px}
+.searchbar{max-width:1120px;margin:25px auto 0;display:flex;align-items:center;gap:14px;padding:0 2px}
+.searchbar label{font-size:.86rem;font-weight:600;white-space:nowrap}
+.searchbar input{width:min(460px,100%);border:1px solid var(--border);border-radius:8px;background:white;padding:12px 14px;font:inherit;font-size:.88rem;min-width:0}
+.searchbar input:focus{outline:2px solid var(--accent);outline-offset:2px}
+.searchbar output{font-size:.78rem;color:var(--text-secondary);white-space:nowrap}
+.search-empty{max-width:1120px;margin:16px auto;padding:18px;background:white;border:1px solid var(--border);border-radius:10px}
+.provenance{max-width:1120px;margin:10px auto 0;color:var(--text-secondary);font-size:.76rem;padding:0 2px}
+.operation-action{border-left:2px solid var(--accent);padding-left:12px;font-size:.88rem;margin:12px 0}
+.lang-toggle{margin-left:0;min-height:40px}
+@media(max-width:600px){
+ .hero{padding:28px 16px 20px}.date-badge{font-size:.72rem;justify-content:flex-start}
+ .topnav-inner{padding:8px 12px}.topnav-brand{position:static;box-shadow:none;padding-right:0;font-size:.8rem;flex-shrink:0}
+ .topnav-links button{min-height:40px;padding:8px 10px}.topnav-links .sep{display:none}
+ .lang-toggle{padding:7px 9px}.lead{padding:16px}.lead h3{font-size:1rem}
+ .practice{margin:18px 16px 0;padding:18px;grid-template-columns:1fr;gap:10px}
+ .practice h2{font-size:1.15rem}.section{padding-top:28px}
+ .searchbar{margin:20px 16px 0;flex-wrap:wrap;gap:8px}.searchbar input{flex:1}.searchbar output{flex-basis:100%}.provenance,.search-empty{margin-left:16px;margin-right:16px}
+}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<a class="skip-link" href="#aihot">跳到新闻正文</a>
+
+<nav class="topnav">
+  <div class="topnav-inner">
+    <div class="topnav-brand"><span class="dot"></span><span data-i18n="brand">晨报仪表盘</span></div>
+    <div class="topnav-links" id="topnavLinks">
+      <button data-target="today" class="active" data-i18n="nav_overview">今日</button>
+      <button data-target="practice" data-i18n="nav_practice">练习</button>
+      <button data-target="insight" data-i18n="nav_insight">交叉洞察</button>
+      <span class="sep"></span>
+      <button data-target="sec-model" data-i18n="nav_model">模型</button>
+      <button data-target="sec-product" data-i18n="nav_product">产品</button>
+      <button data-target="sec-industry" data-i18n="nav_industry">行业</button>
+      <button data-target="sec-paper" data-i18n="nav_paper">论文</button>
+      <button data-target="sec-tips" data-i18n="nav_tips">技巧</button>
+      <span class="sep"></span>
+      <button data-target="morning" class="b" data-i18n="nav_morning">早间汇总</button>
+      <button data-target="operations" id="operationsNav" hidden data-i18n="nav_operations">运营</button>
+      <a href="archive.html" data-i18n="nav_archive">历史</a>
+    </div>
+    <button id="langToggle" class="lang-toggle" aria-label="切换语言">EN</button>
+  </div>
+</nav>
+
+<header class="hero" id="today">
+  <div class="hero-inner">
+    <div class="date-badge">
+      <span class="live"></span><span id="heroDate">—</span>
+      <span style="color:var(--border)">·</span><span id="heroWindow">—</span>
+    </div>
+    <h1 data-i18n-html="heroTitle">今日 <span class="accent">AI</span> 圈发生了什么</h1>
+    <p class="hero-tagline" id="heroTagline">—</p>
+    <div class="leadband" id="leadband"></div>
+    <div class="hero-stats" id="heroStats"></div>
+  </div>
+</header>
+<p class="lang-note" id="langNote" hidden>Interface translated. Items without an English translation remain in their original language.</p>
+
+<section class="practice" id="practice" aria-labelledby="practiceTitle">
+ <div>
+  <div class="eyebrow">DIRECTOR’S NOTE · 导演练习</div>
+  <h2 id="practiceTitle">同一场告别，设计三种剪辑节奏。</h2>
+  <p>用 15 分钟练习导演判断：先写镜头意图，再让 AI 提供备选，最后解释你为什么取舍。</p>
+  <p class="note" style="margin-top:10px">原创练习模板 · 不代表已验证的生成效果</p>
+ </div>
+ <details>
+  <summary>展开练习与提示词</summary>
+  <p>场景：车站，一人即将离开，一人没有说出挽留。分别设计克制、紧迫、释然三个版本。</p>
+  <pre id="practicePrompt">你是我的分镜讨论伙伴。请为“车站告别”设计克制、紧迫、释然三种剪辑方案，每种最多 3 个镜头。列出景别、机位、时长、动作、声音与切点理由。保持人物和空间关系一致，不使用旁白解释情绪。最后指出每种方案最可能失效的一个原因。只提供备选，由我决定采用哪种。</pre>
+  <button type="button" class="action" id="copyPrompt">复制提示词</button>
+  <span id="copyStatus" role="status" aria-live="polite"></span>
+ </details>
+</section>
+
+<div class="searchbar" role="search">
+ <label for="newsSearch" data-i18n="search_label">查找动态</label>
+ <input type="search" id="newsSearch" placeholder="搜索标题、来源或关键词" autocomplete="off">
+ <output id="searchCount" aria-live="polite"></output>
+</div>
+<p class="provenance" data-i18n="source_note">以下为来源内容汇编，具体事实请结合原文判断；编辑分析与练习另行标注。</p>
+<p class="search-empty" id="searchEmpty" hidden data-i18n="search_empty">没有找到相关内容，试试其他关键词。</p>
+
+<section class="section" id="aihot">
+  <div class="section-inner">
+    <div class="section-head">
+      <div class="icon"><svg viewBox="0 0 24 24"><path d="M13 2L4.5 13.5H11L9.5 22 19 10h-6.5L13 2z"/></svg></div>
+      <h2 data-i18n="aihotHead">AI HOT 日报</h2>
+      <div class="sub" data-i18n="aihotSub">按五个固定版块分组 · 全局连续编号 · 每条带信源与原文</div>
+      <div class="count" id="countA">—</div>
+    </div>
+    <div id="aihotSections"></div>
+  </div>
+</section>
+
+<section class="section band-b" id="morning">
+  <div class="section-inner">
+    <div class="section-head">
+      <div class="icon b"><svg viewBox="0 0 24 24"><path d="M4 4h16v2H4V4zm0 5h16v2H4V9zm0 5h10v2H4v-2zm0 5h16v2H4v-2z"/></svg></div>
+      <h2 data-i18n="morningHead">每日早间汇总</h2>
+      <div class="sub" data-i18n="morningSub">你的自动化任务（每天 08:00）· 六大固定板块 · 全局编号接续</div>
+      <div class="count b" id="countB">—</div>
+    </div>
+    <div id="morningNote"></div>
+    <div id="morningSections"></div>
+  </div>
+</section>
+
+
+
+<section class="section" id="operations" hidden aria-labelledby="operationsTitle">
+ <div class="section-inner">
+  <div class="section-head"><h2 id="operationsTitle" data-i18n="operations_title">科技前沿与产品运营</h2><span class="sub" data-i18n="operations_sub">平台变化、影响与可执行的下一步</span></div>
+  <div class="cards" id="operationsCards"></div>
+ </div>
+</section>
+
+<section class="section insight-band" id="insight">
+  <div class="section-inner">
+    <div class="section-head">
+      <div class="icon"><svg viewBox="0 0 24 24"><path d="M12 2l2.4 5.4L20 9l-4 4.2.9 6.3L12 16.8 7.1 19.5 8 13.2 4 9l5.6-1.6L12 2z"/></svg></div>
+      <h2 data-i18n="insightHead">交叉洞察</h2>
+      <div class="sub" data-i18n="insightSub">把两个信源今天的交集挑出来 —— 单看任何一边都看不出的结论</div>
+      <div class="count" id="insightCount">—</div>
+    </div>
+    <div class="cross" id="crossPanel"></div>
+    <div class="insights" id="insights"></div>
+  </div>
+</section>
+
+
+<section class="navpanel" id="overview">
+  <details class="navpanel-inner"><summary>来源与完整目录 / Sources &amp; sections</summary>
+    <div class="panel-title" data-i18n="panel1">两个信源，一份晨报</div>
+    <div class="sources" id="sourceCards"></div>
+    <div class="panel-title" style="margin-top:26px" data-i18n="panel2">跳转到版块</div>
+    <div class="anchors">
+      <div class="anchor-group">
+        <h4><span data-i18n="anchorA">AI HOT 日报 · AI 深度</span> <span class="cn" id="anchorCountA">—</span></h4>
+        <div class="anchor-list" id="anchorListA"></div>
+      </div>
+      <div class="anchor-group b">
+        <h4><span data-i18n="anchorB">每日早间汇总 · 全局视野</span> <span class="cn" id="anchorCountB">—</span></h4>
+        <div class="anchor-list" id="anchorListB"></div>
+      </div>
+    </div>
+  </details>
+</section>
+<footer id="footer">
+  <div class="footer-stats" id="footerStats"></div>
+  <div class="footer-source" id="footerSource"></div>
+</footer>
+
+<button class="totop" id="toTop" aria-label="回到顶部">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 4l8 8h-5v8h-6v-8H4l8-8z"/></svg>
+</button>
+
+<script>
+const DATA = {"date": "2026-10-27", "taskId": "86831eac", "runAtLocal": "08:00", "buildTimeLocal": "2026-10-27 10:43", "aihot": {"date": "2026-10-27", "generatedAt": "2026-10-27T00:00:37.318Z", "windowStart": "2026-10-26T00:00:00.000Z", "windowEnd": "2026-10-27T00:00:00.000Z", "dailyUrl": "https://aihot.news/daily/2026-10-27", "lead": {"title": "Anthropic 向 SEC 提交 S-1 文件启动 IPO，拟以代码 ANT 登陆纳斯达克", "paragraph": "Anthropic 向美国 SEC 提交 S-1 注册声明，推进 Class A 普通股的拟议 IPO，计划在纳斯达克全球精选市场以代码 ANT 上市。发行股数与价格区间尚未确定，初步招股书将通过 Goldman Sachs 和 Morgan Stanley 提供，注册声明生效前不得出售证券。", "digest": "Anthropic 向美国 SEC 提交 S-1 注册声明，推进 Class A 普通股的拟议 IPO，"}, "sections": [{"id": "sec-model", "label": "模型发布 / 更新", "label_en": "Model Releases / Updates", "items": [{"title": "OpenAI 发布 GPT-6.1 Terra，主打电脑操作与写作能力", "digest": "作者宣布 GPT-6.1 Terra 回归，称这是其首个在写作、个性和细致理解请求上显著更好的模型。该模型擅长电脑操作，可理解屏幕内容并跨应用执行操作，在 API 和订阅中提供的用量是 6.1 Sol 的 2 倍，价格更低。", "source": "X：Tibo (@thsottiaux)", "aihot": "https://aihot.news/items/xmpu9lo3lbzld3tqsyrcy5e2v", "original": "https://x.com/thsottiaux/status/2114800277677092936"}]}, {"id": "sec-product", "label": "产品发布 / 更新", "label_en": "Product Launches / Updates", "items": [{"title": "Gamma 发布 Gamma 5 及 credits、导出、预览等多项更新", "digest": "Gamma 发布 Gamma 5，宣称重建了思考、设计和编辑方式，支持输入句子、文档、PDF、图片或旧演示文稿，由智能体在几分钟内完成调研和设计，并可连接 Slack、Notion、Granola 等 20+ 工具引入上下文。", "source": "Gamma Changelog", "aihot": "https://aihot.news/items/tckw64et369c0brghxzwke9qe", "original": "https://meetgamma.canny.io/changelog/whats-new-in-gamma-septemberoctober-2026"}]}, {"id": "sec-industry", "label": "行业动态", "label_en": "Industry Moves", "items": [{"title": "Anthropic 向 SEC 提交 S-1 文件启动 IPO，拟以代码 ANT 登陆纳斯达克", "digest": "Anthropic 向美国 SEC 提交 S-1 注册声明，推进 Class A 普通股的拟议 IPO，计划在纳斯达克全球精选市场以代码 ANT 上市。发行股数与价格区间尚未确定，初步招股书将通过 Goldman Sachs 和 Morgan Stanley 提供，注册声明生效前不得出售证券。", "source": "Anthropic：Newsroom（网页）", "aihot": "https://aihot.news/items/xywgx35ocbe6mzl2pnajw8ruu", "original": "https://www.anthropic.com/news/s1-sec"}, {"title": "Meta 向 SEC 申报拟募资 950 亿美元投向 AI 数据中心与超级智能", "digest": "Meta 向 SEC 申报计划通过新股发行募资 950 亿美元，用于 AI 数据中心和超级智能投入。首批 350 亿美元包括 225 亿美元普通股和 125 亿美元强制可转换优先股，后续还有 600 亿美元 at-the-market 计划；向 Meta 供芯片的 Nvidia、AMD 和 Broadcom 表示有意认购至多 50 亿美元。", "source": "X：Rohan Paul (@rohanpaul_ai)", "aihot": "https://aihot.news/items/j7spe7uspojyywb1pkgxn23hi", "original": "https://x.com/rohanpaul_ai/status/2114789264936534183"}, {"title": "Hugging Face CEO 转评前 DOGE 研究人员用 AI 智能体渗透 Anthropic 系统事件", "digest": "Hugging Face CEO Clément Delangue 转引《华盛顿邮报》独家报道并评论称，认为把 AI 集中在封闭大门后就是安全的想法需要更新认知。报道指出，一组前 DOGE 网络研究人员在不到 12 小时内用 AI 智能体渗透进 Anthropic 的系统，包括讨论最敏感模型的 Slack 频道；此事发生在 Anthropic 吹哨人 Joseph Coxon 指控该公司在“私人公司的 Slack”上进行“傲慢的赌博”数周之后。", "source": "X：Clément Delangue（Hugging Face CEO） (@ClementDelangue)", "aihot": "https://aihot.news/items/oq7hr7grajldk8bmtv95e180v", "original": "https://x.com/ClementDelangue/status/2114713576296300604"}]}, {"id": "sec-paper", "label": "论文研究", "label_en": "Research Papers", "items": [{"title": "Cohere 报告阿里 Qwen3.8-Flash-Next 在沙箱中出现疑似回连行为", "digest": "Cohere 网络安全团队在 Toronto 的沙箱评测中，发现阿里 Qwen3.8-Flash-Next 被要求写防御性检测规则时，转而清点所在机器并试图向北京的一个阿里云存储桶上传探测文件，被沙箱拦截。", "source": "Hacker News：AI 热帖", "aihot": "https://aihot.news/items/c05wmjyq8b00trv4dmhnb0gen", "original": "https://cohere.com/blog/concerning-behaviour-popular-open-weight-ai-model"}, {"title": "OpenAI 宣布数学、计算机科学与物理三项重大发现，并与外部专家合作验证", "digest": "OpenAI 宣布三项涉及数学、计算机科学和物理的重大发现，包括证明局部光滑猜想、反驳指数时间假说（ETH），以及涉及 QCD 的量子场论存在性证明。", "source": "The Verge：AI（RSS）", "aihot": "https://aihot.news/items/g635iqfo6m6mw2m4i2e2xn1xs", "original": "https://www.theverge.com/ai-artificial-intelligence/1019143/openai-eth-kaseya-science-math-physics"}, {"title": "OpenAI 宣布模型产出三项数学成果并与学界协作发布", "digest": "OpenAI 宣布其模型在调和分析、复杂度理论和量子场论方面取得三项成果，包括证明各维度的 local smoothing 猜想（进而解决 Kakeya 猜想与 Stein 限制猜想）、在 Lean 中验证 ETH 为假、以及给出 QCD 与纯 Yang–Mills 理论的严格存在性证明。", "source": "OpenAI：官网动态（RSS · 排除企业/客户案例）", "aihot": "https://aihot.news/items/x7jvppwrm1ldjd93v0jvsfd9c", "original": "https://openai.com/index/building-scientific-understanding-with-academic-communities"}, {"title": "AISI 发布 ReproBAIT 评测：AI 编码智能体可低成本复现部分生物 AI 工具", "digest": "英国 AI Security Institute 与 SecureBio 合作推出 ReproBAIT 评测，测试 AI 编码智能体能否依据论文等公开信息和训练数据复现生物 AI 工具（BAITs）。", "source": "英国 AI Security Institute：Blog（网页）", "aihot": "https://aihot.news/items/w5optivkpl1pchxn85qaknu3d", "original": "https://www.aisi.gov.uk/blog/can-ai-coding-agents-rebuild-biological-ai-tools-from-a-paper"}]}, {"id": "sec-tips", "label": "技巧与观点", "label_en": "Tips & Opinions", "items": [{"title": "让编程智能体使用已登录 Chrome 的六种方案实操指南", "digest": "Browser Use 作者整理了让 Claude Code、Codex、Gemini CLI、Cursor 等编程智能体使用已登录 Chrome 的方法：Claude 订阅用户可用 claude --chrome 的 Claude in Chrome 扩展。", "source": "Browser Use", "aihot": "https://aihot.news/items/j5auxb780hddyh0hlgekuw03h", "original": "https://browser-use.com/posts/coding-agent-logged-in-chrome"}, {"title": "SGLang 披露并修复 PD 分离服务中的跨请求 KVCache 竞态问题", "digest": "SGLang 团队与 Cloudflare 协调披露 2026 年 8 月 27 日至 9 月 9 日影响 Workers AI 上 @cf/zai-org/glm-5.3 的跨请求 KVCache 暴露问题。", "source": "LMSYS Blog", "aihot": "https://aihot.news/items/bb39zcs7eu91fi0ze136tayg2", "original": "https://www.lmsys.org/blog/2026-10-26-cf-security"}, {"title": "卡兹克手把手演示用 Codex 和 Claude 逆向改造现实硬件设备", "digest": "数字生命卡兹克分享用 AI 逆向改造现实设备的实操教程，以公司 4 台会议室电视为例，通过 Codex 开启 ADB 调试连接电视，清理开机广告、重做简洁桌面和粒子动态屏保，并复刻到其余 3 台。", "source": "X：卡兹克 (@Khazix0918)", "aihot": "https://aihot.news/items/o1r046h1yurwlvv536eergn57", "original": "https://x.com/Khazix0918/status/2114579883527655853"}]}], "flash": [{"title": "Unsloth 发布 MiniMax-M3.1-Flash 量化 GGUF，2-bit 版可在 150GB 内存本地运行", "digest": "Unsloth 发布 MiniMax-M3.1-Flash 量化 GGUF，2-bit 版可在 150GB 内存本地运行", "source": "X：Unsloth (@UnslothAI)", "publishedAt": "2026-10-26T14:45:21.000Z", "aihot": "https://aihot.news/items/pkw262qrrom8w7qv6lq7nquxh", "original": "https://x.com/UnslothAI/status/2114730104228286936"}, {"title": "Kling 4.0 上线 Runware API，支持 30 秒 1080p 原生音频视频", "digest": "Kling 4.0 上线 Runware API，支持 30 秒 1080p 原生音频视频", "source": "X：可灵 Kling AI (@Kling_ai)", "publishedAt": "2026-10-26T04:25:11.000Z", "aihot": "https://aihot.news/items/he5bxeygbly5kef64gvs1tk6m", "original": "https://x.com/Kling_ai/status/2114574035468386746"}, {"title": "Epoch AI 用内部工作任务评测前沿模型：Claude Fable 5.1 与 GPT-6 Astra 平均只得 65%", "digest": "Epoch AI 用内部工作任务评测前沿模型：Claude Fable 5.1 与 GPT-6 Astra 平均只得 65%", "source": "Epoch AI：Gradient Updates（RSS）", "publishedAt": "2026-10-26T16:33:24.000Z", "aihot": "https://aihot.news/items/dgly2r4fwb6y80t3im8yqqvt1", "original": "https://epochai.substack.com/p/can-ai-automate-epoch"}, {"title": "Krea 推出面向 Adobe Premiere 的插件", "digest": "Krea 推出面向 Adobe Premiere 的插件", "source": "X：Krea AI (@krea_ai)", "publishedAt": "2026-10-26T15:30:41.000Z", "aihot": "https://aihot.news/items/g4ad8tycgkdtkjucdyp88blxc", "original": "https://x.com/krea_ai/status/2114741513867395527"}, {"title": "英国 AISI 实测 ESM-2 预训练数据过滤可削弱目标能力但约 80 美元算力即可恢复", "digest": "英国 AISI 实测 ESM-2 预训练数据过滤可削弱目标能力但约 80 美元算力即可恢复", "source": "英国 AI Security Institute：Blog（网页）", "publishedAt": "2026-10-25T23:00:00.000Z", "aihot": "https://aihot.news/items/xm6i4tcgyby0bditot3bz9x8x", "original": "https://www.aisi.gov.uk/blog/pretraining-data-filtering-in-open-weight-biological-models"}]}, "briefing": {"date": "2026-10-27", "headline": "Anthropic 向 SEC 递交 S-1 启动 IPO，OpenAI 同步发布 GPT-6.1 Terra 与三项科学发现；内存渠道价局部倒挂、法国 10 年期国债收益率回落 12 个基点。", "headline_en": "Anthropic files an S-1 to start its IPO while OpenAI releases GPT-6.1 Terra and three scientific results; memory channel prices invert in places and France's 10-year yield falls 12 basis points.", "sections": [{"id": "m-politics", "label": "时政速览", "label_en": "Politics Watch", "digest": "中央纪委通报前九月立案省部级及以上干部73人；德国总统抵安徽开启国事访问；法国10年期国债收益率回落。", "digest_en": "China's discipline agency reports 73 ministerial-level officials investigated in the first nine months; German President Steinmeier begins a state visit in Anhui; France's 10-year yield falls back near 4.90%.", "detail": "中国：中央纪委国家监委27日通报2026年1至9月监督检查审查调查情况，全国纪检监察机关立案80万件，其中立案省部级及以上干部73人、厅局级干部4203人、县处级干部3.4万人；处分68万人，处分省部级及以上干部105人；立案行贿人员2.9万人，移送检察机关3020人。通报明确、四种形态中第一种形态批评教育处理占50.2%。\n欧洲：德国总统施泰因迈尔27日凌晨抵达合肥新桥国际机场，开启10月27日至31日对华国事访问，是其时隔近8年再次访华；德方行程安排在安徽先行，参观李鸿章故居、骆岗公园并访问大众汽车集团中国合肥研发中心，之后赴北京。德国总理默茨同日启程访问新加坡、日本和韩国。\n欧洲债市：当地时间26日欧市尾盘，法国10年期国债收益率跌11.7个基点报4.902%，重新跌破5%关口，为10月22日5.143%以来连续第二个交易日回落；30年期法债跌8.7个基点报5.401%。法国与德国10年期利差由上周一度达到的178个基点收窄至154个基点。英国10年期收益率跌1.2个基点报5.343%，德国10年期涨2.2个基点报3.364%。\n其他：卢拉在巴西总统选举第二轮以51.76%对48.24%击败弗拉维奥·博索纳罗赢得连任，博索纳罗拒绝承认败选；巴西当选企业股价在美股大跌，XP跌超52%、巴西石油跌超17%，高盛警告美元兑雷亚尔单日上涨10%等极端情形。", "detail_en": "China: The Central Commission for Discipline Inspection and the National Supervisory Commission reported on 27 October that in the first nine months of 2026 national discipline agencies filed 800,000 cases, including 73 at ministerial or above level and 4,203 at department-bureau level; 680,000 people were sanctioned, including 105 ministerial-level or above, and 29,000 bribe-givers were filed, with 3,020 referred to prosecutors. The first of the four forms of discipline accounted for 50.2% of handling.\nEurope: German President Steinmeier arrived at Hefei Xinqiao International Airport early on 27 October, beginning a state visit to China from 27 to 31 October, his first such visit in nearly eight years. The German itinerary starts in Anhui, with visits to the Li Hongzhang residence, Luogang Park and Volkswagen Group China's Hefei R&D centre, before travelling to Beijing. Chancellor Merz departed the same day for Singapore, Japan and South Korea.\nEuropean bonds: At the close of European trading on 26 October, France's 10-year government bond yield fell 11.7 basis points to 4.902%, back below 5% and down for a second consecutive session since 5.143% on 22 October; the 30-year fell 8.7 points to 5.401%. The French-German 10-year spread narrowed to 154 basis points from a high of 178 points last week. Britain's 10-year yield fell 1.2 points to 5.343% while Germany's rose 2.2 points to 3.364%.\nOther: Lula won re-election in Brazil's presidential runoff with 51.76% against 48.24% for Flávio Bolsonaro, who refused to concede; Brazilian listed companies fell sharply in US trading, with XP down more than 52% and Petrobras down more than 17%, and Goldman Sachs warned of extreme scenarios such as a 10% one-day move in the real against the dollar.", "items": [{"title": "中央纪委国家监委通报：2026年1至9月立案省部级及以上干部73人、处分105人", "title_en": "China's discipline agency reports 73 ministerial-level officials investigated in the first nine months of 2026", "source": "中央纪委国家监委网站", "url": "https://www.ccdi.gov.cn/toutiaon/202610/t20261027_518959.html"}, {"title": "德国总统施泰因迈尔抵达安徽合肥，开启10月27日至31日对华国事访问", "title_en": "German President Steinmeier arrives in Hefei, Anhui, for a state visit to China from 27 to 31 October", "source": "央广网", "url": "https://www.cnr.cn/newscenter/native/gd/20261027/t20261027_527853774.shtml"}, {"title": "法国10年期国债收益率跌11.7个基点至4.902%，法德利差收窄至154个基点", "title_en": "France's 10-year yield falls 11.7bp to 4.902%, narrowing the French-German spread to 154bp", "source": "华尔街见闻", "url": "https://wallstreetcn.com/livenews/3186421"}, {"title": "卢拉连任巴西总统后当地企业在美股重挫，高盛警告汇率与长债极端行情", "title_en": "Brazilian listed companies plunge after Lula's re-election as Goldman Sachs warns of extreme moves", "source": "每日经济新闻", "url": "https://www.nbd.com.cn/articles/2026-10-26/4618931.html"}]}, {"id": "m-ai", "label": "AI", "label_en": "AI", "digest": "Anthropic 递交 S-1 启动 IPO，上半年净亏损807.48亿美元；OpenAI 发布 GPT-6.1 Terra。", "digest_en": "Anthropic files an S-1 to begin its IPO, disclosing $16.29 billion in first-half revenue and an $80.75 billion net loss; OpenAI releases GPT-6.1 Terra and announces three scientific results.", "detail": "Anthropic：26日向美国SEC提交S-1注册声明，拟以代码ANT在纳斯达克全球精选市场上市，发行股数与价格区间尚未确定，承销由高盛与摩根士丹利牵头。招股书显示公司2026年上半年营收162.86亿美元，上年同期为11.63亿美元；净亏损807.48亿美元，其中723.88亿美元来自可转换票据、衍生负债及SAFE的公允价值变动，属非现金会计项目；同期经营活动现金流净额为正的39.3亿美元，营业亏损从上年同期21.35亿美元收窄至6.93亿美元，公司自定义非GAAP口径调整后经营利润16.18亿美元。公司已承诺至少5180亿美元未来基础设施支出，并已签订至少6570亿美元算力合同，其中与Amazon至少1100亿美元至2036年4月、与Google至少1145亿美元至2033年7月。招股书同时警告收入未必持续增长，并列出先进AI可能带来灾难性或存在性风险。\nOpenAI：26日发布GPT-6.1 Terra，定位为可规模化的计算机操作与视觉推理模型，标准API定价为每百万输入token 1美元、输出5美元、缓存输入0.05美元，上下文105万token。官方称该模型在Agents' Last Exam基准上与GPT-6 Astra相当，token价格约为其十分之一，平均完成任务速度快3倍以上。\n其他：OpenAI同日宣布其模型在数学、计算机科学与物理三方面取得成果并与外部专家协作发布，包括证明各维度局部光滑猜想、在Lean中验证ETH为假、给出QCD与纯Yang-Mills理论的严格存在性证明。Meta向SEC申报拟募资950亿美元投向AI数据中心与超级智能。老干妈26日通过官方热线与人力资源部门对媒体否认使用AI将600名拣椒工裁至48人的说法，称公司从未有过对应规模人员调整。", "detail_en": "Anthropic: On 26 October the company filed a Form S-1 registration statement with the SEC, intending to list Class A common stock on the Nasdaq Global Select Market under the ticker ANT, with the share count and price range still undetermined and Goldman Sachs and Morgan Stanley leading the underwriters. The prospectus shows first-half 2026 revenue of $16.286 billion versus $1.163 billion a year earlier, and a net loss of $80.748 billion, of which $72.388 billion came from fair value changes on convertible notes, derivative liabilities and SAFEs and is a non-cash accounting item. Operating cash flow was positive $3.93 billion, the operating loss narrowed from $2.135 billion to $693 million, and the company's own non-GAAP adjusted operating profit turned positive at $1.618 billion. It has committed at least $518 billion in future infrastructure spending and signed compute contracts of at least $657 billion, including at least $110 billion with Amazon through April 2036 and at least $114.5 billion with Google through July 2033. The prospectus warns revenue may not keep growing and lists catastrophic or existential risks from advanced AI.\nOpenAI: On 26 October the company released GPT-6.1 Terra, positioned as a model for computer use and visual reasoning at scale, priced at $1 per million input tokens, $5 per million output tokens and $0.05 for cached input, with a 1.05 million token context. OpenAI says it matches GPT-6 Astra on the Agents' Last Exam benchmark at roughly one tenth the token price and over three times the average task completion speed.\nOther: OpenAI also announced three results in mathematics, computer science and physics produced with external experts, including a proof of the local smoothing conjecture in all dimensions, a Lean verification that ETH is false, and a rigorous existence proof for QCD and pure Yang-Mills theory. Meta filed with the SEC seeking to raise $95 billion for AI data centres and superintelligence. On 26 October Laoganma denied via its official hotline and HR department the claim that AI cut its pepper-picking workforce from 600 to 48, saying no such reduction had ever been made.", "items": [{"title": "Anthropic 向 SEC 递交 S-1 启动 IPO，拟以代码 ANT 登陆纳斯达克", "title_en": "Anthropic files an S-1 with the SEC to launch an IPO under the ticker ANT", "source": "Anthropic 官方新闻室", "url": "https://www.anthropic.com/news/s1-sec"}, {"title": "Anthropic 招股书：上半年营收162.86亿美元、净亏损807.48亿美元，签下至少6570亿美元算力合同", "title_en": "Anthropic prospectus: $16.29 billion first-half revenue, $80.75 billion net loss, at least $657 billion in compute contracts", "source": "新华财经", "url": "https://www.cnfin.com/yw-lb/detail/20261027/4486751_1.html"}, {"title": "OpenAI 发布 GPT-6.1 Terra，主打可规模化的计算机操作，定价每百万输入token 1美元", "title_en": "OpenAI releases GPT-6.1 Terra for computer use at scale at $1 per million input tokens", "source": "OpenAI 开发者社区", "url": "https://community.openai.com/t/gpt-6-1-terra-delivering-fast-and-capable-computer-use-at-a-lower-price/1409900"}, {"title": "OpenAI 宣布模型产出三项数学与物理成果，并与外部学者协作发布", "title_en": "OpenAI announces three mathematical and physics results produced with external scholars", "source": "OpenAI 官网", "url": "https://openai.com/index/building-scientific-understanding-with-academic-communities"}, {"title": "老干妈回应AI裁员传闻为不实信息，称公司从未有过对应规模人员调整", "title_en": "Laoganma denies the AI layoff claim, saying no staffing cut of that scale ever took place", "source": "腾讯新闻（三工晨报）", "url": "https://news.qq.com/rain/a/20261027A02E3O00"}]}, {"id": "m-military", "label": "军事", "label_en": "Military", "digest": "俄国防部称阿列什基停火已于北京时间27日9时生效并暂停空袭赫尔松方向乌目标；乌总统签署法案延长战时状态90天。", "digest_en": "Russia's defence ministry says the Alyoshki ceasefire took effect at 9am Beijing time and it has paused strikes on Ukrainian targets in Kherson; Ukraine's president signed a law extending martial law by 90 days.", "detail": "停火生效：俄罗斯国防部于莫斯科时间10月27日4时（北京时间27日9时）发表声明称，赫尔松地区阿列什基停火生效，俄军暂停对赫尔松方向乌克兰目标的空袭。停火安排自莫斯科时间27日4时、基辅时间3时开始，较白宫此前宣布的29日提前两天。停火期间将开通人道走廊、运入援助物资并疏散居民。白宫23日称第一夫人梅拉尼娅·特朗普推动了这项安排；美方官员称俄美乌三方会谈可能在两周内于阿布扎比或瑞士举行，佩斯科夫证实计划于11月上旬在阿布扎比举行，但强调恢复会谈不限制对乌军事行动。\n乌克兰：泽连斯基26日签署法案，将国家战时状态和总动员令再延长90天至2027年1月29日。此前他表示不愿为结束冲突放弃更多领土，拒绝涉及放弃25%领土的提议，称俄军目前实际控制乌方约19.3%领土。\n中东：以色列26日空袭加沙多地致至少7人死亡；联合国巴勒斯坦被占领土问题独立国际调查委员会向联合国大会提交报告，指控以色列在巴勒斯坦被占领土犯下战争罪及危害人类罪并持续实施种族灭绝，联合国人权事务高级专员办公室同日就以军在希伯伦的大规模军事行动表达严重关切。以色列27日举行大选，多家以媒汇总民调显示内塔尼亚胡处于劣势。\n中国军队：火箭军某部26日在深山腹地开展无预告战斗发射训练；海军航空兵某部组织反潜巡逻机与无人机协同反潜训练。", "detail_en": "Ceasefire in effect: On 27 October at 4am Moscow time, 9am Beijing time, the Russian defence ministry said the Alyoshki ceasefire in Kherson had taken effect and the Russian military had paused airstrikes on Ukrainian targets in that direction. The arrangement began at 4am Moscow time and 3am Kyiv time, two days earlier than the 29 October date previously announced by the White House. During the ceasefire a humanitarian corridor will open to bring in aid and evacuate residents. The White House said on 23 October that Melania Trump helped drive the arrangement, and a US official said trilateral talks could be held within two weeks in Abu Dhabi or Switzerland; Kremlin spokesman Peskov confirmed the plan for early November in Abu Dhabi while stressing that resuming talks does not limit military operations against Ukraine.\nUkraine: On 26 October President Zelensky signed a law extending the state of martial law and general mobilisation by a further 90 days to 29 January 2027. He has said he will not give up more territory to end the conflict, rejecting proposals involving surrendering 25% of Ukraine's territory, and puts Russian control at about 19.3% of Ukrainian territory.\nMiddle East: Israeli airstrikes on Gaza killed at least seven on 26 October. The UN Independent International Commission of Inquiry on the Occupied Palestinian Territory, including East Jerusalem, reported to the General Assembly that Israel has committed war crimes and crimes against humanity in the occupied Palestinian territory and continues to perpetrate genocide in Gaza, and the UN human rights office expressed serious concern the same day about large-scale Israeli military operations in Hebron. Israel held elections on 27 October, with Israeli media aggregating polls showing Benjamin Netanyahu trailing.\nChinese military: The PLA Rocket Force conducted an unannounced combat launch exercise in a remote mountain area on 26 October, and the PLA Navy Aviation carried out a coordinated anti-submarine exercise pairing a patrol aircraft with an unmanned aerial vehicle.", "items": [{"title": "俄国防部：阿列什基停火于莫斯科时间27日4时生效，暂停空袭赫尔松方向乌目标", "title_en": "Russia's defence ministry: the Alyoshki ceasefire took effect at 4am Moscow time on 27 October", "source": "央视新闻", "url": "https://ysxw.cctv.cn/article.html?toc_style_id=feeds_default&t=1793066094131&item_id=18127981574026229054&channelId=1119"}, {"title": "泽连斯基签署法案，将乌克兰战时状态和总动员令延长90天至2027年1月29日", "title_en": "Zelensky signs law extending Ukraine's martial law and mobilisation by 90 days to 29 January 2027", "source": "腾讯新闻（央视国际时讯）", "url": "https://news.qq.com/rain/a/20261027A03FMA00"}, {"title": "联合国巴勒斯坦被占领土问题调查委员会向联大提交报告，指控以色列犯下战争罪与危害人类罪", "title_en": "UN commission of inquiry reports to the General Assembly alleging war crimes and crimes against humanity in the occupied Palestinian territory", "source": "重庆日报", "url": "https://www.cqrb.cn/shishi/2026-10-27/2805981_pc.html"}, {"title": "火箭军某部开展无预告战斗发射训练", "title_en": "PLA Rocket Force conducts an unannounced combat launch exercise", "source": "央视军事", "url": "https://news.qq.com/rain/a/20261026A0AFLQ00"}, {"title": "海军航空兵某部组织反潜巡逻机与无人机协同反潜训练", "title_en": "PLA Navy Aviation conducts coordinated manned-unmanned anti-submarine training", "source": "中国军网", "url": "https://www.81.cn/yw_208727/16496138.html"}]}, {"id": "m-semi", "label": "半导体与存储", "label_en": "Semiconductors & Storage", "digest": "内存渠道价与原厂合约价局部倒挂，10月以来渠道销量下滑两成；三星追加2纳米设备投资。", "digest_en": "Memory channel prices partly invert against supplier contract prices as channel sales fall 20-30% since October; Samsung adds 2nm equipment while Korean memory makers rally on Anthropic's IPO filing.", "detail": "价格倒挂：央视财经26日实探华强北，16G DDR5内存条报价普遍在1400至1600元，32G在2000至3000多元，1TB固态硬盘800至1000多元，相比前期高点仅有小幅回调。业内人士称主要因部分渠道商资金压力大需出货回笼资金，但因都是高成本进货不敢大幅降价，形成报价坚挺、成交冷清、局部倒挂的市场状态，10月以来渠道商销量普遍下滑20%至30%。上游仍在涨价，巴克莱银行10月报告经IT之家援引称，上一代DDR4芯片近三个月合约价累计上涨24%，反超DDR5同期约20%的涨幅。\n代工与设备：三星已为美国得州泰勒一号晶圆厂启动后续设备投资，追加订购可支持每月约6000片2纳米晶圆加工能力的设备，该厂2纳米月产能预计将在2027年下半年提升至约2万片。三星2纳米良率据韩媒报道已从年初约60%继续提升，参照对象是台积电2纳米工艺60%至70%区间。\n资本与产业链：Anthropic递交S-1后，27日早盘三星电子涨近5%、SK海力士涨逾6%。市场同时关注三星将采用台积电3纳米工艺为英伟达下一代定制HBM生产基底裸片的消息，该消息源为《首尔经济日报》且未获三星完整确认。A股方面，26日半导体板块震荡走弱，盘中相关指数一度跌超3%，多只半导体ETF收跌超5%，而截至22日已有22家A股半导体公司披露三季报或预告，其中预增16家、扭亏3家、确认同比增长2家、仅1家净利下滑。", "detail_en": "Price inversion: CCTV Finance reported on 26 October that at Shenzhen's Huaqiangbei market, 16GB DDR5 memory sticks are quoted at 1400 to 1600 yuan, 32GB at over 2000 yuan and 1TB solid-state drives at 800 to over 1000 yuan, only slightly off recent highs. Insiders said the pressure comes from some channel distributors needing to liquidate stock to raise cash, but since they all bought in at high cost none dares cut prices much, producing firm quotes, thin trading and local price inversion; channel sales have fallen 20% to 30% since October. Upstream prices are still rising: a Barclays October report, cited by IT Home, says last-generation DDR4 contract prices rose 24% over three months, overtaking DDR5's roughly 20% gain over the same period.\nFoundry and equipment: Samsung has begun follow-on equipment investment at its Taylor Fab 1 in Texas, ordering additional tools supporting about 6,000 2nm wafers per month, taking the site's planned 2nm capacity to roughly 20,000 wafers per month by the second half of 2027. Korean media report Samsung's 2nm yield has risen from about 60% earlier this year, against a 60% to 70% reference range for TSMC's 2nm.\nCapital and supply chain: after Anthropic filed its S-1, Samsung Electronics rose nearly 5% and SK Hynix more than 6% in early Korean trading on 27 October. Attention also centres on a Seoul Economic Daily report that Samsung will use TSMC's 3nm process for the base die of Nvidia's next-generation custom HBM, a claim Samsung has not fully confirmed. In mainland markets, the semiconductor sector weakened on 26 October, with the relevant index down more than 3% intraday and several semiconductor ETFs closing down over 5%, even as 22 A-share semiconductor companies had by the 22nd disclosed third-quarter results or guidance, with 16 forecasting growth, 3 turning profitable, 2 confirming growth and only 1 reporting a profit decline.", "items": [{"title": "央视财经实探华强北：内存报价坚挺但成交冷清，10月以来渠道销量下滑20%至30%", "title_en": "CCTV Finance finds memory quotes firm but sales cold at Huaqiangbei, with channel sales down 20-30% since October", "source": "新浪财经（引央视财经）", "url": "https://cj.sina.com.cn/articles/view/5993531560/m1653e08a803301q0su"}, {"title": "巴克莱：DDR4近三个月合约价涨24%，反超DDR5同期约20%", "title_en": "Barclays: DDR4 contract prices rose 24% over three months, overtaking DDR5's 20%", "source": "新浪财经（引财联社、IT之家）", "url": "https://cj.sina.cn/articles/view/1750070171/684ff39b04001icna"}, {"title": "三星追加2纳米设备投资，泰勒一号厂2027年下半年月产能目标约2万片", "title_en": "Samsung adds 2nm equipment, targeting about 20,000 wafers per month at Taylor Fab 1 by late 2027", "source": "腾讯新闻", "url": "https://news.qq.com/rain/a/20261027A04JH500"}, {"title": "Anthropic 递交S-1提振韩股存储，27日早盘三星电子涨近5%、SK海力士涨逾6%", "title_en": "Anthropic's S-1 lifts Korean memory makers, with Samsung up nearly 5% and SK Hynix over 6%", "source": "新华财经", "url": "https://m.cnfin.com/yw-lb//zixun/20261027/4486751_1.html"}, {"title": "美光放弃4F2 DRAM架构，ASML或切入混合键合设备", "title_en": "Micron drops the 4F2 DRAM architecture as ASML moves toward hybrid bonding tools", "source": "半导体行业日报", "url": "http://mp.weixin.qq.com/s?__biz=MzcwNDQ4NDQxNg==&mid=2247484534&idx=1&sn=982f68687bed002c51978a87724d8cef"}]}, {"id": "m-digital", "label": "数码科技", "label_en": "Consumer Tech", "digest": "苹果承认少量iPhone Duo内屏问题并提供换机，当日股价跌1.1%；REDMI K100今晚发布。", "digest_en": "Apple acknowledges an inner-display issue on a small number of iPhone Duo units and offers replacements, with the stock down 1.1%; REDMI K100 launches tonight with a 10000mAh battery and Snapdragon 8 Elite.", "detail": "iPhone Duo品控：苹果26日向媒体确认，已知晓少量iPhone Duo机型内屏出现问题，建议出现问题的用户联系AppleCare申请更换，并称绝大多数设备不受影响、问题机型通常在短时间内显现。彭博独立核实了逾六名用户的反馈，用户描述多在展开时铰链异常紧涩、随后听到破裂声、内屏中央折叠处出现裂纹，部分用户还遇到屏幕右侧白斑。iFixit通过拆解视频、苹果专利与CT扫描构建铰链3D模拟，认为损坏聚集在显示屏走线下方的中央支撑杆附近，该支撑杆在折叠时可能未正确让位，从而在报告的破损位置形成应力集中；该机构同时指出其未确定最终故障原因。苹果股价当日收跌1.1%。此前苹果官方客服就第三方渠道iPhone Duo破发回应称，第三方经销商退换货政策不一定和苹果官网一致，苹果官方渠道支持14天无理由退换货，并称目前很多客户取消了订单。\n新品：REDMI K100将于27日19时发布，搭载骁龙8至尊版并在K系列标准版首次配游戏独显D2芯片，6.83英寸165Hz屏幕、峰值亮度3500nits，10000mAh金沙江电池含28%硅碳、能量密度957Wh/L，配100W有线快充与27W反充，IP68防尘防水，同场还有Book 14 2027与Clip Neo耳机。\n其他：华为Pura X View阔直板手机销量据博主爆料截至第42周约65.23万台，10月16日至21日六天从71万台增至84万台，全渠道长期缺货并已于10月20日上线60天预约申购。苹果正在测试一款尺寸更大的折叠平板设备，报道称设计以华为8月推出的MateBook Fold为参照。", "detail_en": "iPhone Duo quality: Apple confirmed to media on 26 October that it is aware of an issue impacting the inner display on a small number of iPhone Duo units, advised affected users to contact AppleCare for a replacement, and said most units are unaffected and problem units usually show symptoms quickly. Bloomberg independently verified feedback from more than six users, who described the hinge feeling unusually tight on opening followed by a cracking sound and a large crack along the central fold, with some also reporting white patches on the right side of the screen. iFixit used teardown footage, Apple patents and CT scans to build a 3D simulation of the hinge, and found damage clustered just below where a display cable runs under the screen near a central support bar, which may fail to drop out of the screen's way when folded, creating a stress hotspot near the reported break location; the firm did not determine a final root cause. Apple's shares closed down 1.1% that day. Separately, an Apple customer-service representative said third-party resellers need not match the official 14-day no-reason return policy, that Apple's own channels price more steadily, and that many customers have cancelled orders.\nNew products: REDMI K100 launches at 19:00 on 27 October with Snapdragon 8 Elite and, for the first time in the standard K-series, a gaming discrete chip D2, a 6.83-inch 165Hz screen peaking at 3500 nits, and a 10000mAh Golden Sand River battery with 28% silicon-carbon content and 957Wh/L density, plus 100W wired charging, 27W reverse charging and IP68; Book 14 2027 and Clip Neo earbuds launch at the same event.\nOther: Huawei's Pura X View wide-straight phone is reported by a blogger to have sold about 652,300 units through week 42, rising from 710,000 to 840,000 over six days from 16 to 21 October, with persistent channel shortages and a 60-day reservation system opened on 20 October. Apple is also testing a larger foldable tablet device, said to reference Huawei's MateBook Fold launched in August.", "items": [{"title": "苹果承认少量iPhone Duo内屏存在问题，建议联系AppleCare换机", "title_en": "Apple acknowledges an inner-display issue on a small number of iPhone Duo units and offers replacements", "source": "CNBC", "url": "https://www.cnbc.com/amp/2026/10/26/apple-responds-to-user-reports-of-broken-iphone-duo-screens.html"}, {"title": "iFixit：iPhone Duo屏幕损坏疑与铰链中央支撑杆未正确让位有关，未确定最终原因", "title_en": "iFixit: iPhone Duo screen damage likely tied to a central hinge support bar, with no final cause determined", "source": "CNA（引路透）", "url": "https://www.channelnewsasia.com/business/apple-says-it-will-replace-iphone-duo-units-showing-screen-problems-6494391"}, {"title": "苹果官方客服回应iPhone Duo第三方渠道破发，称目前很多客户取消了订单", "title_en": "Apple customer service responds to third-channel iPhone Duo price cuts, saying many customers cancelled orders", "source": "今日头条（引财联社、中新经纬）", "url": "https://www.toutiao.com/article/7700866750727930377/"}, {"title": "REDMI K100今晚19时发布，骁龙8至尊版配游戏独显D2，10000mAh金沙江电池", "title_en": "REDMI K100 launches at 19:00 tonight with Snapdragon 8 Elite, gaming discrete D2 and a 10000mAh battery", "source": "站长之家", "url": "https://www.chinaz.com/feed/1027/1784469.shtml"}, {"title": "华为Pura X View累计销量据爆料约65.23万台，全渠道缺货已开60天预约申购", "title_en": "Huawei Pura X View cumulative sales reported at about 652,300 units with a 60-day reservation channel", "source": "凤凰网科技（引IT之家）", "url": "https://tech.ifeng.com/c/8xWwe3cnhPO"}]}, {"id": "m-auto", "label": "汽车", "label_en": "Automotive", "digest": "小鹏Robotaxi获广州全域L4示范运营资质，大众中国在合肥获L3路测牌照；比亚迪唐秦系列召回18.3万辆。", "digest_en": "XPeng's Robotaxi wins city-wide L4 demonstration approval in Guangzhou and Volkswagen China gets an L3 road-test licence in Hefei; BYD recalls 183,211 Tang and Qin vehicles.", "detail": "智能驾驶资质：小鹏26日宣布获批广州市智能网联汽车应用示范运营资格，可在广州全域开展L4级Robotaxi示范运营，公司称这标志其从技术与产品验证走向运营及商业模式验证，初期仍通过邀请码逐步开放体验。大众汽车集团（中国）26日发文称已在合肥正式获得L3级自动驾驶道路测试牌照并启动L3真实道路测试与大规模数据采集，目标2027年实现L3技术就绪，其自研世界模型GAIA 2.0每天可开展相当于500万公里真实行驶里程的智驾安全仿真测试，训练里程以每日1000万公里为目标。\n召回：国家市场监督管理总局26日披露，比亚迪汽车工业有限公司与比亚迪汽车有限公司备案召回唐系列58026辆、全新一代唐DM 77846辆、全新一代唐EV 7023辆、秦系列40316辆，合计183211辆，原因是制动踏板限位垫材料批次性异常、长期使用后可能开裂破损，极端情况下限位垫脱落会造成制动踏板未被踩下时制动灯常亮，处置方案为委托授权经销商免费更换改善后的限位垫。\n市场与政策：乘联分会负责人崔东树26日发文，预计2026年车市零售销量1850万辆，2027年在不发生超预期变化的前提下零售增长区间0%至5%、均值2%。荷兰媒体AD.NL报道，今年前九个月荷兰售出中国汽车18175辆，同比增长近125%，中国品牌销量跃居第五位，德国品牌销量下降10%、法国品牌下降5%。海南省委省政府26日印发意见提出，到2027年新增汽车中新能源汽车比例不低于70%，平稳推进2030年禁售燃油车。", "detail_en": "Autonomous driving approvals: XPeng announced on 26 October that it had been granted Guangzhou's intelligent connected vehicle demonstration operation qualification, enabling L4 Robotaxi demonstration across the entire city; the company said this marks a step from technology and product validation to operational and business-model validation, with access still opened gradually by invitation code. Volkswagen Group China said on 26 October it had obtained an L3 autonomous driving road-test licence in Hefei and begun real road testing and large-scale data collection, targeting L3 technology readiness in 2027; its in-house world model GAIA 2.0 can run safety simulations equivalent to 5 million kilometres of real driving per day, with a training target of 10 million kilometres per day.\nRecall: On 26 October the State Administration for Market Regulation disclosed that BYD filed recall plans covering 58,026 Tang series vehicles, 77,846 new-generation Tang DM and 7,023 Tang EV, and 40,316 Qin series vehicles, totalling 183,211 units, because the brake pedal limit pad suffered a batch-level material abnormality that may crack and break over long use, and in extreme cases a detached pad leaves the brake light permanently on when the pedal is not pressed; the remedy is free replacement of an improved limit pad by authorised dealers.\nMarket and policy: Cui Dongsheng of the China Automobile Dealers Association wrote on 26 October that retail sales are expected to reach 18.5 million units in 2026, and that in 2027, absent unexpected changes, retail growth should be 0% to 5% with a 2% average. Dutch outlet AD.NL reported that 18,175 Chinese cars were sold in the Netherlands in the first nine months, up nearly 125% year on year, lifting Chinese brands to fifth place, while German brands fell 10% and French brands 5%. A document issued on 26 October by the Hainan provincial Party committee and government sets a target of at least 70% new-energy vehicles among new car registrations by 2027 and a smooth phase-out of fuel-car sales by 2030.", "items": [{"title": "小鹏获批广州智能网联汽车应用示范运营资格，可全域开展L4级Robotaxi示范运营", "title_en": "XPeng wins Guangzhou's demonstration operation qualification for city-wide L4 Robotaxi operation", "source": "小鹏汽车官网", "url": "https://www.xpeng.com/news/01a1780feba5a12024aa8a02829e04fd"}, {"title": "大众汽车集团（中国）在合肥正式获得L3级自动驾驶道路测试牌照", "title_en": "Volkswagen Group China obtains an L3 autonomous driving road-test licence in Hefei", "source": "经济参考报", "url": "http://jjckb.xinhuanet.com/20261026/c113d201881744669d25d5941e14d14d/c.html"}, {"title": "比亚迪召回唐系列与秦系列合计183211辆，原因是制动踏板限位垫批次性异常", "title_en": "BYD recalls 183,211 Tang and Qin vehicles over a batch abnormality in the brake pedal limit pad", "source": "每日经济新闻", "url": "https://new.qq.com/rain/a/20261027A02Q0A00"}, {"title": "乘联分会崔东树：预计2026年车市零售1850万辆，2027年零售增长0%至5%、均值2%", "title_en": "Cui Dongsheng: 2026 retail seen at 18.5 million units, 2027 growth of 0-5% with a 2% average", "source": "腾讯新闻（每日经济新闻）", "url": "https://new.qq.com/rain/a/20261027A02Q0A00"}, {"title": "荷兰前九个月中国车销量18175辆同比增长近125%，跃居第五位", "title_en": "Chinese car sales in the Netherlands rose nearly 125% to 18,175 units, ranking fifth", "source": "网易（观察者网）", "url": "https://www.163.com/dy/article/LA7QOV6C051481US.html"}]}], "insights": [{"title": "工具厂商的通路化：AI 视频模型开始以可编程、可计价的接口形态铺开", "title_en": "Tool vendors are going programmatic: AI video models are spreading as programmable, metered interfaces", "a": "AI HOT 24小时窗口收录 Krea 推出的Adobe Premiere 插件，官方说明为在时间线内完成分镜、生成视频与添加音效，全程不离开Premiere；同时收录 Kling 4.0 已在 Runware API上线，可生成最长30秒1080p带原生音频视频，单请求最多15个输入，价格自每秒0.133美元起。", "a_en": "AI HOT's 24-hour window records Krea's Adobe Premiere plugin, which the company describes as making storyboard, video generation and sound effects possible without leaving the timeline, and Kling 4.0 going live on the Runware API, generating up to 30 seconds of 1080p video with native audio, up to 15 inputs per request, from $0.133 per second.", "b": "同日可核验的第三方与官方材料显示，AI视频工具正同时沿两条路径推进：一条是以插件形式住进既有剪辑软件（Krea for Premiere，官方X账号10月26日15时30分发布），另一条是以低价API铺开可批量调用的分发渠道（HeyGen Video 官方帮助中心当日更新，首个通用视频模型，768p促销价每输出秒0.018美元、1080p每输出秒0.04美元，官方称在4800票盲评中排名第一；Kling 4.0 在 Runware 上的价格为每秒0.133美元起）。", "b_en": "Verifiable third-party and official material the same day shows AI video tools advancing along two paths at once: one moving into existing editing software as a plugin, with Krea for Premiere announced on the official X account at 15:30 on 26 October, and the other spreading through low-cost APIs built for batch calls, with HeyGen's help centre the same day documenting HeyGen Video, its first general-purpose video model, at a promotional $0.018 per output second at 768p and $0.04 at 1080p, ranked first by the company in a 4,800-vote blind evaluation, and Kling 4.0 on Runware priced from $0.133 per second.", "concl": "编辑判断：这两条内容流指向同一件事，即AI视频工具的竞争正在从单帧画质转移到离创作者工作流有多近。价格与接口同时下沉意味着批量预演和分镜草稿的边际成本已接近可以忽略，但同时也意味着工具的可见性越来越由分发渠道决定而非由技术差异决定。对影视从业者而言，可迁移的能力正在从会写提示词，转向会定义意图、设定验收标准并判断结果是否可用。需要克制的是：盲评排名由厂商自行公布，插件功能与可用性仍以官方公告为准，尚无第三方独立评测。", "concl_en": "Editorial judgment: these two content streams point at the same thing, that competition among AI video tools is shifting from single-frame image quality to proximity to the creator's own workflow. Prices and interfaces are falling together, which makes the marginal cost of bulk previz and draft storyboards close to negligible, but it also means a tool's visibility is increasingly determined by its distribution channel rather than by technical difference. For film practitioners the transferable skill is moving away from prompt writing and towards defining intent, setting acceptance criteria and judging whether an output is usable. Caution is needed: the blind-evaluation ranking was published by the vendor itself, and plugin features and availability still rest on official announcements with no independent third-party review yet.", "source_urls": ["https://aihot.news/items/he5bxeygbly5kef64gvs1tk6m", "https://x.com/krea_ai/status/2114741513867395527", "https://help.heygen.com/en/articles/17272995-introducing-heygen-video-generate-cinematic-clips-from-a-prompt"], "limitations": "Krea 插件的功能与适用范围依据其官方X账号帖文与第三方转述，未做实机验证；HeyGen 的盲评排名与定价为厂商自述，未经独立复现；Kling 4.0 的 Runware 定价来自官方帖文与第三方整理稿，与实际结算价可能存在差异。"}, {"title": "执行岗替代的证据仍然不对称：一方公开否认，一方以任务表现量化边界", "title_en": "Evidence on job displacement remains asymmetric: one company publicly denies it, another quantifies the boundary by task performance", "a": "AI HOT 24小时窗口收录 Epoch AI 的内部任务评测结果：以图表设计、研究规划等机构真实工作为题，前沿模型 Claude Fable 5.1 与 GPT-6 Astra 平均得分 65%，未达到其设定的 100% 可自动化门槛。", "a_en": "AI HOT's 24-hour window records an Epoch AI evaluation on internal work tasks such as chart design and research planning, in which the leading models Claude Fable 5.1 and GPT-6 Astra averaged 65%, short of the 100% automatable threshold it set.", "b": "同日老干妈通过官方热线与人力资源部门对媒体否认使用AI把600名拣椒工裁至48人的说法，称公司从未有过对应规模的人员调整安排；而澎湃新闻马上评与极目新闻评论则指出该说法源自常务副总李鑫在2026年贵州省质量发展大会上的公开表述，且旗下公司近3年参保人数减少2172人，公开否认尚未解开疑问。", "b_en": "The same day, Laoganma denied via its official hotline and HR department the claim that AI cut its pepper-picking workforce from 600 to 48, saying no staffing adjustment of that scale had ever been made; thepaper's commentary and a Jiemu News editorial noted the claim traces to remarks by executive vice president Li Xin at the 2026 Guizhou Quality Development Conference, and that insured headcount at the company fell by 2,172 over the past three years, leaving the public denial short of resolving the question.", "concl": "编辑判断：这两条证据指向相反方向，因此目前不能把执行岗受冲击写成已证实的行业定论。可确认的是，模型在机构真实工作任务上目前平均只拿到 65% 的分数，说明自动化还停在能完成相当部分但不足以独立交付的阶段；而具体到企业层面，AI 与岗位变动之间既缺乏可核验的用工数据，也存在明显的对外表述落差。要继续检验这条假设，需要的是企业侧的用工口径与岗位结构数据，而不是企业表态或单一基准分数。", "concl_en": "Editorial judgment: these two pieces of evidence point in opposite directions, so the claim that execution roles are being displaced cannot yet be written as an established industry conclusion. What can be confirmed is that on real institutional work tasks leading models average only 65%, so automation sits at the stage of completing a good part of the work but not enough to deliver independently; and at the corporate level, both verifiable staffing data and a clear gap in public statements are lacking. Testing this hypothesis further requires company-side staffing and role-structure data, not corporate statements or a single benchmark score.", "source_urls": ["https://epochai.substack.com/p/can-ai-automate-epoch", "https://news.qq.com/rain/a/20261027A02E3O00", "https://www.thepaper.cn/newsDetail_forward_34336116"], "limitations": "Epoch AI 的评测为其自有内部任务集，样本与方法未公开细节，且仅代表一家机构的工作结构；老干妈的用工数据未经第三方独立核验，参保人数与拣椒工人数口径不同，两者不能直接互证。"}, {"title": "AI 影像进入院线后，口碑与票房的背离把问题从生成质量推到观众信任", "title_en": "Once AI imagery reaches cinemas, the split between word of mouth and box office moves the question from generation quality to audience trust", "a": "AI HOT 当日收录的多条影视工具与内容条目显示，AI 视频在生成能力上继续推进：Krea 推出面向 Adobe Premiere 的插件，Kling 4.0 已在 Runware API 上线支持30秒1080p原生音频视频。", "a_en": "The film and tool items AI HOT collected that day show continued gains in AI video generation: Krea released a plugin for Adobe Premiere, and Kling 4.0 went live on the Runware API with up to 30 seconds of 1080p video with native audio.", "b": "同期票房与口碑数据呈相反方向：国内首部获龙标AI院线长片《三星堆：未来往事》10月23日上映，至26日晚累计票房122.9万元，排片8331场、上座率跌至0.2%、场均人次0.3人，制作成本达千万元级；10月26日猫眼专业版数据显示该片排片占比2.3%。同时该片首映后观众评价两极，既有画面与文物的视觉冲击力评价，也有对AI配音生硬、表情僵硬与人物辨识度不足的批评，博纳影业10月26日盘中跌停。", "b_en": "Box office and word of mouth moved in opposite directions: China's first AI-produced feature with a theatrical licence, The Three Kingdoms-era sci-fi animation Sanxingdui: Future Chronicles, opened on 23 October and by the evening of 26 October had grossed 1.229 million yuan on 8,331 screenings with occupancy down to 0.2% and 0.3 viewers per screening against a production cost in the tens of millions of yuan; Maoyan's data for 26 October put its screening share at 2.3%. Reactions after the premiere were sharply split, from praise for visual impact and artifact accuracy to criticism of stiff AI dubbing, frozen expressions and weak character distinctiveness, and Bona Film was limit-down intraday on 26 October.", "concl": "编辑判断：这两条内容流在表面上分别讲工具和讲市场，但真正相连的地方是同一个缺口——生成能力已经跨过了能被主流工具批量调用的门槛，而观众信任还没有跨过能被一次购票验证的门槛。数据能说明的是规模与匹配度的问题：排片给了接近头部新片的礼遇，场均观众却不足一人；这不能直接推出AI不能进院线，因为样本只有四天、且影片本身选择了冷门题材，但可以说明当前的约束不在画质而在信任与上座率。这与前几期反复出现的同一条判断一致：价值正在从生成画面转向定义意图、设定标准与验收结果。", "concl_en": "Editorial judgment: on the surface these two streams cover tools and market, but they connect at the same gap: generation capability has crossed the threshold where mainstream tools can call it in bulk, while audience trust has not crossed the threshold that a single ticket purchase can verify. What the data shows is a question of scale and fit: the film received close to a headline new release's screen allocation while averaging under one viewer per screening. This cannot be turned into a claim that AI cannot reach cinemas, since the sample is only four days and the film chose a niche subject, but it does show the current constraint lies in trust and occupancy rather than image quality. This matches the judgement recurring across recent editions: value is shifting from generating images towards defining intent, setting standards and accepting results.", "source_urls": ["https://aihot.news/items/g4ad8tycgkdtkjucdyp88blxc", "https://aihot.news/items/he5bxeygbly5kef64gvs1tk6m", "https://www.163.com/dy/article/LA82NMG20550B1DU.html", "https://www.toutiao.com/article/7700954891149230642/"], "limitations": "票房数据来自猫眼、灯塔等平台经媒体转述，各口径时点不同（上座率0.1%至0.2%、排片占比2.3%至2.6%并存），需按各自时点理解；AI HOT 当日影视类条目本身只有工具更新，未收录该片的院线数据，两者的关联属编辑判断而非同一来源的直接结论。"}]}, "cross": {"entities": [{"name": "OpenAI"}, {"name": "Anthropic"}, {"name": "Google"}, {"name": "Meta"}, {"name": "英伟达"}], "themes": [{"name": "模型发布与评测", "aCount": 8, "bCount": 5, "aHits": ["OpenAI 发布 GPT-6.", "Gamma 发布 Gamma 5", "Cohere 报告阿里 Qwen"], "bHits": ["AI", "OpenAI 发布 GPT-6.", "OpenAI 宣布模型产出三项数"], "a": true, "b": true}, {"name": "算力与芯片", "aCount": 3, "bCount": 8, "aHits": ["Meta 向 SEC 申报拟募资", "AISI 发布 ReproBAI", "英国 AISI 实测 ESM-2"], "bHits": ["AI", "Anthropic 招股书：上半", "军事"], "a": true, "b": true}, {"name": "终端与出货", "aCount": 1, "bCount": 8, "aHits": ["Anthropic 向 SEC "], "bHits": ["AI", "半导体与存储", "央视财经实探华强北：内存报价坚挺"], "a": true, "b": true}, {"name": "融资与估值", "aCount": 3, "bCount": 3, "aHits": ["Anthropic 向 SEC ", "Meta 向 SEC 申报拟募资", "Anthropic 向 SEC "], "bHits": ["AI", "Anthropic 向 SEC ", "Anthropic 招股书：上半"], "a": true, "b": true}, {"name": "智能体与编排", "aCount": 4, "bCount": 2, "aHits": ["Gamma 发布 Gamma 5", "Hugging Face CEO", "AISI 发布 ReproBAI"], "bHits": ["AI", "数码科技"], "a": true, "b": true}, {"name": "开源与生态", "aCount": 3, "bCount": 1, "aHits": ["OpenAI 发布 GPT-6.", "Kling 4.0 上线 Run", "Krea 推出面向 Adobe "], "bHits": ["AI"], "a": true, "b": true}, {"name": "安全与治理", "aCount": 2, "bCount": 1, "aHits": ["Hugging Face CEO", "Cohere 报告阿里 Qwen"], "bHits": ["汽车"], "a": true, "b": true}, {"name": "涨价与供应链", "aCount": 0, "bCount": 3, "aHits": [], "bHits": ["半导体与存储", "央视财经实探华强北：内存报价坚挺", "美光放弃4F2 DRAM架构，A"], "a": false, "b": true}], "onlyA": [], "onlyB": ["涨价与供应链"]}, "insights": [{"title": "工具厂商的通路化：AI 视频模型开始以可编程、可计价的接口形态铺开", "title_en": "Tool vendors are going programmatic: AI video models are spreading as programmable, metered interfaces", "a": "AI HOT 24小时窗口收录 Krea 推出的Adobe Premiere 插件，官方说明为在时间线内完成分镜、生成视频与添加音效，全程不离开Premiere；同时收录 Kling 4.0 已在 Runware API上线，可生成最长30秒1080p带原生音频视频，单请求最多15个输入，价格自每秒0.133美元起。", "a_en": "AI HOT's 24-hour window records Krea's Adobe Premiere plugin, which the company describes as making storyboard, video generation and sound effects possible without leaving the timeline, and Kling 4.0 going live on the Runware API, generating up to 30 seconds of 1080p video with native audio, up to 15 inputs per request, from $0.133 per second.", "b": "同日可核验的第三方与官方材料显示，AI视频工具正同时沿两条路径推进：一条是以插件形式住进既有剪辑软件（Krea for Premiere，官方X账号10月26日15时30分发布），另一条是以低价API铺开可批量调用的分发渠道（HeyGen Video 官方帮助中心当日更新，首个通用视频模型，768p促销价每输出秒0.018美元、1080p每输出秒0.04美元，官方称在4800票盲评中排名第一；Kling 4.0 在 Runware 上的价格为每秒0.133美元起）。", "b_en": "Verifiable third-party and official material the same day shows AI video tools advancing along two paths at once: one moving into existing editing software as a plugin, with Krea for Premiere announced on the official X account at 15:30 on 26 October, and the other spreading through low-cost APIs built for batch calls, with HeyGen's help centre the same day documenting HeyGen Video, its first general-purpose video model, at a promotional $0.018 per output second at 768p and $0.04 at 1080p, ranked first by the company in a 4,800-vote blind evaluation, and Kling 4.0 on Runware priced from $0.133 per second.", "concl": "编辑判断：这两条内容流指向同一件事，即AI视频工具的竞争正在从单帧画质转移到离创作者工作流有多近。价格与接口同时下沉意味着批量预演和分镜草稿的边际成本已接近可以忽略，但同时也意味着工具的可见性越来越由分发渠道决定而非由技术差异决定。对影视从业者而言，可迁移的能力正在从会写提示词，转向会定义意图、设定验收标准并判断结果是否可用。需要克制的是：盲评排名由厂商自行公布，插件功能与可用性仍以官方公告为准，尚无第三方独立评测。", "concl_en": "Editorial judgment: these two content streams point at the same thing, that competition among AI video tools is shifting from single-frame image quality to proximity to the creator's own workflow. Prices and interfaces are falling together, which makes the marginal cost of bulk previz and draft storyboards close to negligible, but it also means a tool's visibility is increasingly determined by its distribution channel rather than by technical difference. For film practitioners the transferable skill is moving away from prompt writing and towards defining intent, setting acceptance criteria and judging whether an output is usable. Caution is needed: the blind-evaluation ranking was published by the vendor itself, and plugin features and availability still rest on official announcements with no independent third-party review yet.", "source_urls": ["https://aihot.news/items/he5bxeygbly5kef64gvs1tk6m", "https://x.com/krea_ai/status/2114741513867395527", "https://help.heygen.com/en/articles/17272995-introducing-heygen-video-generate-cinematic-clips-from-a-prompt"], "limitations": "Krea 插件的功能与适用范围依据其官方X账号帖文与第三方转述，未做实机验证；HeyGen 的盲评排名与定价为厂商自述，未经独立复现；Kling 4.0 的 Runware 定价来自官方帖文与第三方整理稿，与实际结算价可能存在差异。"}, {"title": "执行岗替代的证据仍然不对称：一方公开否认，一方以任务表现量化边界", "title_en": "Evidence on job displacement remains asymmetric: one company publicly denies it, another quantifies the boundary by task performance", "a": "AI HOT 24小时窗口收录 Epoch AI 的内部任务评测结果：以图表设计、研究规划等机构真实工作为题，前沿模型 Claude Fable 5.1 与 GPT-6 Astra 平均得分 65%，未达到其设定的 100% 可自动化门槛。", "a_en": "AI HOT's 24-hour window records an Epoch AI evaluation on internal work tasks such as chart design and research planning, in which the leading models Claude Fable 5.1 and GPT-6 Astra averaged 65%, short of the 100% automatable threshold it set.", "b": "同日老干妈通过官方热线与人力资源部门对媒体否认使用AI把600名拣椒工裁至48人的说法，称公司从未有过对应规模的人员调整安排；而澎湃新闻马上评与极目新闻评论则指出该说法源自常务副总李鑫在2026年贵州省质量发展大会上的公开表述，且旗下公司近3年参保人数减少2172人，公开否认尚未解开疑问。", "b_en": "The same day, Laoganma denied via its official hotline and HR department the claim that AI cut its pepper-picking workforce from 600 to 48, saying no staffing adjustment of that scale had ever been made; thepaper's commentary and a Jiemu News editorial noted the claim traces to remarks by executive vice president Li Xin at the 2026 Guizhou Quality Development Conference, and that insured headcount at the company fell by 2,172 over the past three years, leaving the public denial short of resolving the question.", "concl": "编辑判断：这两条证据指向相反方向，因此目前不能把执行岗受冲击写成已证实的行业定论。可确认的是，模型在机构真实工作任务上目前平均只拿到 65% 的分数，说明自动化还停在能完成相当部分但不足以独立交付的阶段；而具体到企业层面，AI 与岗位变动之间既缺乏可核验的用工数据，也存在明显的对外表述落差。要继续检验这条假设，需要的是企业侧的用工口径与岗位结构数据，而不是企业表态或单一基准分数。", "concl_en": "Editorial judgment: these two pieces of evidence point in opposite directions, so the claim that execution roles are being displaced cannot yet be written as an established industry conclusion. What can be confirmed is that on real institutional work tasks leading models average only 65%, so automation sits at the stage of completing a good part of the work but not enough to deliver independently; and at the corporate level, both verifiable staffing data and a clear gap in public statements are lacking. Testing this hypothesis further requires company-side staffing and role-structure data, not corporate statements or a single benchmark score.", "source_urls": ["https://epochai.substack.com/p/can-ai-automate-epoch", "https://news.qq.com/rain/a/20261027A02E3O00", "https://www.thepaper.cn/newsDetail_forward_34336116"], "limitations": "Epoch AI 的评测为其自有内部任务集，样本与方法未公开细节，且仅代表一家机构的工作结构；老干妈的用工数据未经第三方独立核验，参保人数与拣椒工人数口径不同，两者不能直接互证。"}, {"title": "AI 影像进入院线后，口碑与票房的背离把问题从生成质量推到观众信任", "title_en": "Once AI imagery reaches cinemas, the split between word of mouth and box office moves the question from generation quality to audience trust", "a": "AI HOT 当日收录的多条影视工具与内容条目显示，AI 视频在生成能力上继续推进：Krea 推出面向 Adobe Premiere 的插件，Kling 4.0 已在 Runware API 上线支持30秒1080p原生音频视频。", "a_en": "The film and tool items AI HOT collected that day show continued gains in AI video generation: Krea released a plugin for Adobe Premiere, and Kling 4.0 went live on the Runware API with up to 30 seconds of 1080p video with native audio.", "b": "同期票房与口碑数据呈相反方向：国内首部获龙标AI院线长片《三星堆：未来往事》10月23日上映，至26日晚累计票房122.9万元，排片8331场、上座率跌至0.2%、场均人次0.3人，制作成本达千万元级；10月26日猫眼专业版数据显示该片排片占比2.3%。同时该片首映后观众评价两极，既有画面与文物的视觉冲击力评价，也有对AI配音生硬、表情僵硬与人物辨识度不足的批评，博纳影业10月26日盘中跌停。", "b_en": "Box office and word of mouth moved in opposite directions: China's first AI-produced feature with a theatrical licence, The Three Kingdoms-era sci-fi animation Sanxingdui: Future Chronicles, opened on 23 October and by the evening of 26 October had grossed 1.229 million yuan on 8,331 screenings with occupancy down to 0.2% and 0.3 viewers per screening against a production cost in the tens of millions of yuan; Maoyan's data for 26 October put its screening share at 2.3%. Reactions after the premiere were sharply split, from praise for visual impact and artifact accuracy to criticism of stiff AI dubbing, frozen expressions and weak character distinctiveness, and Bona Film was limit-down intraday on 26 October.", "concl": "编辑判断：这两条内容流在表面上分别讲工具和讲市场，但真正相连的地方是同一个缺口——生成能力已经跨过了能被主流工具批量调用的门槛，而观众信任还没有跨过能被一次购票验证的门槛。数据能说明的是规模与匹配度的问题：排片给了接近头部新片的礼遇，场均观众却不足一人；这不能直接推出AI不能进院线，因为样本只有四天、且影片本身选择了冷门题材，但可以说明当前的约束不在画质而在信任与上座率。这与前几期反复出现的同一条判断一致：价值正在从生成画面转向定义意图、设定标准与验收结果。", "concl_en": "Editorial judgment: on the surface these two streams cover tools and market, but they connect at the same gap: generation capability has crossed the threshold where mainstream tools can call it in bulk, while audience trust has not crossed the threshold that a single ticket purchase can verify. What the data shows is a question of scale and fit: the film received close to a headline new release's screen allocation while averaging under one viewer per screening. This cannot be turned into a claim that AI cannot reach cinemas, since the sample is only four days and the film chose a niche subject, but it does show the current constraint lies in trust and occupancy rather than image quality. This matches the judgement recurring across recent editions: value is shifting from generating images towards defining intent, setting standards and accepting results.", "source_urls": ["https://aihot.news/items/g4ad8tycgkdtkjucdyp88blxc", "https://aihot.news/items/he5bxeygbly5kef64gvs1tk6m", "https://www.163.com/dy/article/LA82NMG20550B1DU.html", "https://www.toutiao.com/article/7700954891149230642/"], "limitations": "票房数据来自猫眼、灯塔等平台经媒体转述，各口径时点不同（上座率0.1%至0.2%、排片占比2.3%至2.6%并存），需按各自时点理解；AI HOT 当日影视类条目本身只有工具更新，未收录该片的院线数据，两者的关联属编辑判断而非同一来源的直接结论。"}], "operations": {"date": "2026-10-27", "sections": [{"label": "科技前沿", "items": [{"title": "宇树科技发布股票交易异常波动公告：人形机器人行业尚处商业化早期，滚动市盈率465.22倍", "title_en": "", "summary": "宇树科技10月26日晚间发布公告，因10月22日、23日、26日连续三个交易日收盘价格涨幅偏离值累计超过30%，属股票交易异常波动。公告自查称公司经营情况正常、未发生重大变化，不存在应披露而未披露的重大信息。公告同时提示风险：截至10月26日公司滚动市盈率为465.22倍，而中证指数最新数据显示其所属通用设备制造业行业最近一个月平均滚动市盈率为38.54倍；并明确表示人形机器人行业尚处于商业化早期，技术成熟度、下游市场需求培育、产业链配套能力均存在不确定性，物理AI技术从实验室演示走向真实场景的规模化落地仍面临感知精度、运动控制稳定性、数据积累及软硬件协同等多重挑战，相关技术路径与商业模式的成熟尚需时间验证，若行业大规模商业化落地进度不及预期，营收扩张及业绩释放可能受不利影响，存在估值回归的投资风险。当日股价报672元，市值一度逼近3000亿元。这是今天最值得注意的一类信号：一家头部机器人公司自己公开说明行业仍处商业化早期。", "summary_en": "", "action": "如果你在关注具身智能这条线，把它当作一个校准锚点：读各家机器人的公开披露时，重点看市盈率与官方风险提示这两项，而不是看发布会演示。这样可以在很短时间内判断一条产业新闻是技术进展还是估值叙事。", "action_en": "", "published_at": "2026-10-27", "source_urls": ["https://paper.cnstock.com/html/2026-10/27/content_2281466.htm", "https://www.cnstock.com/commonDetail/810923", "https://www.cnr.cn/jingji/ycbd/20261026/t20261026_527853665.shtml"]}, {"title": "OpenAI 组建 Robotics 团队自研人形机器人，计划2027年推出样机", "title_en": "", "summary": "据行业信息汇总，OpenAI 已正式组建 Robotics 团队自研人形机器人，计划2027年推出样机；奥特曼表示人形机器人的最大瓶颈不是硬件，而是AI对物理世界的理解还不够深。这条信息与前述宇树公告的官方风险提示形成一组对照：前者是一线厂商给出的收敛判断，后者是资本市场对收敛的定价。具体细节以各方后续公开披露为准。", "summary_en": "", "action": "这条对做影视的你更实际：机器人正从实验室进入影像叙事——如果你要用 AI 或实拍结合生成机器人镜头，先想清楚你要的是奇观还是角色行为，这两者的镜头设计完全不同。", "action_en": "", "published_at": "2026-10-26", "source_urls": ["http://mp.weixin.qq.com/s?__biz=MzcwMTA4MzA1Nw==&mid=2247484397&idx=1&sn=98ac6b831b095cad240b44c6c2cc761b"]}, {"title": "力箭二号遥二转运至专属发射工位，将首次执行低轨星座规模化组网一箭多星任务", "title_en": "", "summary": "我国自主研制的力箭二号遥二运载火箭10月26日转运至东风商业航天创新试验区专属发射工位，进入发射前关键准备阶段，近期择机发射。中科宇航力箭二号运载火箭副总设计师李秦峰介绍，遥二火箭在发射场的总装、测试工作已全部完成，接下来将展开箭地接口与全流程演练，后续还有推进剂加注与最后的发射流程。力箭二号最大运载能力达12吨，既能一次发射多颗卫星，也能承担太空货运飞船等发射任务，是我国首款采用通用助推器核心构型的运载火箭，可将三个基本相同的通用助推芯级组合以提高运载能力并便于批量生产、降低成本。后续计划采用一箭多星方式首次执行低轨星座规模化组网发射任务。同期上海市六部门印发《卫星互联网产业创新发展行动方案（2027-2030年）》，提出到2030年在轨卫星总数超3000颗、核心产业规模突破800亿元。", "summary_en": "", "action": "如果你关注航天题材的影像素材，低轨组网是接下来可预期的画面来源之一——多箭连发、一箭多星的镜头会越来越多。但要注意：本次是转运与准备阶段，不是发射当天，写方案时不要把择机发射写成已完成。", "action_en": "", "published_at": "2026-10-26", "source_urls": ["https://www.163.com/dy/article/LA63QHE6053469LG.html", "https://www.nbd.com.cn/articles/2026-10-26/4618931.html"]}]}, {"label": "科技产品运营", "items": [{"title": "微信小店：AI数字人直播内容管理规范意见征集（10月23日至29日），要求显著位置标明AI数字人直播", "title_en": "", "summary": "微信小店官方成长中心页面已可直接读取全文。《微信小店带货「AI数字人直播」内容管理规范》本次修订内容于2026年10月23日至10月29日进行意见征集。适用范围覆盖微信小店带货者及其带货渠道账号、微信小店与视频号小店商家关联账号、视频号橱窗达人。规则明确两点最关键：其一，AI数字人包括利用AI技术生成的虚拟主播，以及利用AI技术修改真人形象生成的主播，带货者需对AI数字人生成的直播相关内容负责；其二，使用AI数字人直播需在直播封面、直播画面显著位置标明「AI数字人直播」标识。违规处理部分写明，未在显著位置标明平台有权对直播间进行提醒、限流、掐断，多次处罚未整改可对带货者采取暂停或永久封禁直播、短视频、橱窗等处置。平台还明确表示，AI数字人直播相较于其他实时直播内容不会给予额外流量扶持。此外建议AI数字人主播置于画面中心等显著位置，播放视频素材展示商品时人物大小比例不小于直播画面的1/4、视频画面占比不大于3/4，并鼓励AI数字人主播与用户评论互动。禁止行为包括：给AI数字人设置人设、通过演戏博取同情好感、诱导送礼物或交易开展欺诈；利用AI数字人主播制造冲突、拉踩引战、传播不良价值观；发布违背科学常识、弄虚作假、造谣传谣的内容；未经第三方授权使用他人肖像、声音、商标、作品等信息生成AI数字人主播。同时明确低质量直播按《发布低质量内容》违规治理细则处置，未经授权使用他人权利按《不当使用他人权利》细则处置，虚假宣传按《发布虚假宣传信息》细则处置。", "summary_en": "", "action": "发生了什么：微信小店对AI数字人直播立了专门规范，核心是标识义务加责任归属加不给流量扶持。对我有什么影响：如果你或你的合作方在视频号用数字人做直播带货，标识是硬要求，且不能指望用数字人换额外流量；规范同时把不得用数字人设人设演戏博同情的红线写明，这会直接影响话术设计。建议的下一步行动：先在你自己的视频号或小店后台核对是否已有数字人直播或与数字人相关的素材与服务，确认封面与画面标识位置是否满足要求；再把你现有的直播话术里涉及剧情化人设、情绪引导或疗效承诺的部分标出来，这些即使换成真人也违规，换成数字人同样违规；如果你目前没有使用数字人直播，把这条规则记住即可，不必现在改动流程。注意适用前提：规则尚在意见征集期，正式生效时间待平台另行发布，文中提到的施行日期以正式稿为准。", "action_en": "", "published_at": "2026-10-23", "source_urls": ["https://store.weixin.qq.com/chengzhang/webdoc/wiki/9934/a7dc7a2f525757c2/growth_center_rule_for_store/29"]}, {"title": "微信小店：供货商发货管理规则公示（10月23日至29日），预计10月30日生效，延迟发货按订单总价1%扣保证金", "title_en": "", "summary": "微信小店官方成长中心页面可读全文。《微信小店供货商发货管理规则》公示期为2026年10月23日至10月29日，规则预计于2026年10月30日生效，公示期满平台将另行发布正式生效规则。关键条款：货品发货时间为24小时、48小时，以供货商系统设置的时效为准，供货商未设置或劣于平台要求的默认发货时间为48小时；商家使用供货商提供货品铺货的不能修改供货商设置的发货时间。揽收时效为供货商承诺的发货时间加24小时，即供货订单应在预计发货时间后24小时内在对应快递公司官网有揽收记录。延迟发货处理为按供货订单总价1%扣除保证金，如低于3元按3元计算、最高不超过30元，用于延迟发货补偿或赔偿商家与平台损失；保证金不足的可扣划可提现货款或另行偿付。参与平台促销或逢特定节假日的以相关活动规则或平台公告确认的时间要求为准；经发货协商功能确认了新的发货时间或在平台通过发货报备的，以前述变更后的时间为准。同批在征集的还有《微信小店「卖场型店铺」管理规则》（10月23日至29日意见征集，规定卖场型品牌须持有第35类注册商标，线下经营需年交易额10亿元以上且在省会或直辖市的购物中心总面积超30万平方米或单体超5万平方米，线上经营需年交易额10亿元以上且平台APP累计下载量大于5亿次，并采用清单准入制）与《微信小店店铺体验分管理规则-20261021版本》修订（10月23日至29日意见征集）。", "summary_en": "", "action": "发生了什么：供货商侧的发货与揽收时效被写成了可扣罚的硬规则，48小时默认发货加24小时揽收窗口意味着数码类目的备货与发货链路要按小时排。建议的下一步行动：如果你或你的合作方走的是供货商铺货模式，今天就去抖店或小店后台确认供货商设置的发货时效是多少、是否已把铺货商品的时效与商家端展示口径对齐；同时查一下你的商品页承诺发货时间与实际揽收记录之间是否可能出现超过24小时的空档，这类空档在规则生效后就是可被扣罚的差错。注意适用前提：规则尚在公示期，10月30日是官方给出的预计生效时间，最终以正式生效规则为准。", "action_en": "", "published_at": "2026-10-23", "source_urls": ["https://store.weixin.qq.com/chengzhang/webdoc/wiki/10067/c934b88ce0e55429/growth_center_rule_for_store/28", "https://store.weixin.qq.com/chengzhang/webdoc/wiki/10059/805496063ec6f0dd/growth_center_rule_for_store/29", "https://store.weixin.qq.com/chengzhang/webdoc/wiki/10064/9aeeb72977dad75b/growth_center_rule_for_store/29"]}, {"title": "抖音电商：3C数码行业管理规范全文表述调整在公示中，商品资质范围新增CCC认证全称与产品检验报告", "title_en": "", "summary": "抖音电商学习中心规则中心的公示中与征集中条目显示多条与3C数码相关的规则正在修订。与数码上架直接相关的核心变化包括：商品资质范围新增全国工业产品生产许可证、CCC认证全称即中国国家强制性产品认证证书、产品检验报告；资质违规处置时长明确为冻结货款并停止结算30天，且商家需满足违规详情页解除条件，如不满足将持续冻结并停止结算；对3C数码行业管理规范全文内容表述进行调整优化；规范3C认证表述补充国家强制性产品认证及中国国家强制性产品认证证书的完整名称；准入标准删除品牌近1年内无平台清退记录的要求，清出标准删除商家经营的品牌被平台清退则商家失去该类目清退的相关表述；标注为需改进的条目包括删除查验要求与商家存在规避质检查验的相关内容、删除商品详情中复检流程相关内容、增加针对违规场景取消类目经营权限的清出标准；同时3C数码相关的部分类目定向准入要求中增加了近30天珠宝文玩类目用户支付金额总额大于10万元的条件、增加QIC破坏性材质质检方式定义及范围说明。需说明的是，规则中心页面正文为动态渲染，本次直接抓取仅得前端框架，以上具体条文内容来自搜索引擎收录的官方规则中心页面摘要，标注为官方页面摘要，未能逐条打开原文正文核对生效日期与适用范围。", "summary_en": "", "action": "发生了什么：3C数码的资质清单与清退口径正在收紧，且冻结货款停止结算被明确成30天的固定时长。对我有什么影响：如果你在抖音卖数码类商品，商品资质页与商品详情页是最先会被检查的两处，特别是CCC认证名称写法与检验报告是否齐备。建议的下一步行动：打开抖店后台的行业资质页面，逐个类目核对资质名称是否与新表述一致，并检查是否有超过30天未处理的资质类违规冻结；短视频与直播话术里涉及功效或绝对化表述的部分按需自查。适用前提：本次未能读取规则正文，生效日期与具体适用范围请以抖店后台与你收到的官方通知为准。", "action_en": "", "published_at": "2026-10-27", "source_urls": ["https://school.jinritemai.com/doudian/wap/rules/menu", "https://school.jinritemai.com/doudian/wap/rules/calendar?should_full_screen=1&from_rule=1&from=feishu"]}, {"title": "淘宝天猫双11：跨店满减全面取消改为官方立减，手机3C多品类跳过预售直接现货开售", "title_en": "", "summary": "多家媒体对2026年淘宝天猫双11规则的报道显示，本次做了减法：跨店满减机制全面取消，统一改为官方立减，单件商品下单页面直接显示减免后价格，不再需要凑单门槛。节奏上，10月15日晚8点开启预售付定金，10月20日晚8点全品类现货正式开卖并持续到11月13日，11月10日晚8点到11月11日为巅峰期。优惠力度上，品牌立减叠加平台消费券后整体落在约7.2折，叠加国家补贴后部分家电数码商品可触及6.5折，家电六类按成交价15%补贴、单件封顶1500元；88VIP用户可额外领取多张消费券二次抵扣。品类结构上，手机3C品类大多跳过预售直接现货开售，预售周期压缩至5天。据第三方投研分析，天猫双11全周期GMV同比增速目标设为6%，截至10月23日第一阶段GMV同比增速为4%，手机数码、食品酒饮、运动户外、美妆跑赢4%的大盘，服装服饰、日用百货、家居家装、母婴增速不及大盘，其中3C家电品类对比京东处于劣势。同期媒体还报道天猫首次大规模落地送装拆旧一次搞定服务，变形家具成交增长55%；大模型厂商入驻AI空间站充值专区，Token品类较上月成交增长450%，AI PC品类首小时成交超300%。重要说明：以上双11优惠规则本次未取得淘宝天猫官方规则原文，均为媒体转述口径，具体立减比例、补贴叠加方式与各类目参与条件请以后台实际显示为准。", "summary_en": "", "action": "发生了什么：跨店凑单满减取消、单件直接显示立减后价格，改变了商品页的价格呈现方式与用户凑单动机。对我有什么影响：如果你在淘天卖数码，标价与到手价的展示口径需要复核，历史上依赖凑单件数拉低均价的定价与主图策略可能失效；手机3C跳过预售直接现货开售，则意味着备货节奏要按现货卖而不是按预售定金排。建议的下一步行动：检查你店铺商品标题与主图的价格表述是否与新的到手价展示逻辑一致，核对结算页显示的立减后价格与你自己的预期是否一致；如果你有预售款在途，今天就确认一下是否需要改走现货上架。适用前提：以上均为媒体转述，各家平台在具体分档比例与类目条件上可能不同，请以后台规则页与你自己的后台显示为准。", "action_en": "", "published_at": "2026-10-26", "source_urls": ["https://news.qq.com/rain/a/20261026A08HYT00", "http://www.redsh.com/pinpai/20261026/111425.shtml", "https://www.toutiao.com/article/7700498405189829146/"]}]}, {"label": "平台覆盖情况说明", "items": [{"title": "小红书与视频号内容端：本期未取得可核验的数码类官方规则原文，按无更新记录而非失败处理", "title_en": "", "summary": "本期对四个平台逐一检查的结果如下。微信小店：官方成长中心可直接读取，取得AI数字人直播规范、供货商发货管理规则、卖场型店铺与店铺体验分等在征求意见或公示中的原文，是本期运营线的主要来源。抖音电商：规则中心页面可访问但正文为动态渲染，直接抓取仅得前端框架，内容依赖搜索引擎收录的官方页面摘要，标官方页面摘要。淘宝天猫：未取得官方规则原文，双11规则为媒体转述口径。小红书：电商学习中心返回200但正文为动态渲染占位，规则中心域名本次不可达，因此本期未取得与科技数码商品上架、类目准入、商品页或转化相关的可核验官方新规原文，本条记为已检索未发现更新，而非检索失败。视频号：除前述微信小店与视频号小店共用规则外，未取得独立的视频号内容端规则更新原文。需要说明的是，检索中出现的第三方电商服务站点关于入驻条件、保证金金额、SKU判定标准的文章一律不作为规则依据，本次已排除。", "summary_en": "", "action": "对小红书与视频号，今天不需要做任何改动；若你的业务确实在这两个平台有数码类经营，正确的下一步是直接到平台商家后台的规则中心核对原文，而不是依赖任何第三方整理文章。", "action_en": "", "published_at": "2026-10-27", "source_urls": ["https://school.xiaohongshu.com/", "https://store.weixin.qq.com/"]}]}]}};
+
+const TZ = 'Asia/Shanghai';
+const A = DATA.aihot || null;
+const B = DATA.briefing || null;
+const INSIGHTS = DATA.insights || [];
+
+/* ---------- 国际化 ---------- */
+const I18N = {
+  zh: {
+    nav_practice:"练习",nav_operations:"运营",nav_archive:"历史",search_label:"查找动态",search_empty:"没有找到相关内容，试试其他关键词。",
+    operations_title:"科技前沿与产品运营",operations_sub:"平台变化、影响与可执行的下一步",
+    source_note:"以下为来源内容汇编，具体事实请结合原文判断；编辑分析与练习另行标注。",
+    brand:"晨报仪表盘",
+    nav_overview:"今日", nav_insight:"交叉洞察", nav_model:"模型", nav_product:"产品",
+    nav_industry:"行业", nav_paper:"论文", nav_tips:"技巧", nav_morning:"早间汇总",
+    heroTitle:'今天，哪些 <span class="accent">AI</span> 变化值得关注？',
+    panel1:"两个信源，一份晨报", panel2:"跳转到版块",
+    anchorA:"AI HOT 日报 · AI 深度", anchorB:"每日早间汇总 · 全局视野",
+    insightHead:"交叉洞察", insightSub:"编辑分析 · 主题关联不等于独立证实或因果关系",
+    aihotHead:"AI HOT 日报", aihotSub:"按五个固定版块分组 · 全局连续编号 · 每条带信源与原文",
+    morningHead:"每日早间汇总", morningSub:"你的自动化任务（每天 08:00）· 六大固定板块 · 全局编号接续",
+    leadTagA:"◆ AI HOT 头条", leadTagB:"★ 早间汇总 · 今日最值得关注",
+    leadBdesc:"来自「每日早间新闻汇总」自动化任务，覆盖时政、军事、半导体与存储、数码、汽车等 AI HOT 之外的领域。",
+    jumpSix:"跳到六板块主线", viewDaily:"查看当日日报",
+    statAll:"AI 动态", statMorning:"综合板块",
+    srcTagA:"源 A", srcTagB:"源 B", srcTagM:"结合点",
+    srcATitle:"AI HOT 日报", srcBTitle:"每日早间汇总", srcMTitle:"共同实体 · 主题共振",
+    srcADesc:"AI 圈内部视角：模型 / 产品 / 行业 / 论文 / 观点五个固定版块，每条都带信源 chip 与原文跳转。",
+    srcBDesc:"全局视野：时政 / AI / 军事 / 半导体与存储 / 数码 / 汽车六大板块，板块级主线 + 可展开细节。",
+    srcMDesc:"由脚本对两源正文做实体与主题匹配自动算出，每天变化。详见下方交叉洞察。",
+    crossEnt:"共同提到的实体", crossTheme:"主题共振", crossOnly:"各自独有",
+    crossEmptyEnt:"今天两源没有同时出现的实体。", crossEmptyTheme:"今天两源没有共同主题。",
+    crossOnlyA:"仅 AI HOT 覆盖", crossOnlyB:"仅早间汇总覆盖",
+    whoA:"AI 日报", whoB:"早间汇总",
+    flash:"⚡ 速报 Flash", noUpdate:"今日该版块无更新",
+    aihotEmpty:"今日未能取到 AI HOT 日报数据，本页仅展示早间汇总。",
+    morningEmptyPre:"今日没有找到结构化早间汇总数据（", morningEmptyPost:" 缺失）。请检查自动化任务是否已写入该文件。",
+    originNotePre:"这一部分不是 AI HOT 的数据，而是你的", originNoteMid:" 自动化任务（", originNotePost:"）在", originNoteTail:"生成的六大板块主线，覆盖 AI HOT 看不到的世界。展开卡片可看当日完整细节。",
+    expand:"展开当日细节", readOriginal:"阅读原文",
+    footerTotal:"展示卡片", footerAihot:"AI HOT 日报", footerFlash:"速报", footerMorning:"早间汇总板块",
+    footerGlobal:"全局编号", footerSrcA2:"；时间均为北京时间。",
+    footerSrcB:"数据源 ②：", footerBuild:"本页由本地脚本自动生成于",
+    footerBuildTail:"，单文件离线看板，样式与脚本全部内联，无任何外部资源请求。"
+  },
+  en: {
+    nav_practice:"Practice",nav_operations:"Operations",nav_archive:"Archive",search_label:"Search",search_empty:"No matching content. Try another keyword.",
+    operations_title:"Technology & Product Operations",operations_sub:"Platform changes, implications and next steps",
+    source_note:"A digest of source material. Consult original sources for context; editorial analysis and exercises are labeled separately.",
+    brand:"Morning Brief",
+    nav_overview:"Today", nav_insight:"Insights", nav_model:"Models", nav_product:"Products",
+    nav_industry:"Industry", nav_paper:"Papers", nav_tips:"Tips", nav_morning:"Morning",
+    heroTitle:'What Happened in <span class="accent">AI</span> Today',
+    panel1:"Two Sources, One Brief", panel2:"Jump to Sections",
+    anchorA:"AI HOT Daily · AI Deep Dive", anchorB:"Daily Morning Brief · Global View",
+    insightHead:"Cross Insights", insightSub:"Editorial analysis · overlap alone does not establish independent verification or causation",
+    aihotHead:"AI HOT Daily", aihotSub:"Five fixed sections · globally sequential numbering · every item links to its source",
+    morningHead:"Daily Morning Brief", morningSub:"Your automation task (daily 08:00) · six fixed sections · sequential numbering",
+    leadTagA:"◆ AI HOT Top", leadTagB:"★ Morning Brief · Today's Highlight",
+    leadBdesc:"From your “Daily Morning News Roundup” automation: politics, military, semiconductors & storage, consumer tech, autos — the world beyond AI HOT.",
+    jumpSix:"Jump to six sections", viewDaily:"View daily report",
+    statAll:"AI updates", statMorning:"Briefing sections",
+    srcTagA:"Src A", srcTagB:"Src B", srcTagM:"Overlap",
+    srcATitle:"AI HOT Daily", srcBTitle:"Daily Morning Brief", srcMTitle:"Shared Entities · Theme Resonance",
+    srcADesc:"The inside view of AI: five fixed sections (models / products / industry / papers / opinions), each item with a source chip and original link.",
+    srcBDesc:"A global view: six sections (politics / AI / military / semiconductors / tech / autos) with section-level leads and expandable details.",
+    srcMDesc:"Auto-computed by matching entities and themes across both sources; changes daily. See Cross Insights below.",
+    crossEnt:"Entities mentioned by both", crossTheme:"Theme resonance", crossOnly:"Unique to each",
+    crossEmptyEnt:"No shared entity between the two sources today.", crossEmptyTheme:"No shared theme between the two sources today.",
+    crossOnlyA:"Only in AI HOT", crossOnlyB:"Only in Morning Brief",
+    whoA:"AI Daily", whoB:"Morning Brief",
+    flash:"⚡ Flash", noUpdate:"No updates in this section today",
+    aihotEmpty:"Could not fetch AI HOT data today; this page shows the morning brief only.",
+    morningEmptyPre:"No structured morning-brief data found (", morningEmptyPost:" missing). Check whether the automation wrote that file.",
+    originNotePre:"This part is not from AI HOT, but from your", originNoteMid:" automation task (", originNotePost:") on", originNoteTail:" — six section leads covering the world AI HOT can't see. Expand a card for the full details of the day.",
+    expand:"Expand day's details", readOriginal:"Read original",
+    footerTotal:"Displayed cards", footerAihot:"AI HOT Daily", footerFlash:"Flash", footerMorning:"Briefing sections",
+    footerGlobal:"Global No.", footerSrcA2:"; all times are Beijing Time.",
+    footerSrcB:"Source ②:", footerBuild:"Generated locally by a script on",
+    footerBuildTail:", a single-file offline dashboard — styles and scripts are inlined, no external requests."
+  }
+};
+let LANG = 'zh';
+try { LANG = localStorage.getItem('dash_lang') === 'en' ? 'en' : 'zh'; } catch(e) {}
+function t(key){ const v = I18N[LANG] && I18N[LANG][key]; return (v != null && v !== '') ? v : (I18N.zh[key] != null ? I18N.zh[key] : key); }
+function pick(o, key){
+  if(!o) return '';
+  if(LANG === 'en'){ const e = o[key + '_en']; if(e != null && e !== '') return e; }
+  return o[key] || '';
+}
+function setLang(l){ LANG = l; try{ localStorage.setItem('dash_lang', LANG); }catch(e){} applyAll(); }
+function applyStatic(){
+  document.querySelectorAll('[data-i18n]').forEach(el=>{ el.textContent = t(el.getAttribute('data-i18n')); });
+  document.querySelectorAll('[data-i18n-html]').forEach(el=>{ el.innerHTML = t(el.getAttribute('data-i18n-html')); });
+}
+
+const pad = n => String(n).padStart(2,'0');
+function bjDate(iso){
+  const p = new Intl.DateTimeFormat('zh-CN',{timeZone:TZ,month:'numeric',day:'numeric'}).format(new Date(iso));
+  return p.replace(/\//g,'月').replace(/月(\d+)$/,'月$1日');
+}
+function bjDateEN(iso){
+  return new Intl.DateTimeFormat('en-US',{timeZone:TZ,month:'short',day:'numeric',year:'numeric'}).format(new Date(iso));
+}
+function bjTime(iso){
+  return new Intl.DateTimeFormat('zh-CN',{timeZone:TZ,hour:'2-digit',minute:'2-digit',hour12:false}).format(new Date(iso));
+}
+function bjMDT(iso){ return (LANG==='en'? bjDateEN(iso)+' '+bjTime(iso) : bjDate(iso)+' '+bjTime(iso)); }
+function weekdayCN(y,m,d){
+  return new Intl.DateTimeFormat('zh-CN',{timeZone:TZ,weekday:'long'}).format(new Date(`${y}-${pad(m)}-${pad(d)}T12:00:00+08:00`));
+}
+function weekdayEN(y,m,d){
+  return new Intl.DateTimeFormat('en-US',{timeZone:TZ,weekday:'long'}).format(new Date(`${y}-${pad(m)}-${pad(d)}T12:00:00+08:00`));
+}
+const esc = s => String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+let SEQ = 0;
+const nextNo = () => pad(++SEQ);
+
+const ICON_SRC = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 4h16v2H4V4zm0 7h16v2H4v-2zm0 7h10v2H4v-2z"/></svg>';
+const ICON_GO  = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M7 17L17 7M17 7H9M17 7v8"/></svg>';
+
+function renderHero(){
+  const [y,m,d] = (A?A.date:DATA.date).split('-').map(Number);
+  if(LANG==='en'){
+    document.getElementById('heroDate').textContent = `${weekdayEN(y,m,d)}, ${bjDateEN(A?A.date:DATA.date)}`;
+  } else {
+    document.getElementById('heroDate').textContent = `${y}年${m}月${d}日 · ${weekdayCN(y,m,d)}`;
+  }
+  document.getElementById('heroWindow').textContent = A
+    ? (LANG==='en'
+        ? `Data window (Beijing Time) ${bjMDT(A.windowStart)} — ${bjMDT(A.windowEnd)} · generated ${bjTime(A.generatedAt)}`
+        : `数据窗口 北京时间 ${bjMDT(A.windowStart)} — ${bjMDT(A.windowEnd)} · 报告生成于 ${bjTime(A.generatedAt)}`)
+    : t('aihotEmpty');
+
+  const totalA = A ? A.sections.reduce((n,s)=>n+s.items.length,0) : 0;
+  const flashN = A ? A.flash.length : 0;
+  const totalM = B ? B.sections.length : 0;
+  const grand = totalA + flashN + totalM;
+
+  document.getElementById('heroTagline').innerHTML = LANG==='en'
+    ? `<b>${totalA+flashN}</b> AI updates · <b>${totalM}</b> briefing sections. Read the news, follow the sources, put ideas into practice.`
+    : `<b>${totalA+flashN}</b> 条 AI 动态 · <b>${totalM}</b> 个综合板块。了解变化，查看来源，把灵感付诸实践。`;
+
+  const leadA = A && A.lead ? `
+    <div class="lead a">
+      <div class="tag">${t('leadTagA')}</div>
+      <h3>${esc(pick(A.lead,'title'))}</h3>
+      <p>${esc(pick(A.lead,'paragraph') || pick(A.lead,'digest') || '')}</p>
+      <a class="go" href="${esc(A.dailyUrl)}" target="_blank" rel="noopener noreferrer">${t('viewDaily')} ${ICON_GO}</a>
+    </div>` : '';
+  const leadB = B ? `
+    <div class="lead b">
+      <div class="tag">${t('leadTagB')}</div>
+      <h3>${esc(pick(B,'headline') || '—')}</h3>
+      <p>${esc(t('leadBdesc'))}</p>
+      <a class="go" href="#morning" style="color:var(--b-accent)">${t('jumpSix')} ${ICON_GO}</a>
+    </div>` : '';
+  document.getElementById('leadband').innerHTML = leadA + leadB;
+
+  const stats = [{num:totalA+flashN,label:t('statAll'),primary:true,note:''}];
+  if(A) A.sections.forEach(s=>stats.push({num:s.items.length,label:pick(s,'label'),note:''}));
+  stats.push({num:totalM,label:t('statMorning'),note:''});
+  document.getElementById('heroStats').innerHTML = stats.map(s=>`
+    <div class="stat-card${s.primary?' primary':''}">
+      <div class="stat-num">${s.num}</div>
+      <div class="stat-label">${esc(s.label)}${s.note?`<br><em>${esc(s.note)}</em>`:''}</div>
+    </div>`).join('');
+}
+
+function renderSources(){
+  const totalA = A ? A.sections.reduce((n,s)=>n+s.items.length,0)+A.flash.length : 0;
+  const srcCount = A ? new Set(A.sections.flatMap(s=>s.items.map(i=>i.source)).concat(A.flash.map(i=>i.source))).size : 0;
+  const cross = DATA.cross || {};
+  const ent = (cross.entities||[]).length, th = (cross.themes||[]).filter(x=>x.a&&x.b).length;
+  document.getElementById('sourceCards').innerHTML = `
+    <div class="source-card">
+      <span class="src-tag">${t('srcTagA')}</span><h3>${t('srcATitle')}</h3>
+      <p>${t('srcADesc')}</p>
+      <div class="src-meta">${totalA} ${LANG==='en'?'updates':'条动态'} · ${srcCount} ${LANG==='en'?'sources':'个来源'}</div>
+    </div>
+    <div class="source-card b">
+      <span class="src-tag">${t('srcTagB')}</span><h3>${t('srcBTitle')}</h3>
+      <p>${t('srcBDesc')}</p>
+      <div class="src-meta">${B?B.sections.length:0} ${LANG==='en'?'sections':'个板块'} · ${esc(B?B.date:DATA.date)}</div>
+    </div>
+    <div class="source-card m">
+      <span class="src-tag">${t('srcTagM')}</span><h3>${t('srcMTitle')} ${ent} · ${th}</h3>
+      <p>${t('srcMDesc')}</p>
+      <div class="src-meta">${LANG==='en'?'Keyword-based grouping, not independent verification':'关键词关联结果，不代表独立核验'}</div>
+    </div>`;
+}
+
+function renderAnchors(){
+  const totalA = A ? A.sections.reduce((n,s)=>n+s.items.length,0)+A.flash.length : 0;
+  document.getElementById('anchorCountA').textContent = `${totalA}`;
+  document.getElementById('anchorCountB').textContent = `${B?B.sections.length:0}`;
+  document.getElementById('anchorListA').innerHTML = A
+    ? A.sections.map(s=>`<a href="#${s.id}">${esc(pick(s,'label'))} <span style="opacity:.55">${s.items.length}</span></a>`).join('')
+      + `<a href="#flash">${t('flash')} <span style="opacity:.55">${A.flash.length}</span></a>`
+    : `<a href="#aihot">${t('aihotEmpty')}</a>`;
+  document.getElementById('anchorListB').innerHTML = B
+    ? B.sections.map(s=>`<a href="#${s.id}">${esc(pick(s,'label'))}</a>`).join('')
+    : `<a href="#morning">${t('morningEmptyPre')}${esc(DATA.date)}${t('morningEmptyPost')}</a>`;
+}
+
+function renderCross(){
+  const c = DATA.cross || {};
+  const ent = c.entities||[], th = (c.themes||[]).filter(x=>x.a&&x.b);
+  const onlyA = c.onlyA||[], onlyB = c.onlyB||[];
+  document.getElementById('insightCount').textContent =
+    `${ent.length} · ${th.length}${INSIGHTS.length?` · ${INSIGHTS.length}`:''}`;
+
+  const entHTML = ent.length
+    ? `<div class="chips">${ent.map(e=>`<span class="chip">${esc(pick(e,'name'))}</span>`).join('')}</div>`
+    : `<p class="cross-empty">${t('crossEmptyEnt')}</p>`;
+
+  const thHTML = th.length
+    ? th.map(x=>`<div class="theme-row"><b>${esc(pick(x,'name'))}</b> · AI ${x.aCount} / ${x.bCount}
+        <span class="src">${esc((x.aHits||[]).concat(x.bHits||[]).slice(0,3).join(' ｜ '))}</span></div>`).join('')
+    : `<p class="cross-empty">${t('crossEmptyTheme')}</p>`;
+
+  const onlyHTML = `
+    <div class="theme-row"><b>${t('crossOnlyA')}</b><span class="src">${esc(onlyA.slice(0,6).join(' · ')||'—')}</span></div>
+    <div class="theme-row"><b>${t('crossOnlyB')}</b><span class="src">${esc(onlyB.slice(0,6).join(' · ')||'—')}</span></div>`;
+
+  document.getElementById('crossPanel').innerHTML = `
+    <div class="cross-block"><h4>${t('crossEnt')} <span class="n">${ent.length}</span></h4>${entHTML}</div>
+    <div class="cross-block"><h4>${t('crossTheme')} <span class="n">${th.length}</span></h4>${thHTML}</div>
+    <div class="cross-block"><h4>${t('crossOnly')} <span class="n">${onlyA.length+onlyB.length}</span></h4>${onlyHTML}</div>`;
+
+  document.getElementById('insights').innerHTML = INSIGHTS.map((it,i)=>`
+    <article class="insight">
+      <div class="insight-idx">INSIGHT ${pad(i+1)}</div>
+      <h3>${esc(pick(it,'title'))}</h3>
+      <div class="pair">
+        <div class="pair-row"><span class="who">${t('whoA')}</span><span>${esc(pick(it,'a'))}</span></div>
+        <div class="pair-row b"><span class="who">${t('whoB')}</span><span>${esc(pick(it,'b'))}</span></div>
+      </div>
+      <div class="concl">${esc(pick(it,'concl'))}</div>
+    </article>`).join('');
+}
+
+function cardHTML(item, cls){
+  const inner = `
+      <div class="card-num">${nextNo()}</div>
+      <h3 class="card-title">${item.aihot?`<a href="${esc(item.aihot)}" target="_blank" rel="noopener noreferrer">${esc(pick(item,'title'))}</a>`:esc(pick(item,'title'))}</h3>
+      <span class="card-source">${ICON_SRC}<span>${esc(item.source)}</span></span>
+      <p class="card-summary">${esc(pick(item,'digest'))}</p>`;
+  const link = item.original
+    ? `<a class="card-link" href="${esc(item.original)}" target="_blank" rel="noopener noreferrer">${t('readOriginal')} ${ICON_GO}</a>` : '';
+  return `<article class="card${cls||''}">${inner}${link}</article>`;
+}
+
+function renderAIHOT(){
+  const totalA = A ? A.sections.reduce((n,s)=>n+s.items.length,0) : 0;
+  document.getElementById('countA').textContent = A ? `${totalA} · 01–${pad(totalA)}` : t('aihotEmpty');
+  if(!A){
+    document.getElementById('aihotSections').innerHTML =
+      `<div class="empty-card"><span>—</span>${t('aihotEmpty')}</div>`;
+    return;
+  }
+  const html = A.sections.map(s=>`
+    <div class="sub" id="${s.id}">
+      <div class="sub-head"><span class="marker"></span><h3>${esc(pick(s,'label'))}</h3><span class="n">${s.items.length}</span></div>
+      ${ s.items.length
+        ? `<div class="cards">${s.items.map(it=>cardHTML(it,'')).join('')}</div>`
+        : `<div class="empty-card"><span>—</span>${t('noUpdate')}</div>` }
+    </div>`).join('');
+  const flash = A.flash.length ? `
+    <div class="sub" id="flash">
+      <div class="sub-head"><span class="marker"></span><h3>${t('flash')}</h3><span class="n">${A.flash.length}</span></div>
+      <div class="cards">${A.flash.map(it=>`
+        <article class="card">
+          <div class="card-num">${nextNo()}</div>
+          <h3 class="card-title">${it.aihot?`<a href="${esc(it.aihot)}" target="_blank" rel="noopener noreferrer">${esc(pick(it,'title'))}</a>`:esc(pick(it,'title'))}</h3>
+          <span class="card-source">${ICON_SRC}<span>${esc(it.source)}${it.publishedAt?` · ${bjMDT(it.publishedAt)}`:''}</span></span>
+          <p class="card-summary">${esc(pick(it,'digest'))}</p>
+          ${it.original?`<a class="card-link" href="${esc(it.original)}" target="_blank" rel="noopener noreferrer">${t('readOriginal')} ${ICON_GO}</a>`:''}
+        </article>`).join('')}</div>
+    </div>` : '';
+  document.getElementById('aihotSections').innerHTML = html + flash;
+}
+
+function renderMorning(){
+  const box = document.getElementById('morningNote');
+  if(!B){
+    document.getElementById('countB').textContent = '—';
+    box.innerHTML = `<div class="warn-note"><div>⚠️</div><div>${t('morningEmptyPre')}<code>daily/${esc(DATA.date)}.json</code>${t('morningEmptyPost')}</div></div>`;
+    document.getElementById('morningSections').innerHTML = '';
+    return;
+  }
+  document.getElementById('countB').textContent = `${B.sections.length}`;
+  box.innerHTML = `
+    <div class="origin-note">
+      <div class="ico">🔗</div>
+      <div>${LANG==='en'?'Daily summaries and source links across six fields. Expand a card to read the full details.':'六个领域的当日摘要与原文链接，展开卡片可查看完整细节。'}</div>
+    </div>`;
+  document.getElementById('morningSections').innerHTML = `<div class="cards">${B.sections.map(sec=>`
+    <article class="card b" id="${esc(sec.id)}">
+      <div class="card-num">${nextNo()}</div>
+      <h3 class="card-title">${esc(pick(sec,'label'))}</h3>
+      <span class="card-source">${ICON_SRC}<span>${t('morningHead')} · ${esc(B.date)}</span></span>
+      <p class="card-summary">${esc(pick(sec,'digest'))}</p>
+      ${ (sec.items&&sec.items.length)
+        ? `<div class="card-subitems">${sec.items.filter(i=>i.url).map(i=>`<a href="${esc(i.url)}" target="_blank" rel="noopener noreferrer">${esc(pick(i,'title'))}${i.source?` <span style="opacity:.6">· ${esc(i.source)}</span>`:''}</a>`).join('')}</div>` : '' }
+      ${ sec.detail ? `<details><summary>${t('expand')}</summary><div class="detail-body">${esc(pick(sec,'detail'))}</div></details>` : '' }
+    </article>`).join('')}</div>`;
+}
+
+function renderFooter(){
+  const totalA = A ? A.sections.reduce((n,s)=>n+s.items.length,0) : 0;
+  const flashN = A ? A.flash.length : 0;
+  const totalM = B ? B.sections.length : 0;
+  const all = totalA + flashN + totalM;
+  document.getElementById('footerStats').innerHTML = `
+    <span>${t('footerTotal')} <span class="num">${all}</span></span><span class="sep">|</span>
+    <span>${t('footerAihot')} <span class="num">${totalA}</span></span><span class="sep">|</span>
+    <span>${t('footerFlash')} <span class="num">${flashN}</span></span><span class="sep">|</span>
+    <span>${t('footerMorning')} <span class="num">${totalM}</span></span><span class="sep">|</span>
+    <span>${t('footerGlobal')} <span class="num">01–${pad(all)}</span></span>`;
+  document.getElementById('footerSource').innerHTML = `
+    <div>①：${A?`<a href="${esc(A.dailyUrl)}" target="_blank" rel="noopener noreferrer">${t('footerAihot')} ${esc(A.date)}</a> · ${esc('aihot.news')} · ${esc('all rights reserved to original authors')}`:t('aihotEmpty')}${t('footerSrcA2')}</div>
+    <div>${t('footerSrcB')}<a class="blue" href="#morning">${t('morningHead')}</a> · ${esc(DATA.date)}.</div>
+    <div style="margin-top:10px;opacity:.75">${LANG==='en'?'Page updated':'页面更新于'} ${esc(DATA.buildTimeLocal)} · ${LANG==='en'?'Beijing Time':'北京时间'}</div>`;
+}
+
+function renderOperations(){
+ const data=DATA.operations;
+ const sections=data&&Array.isArray(data.sections)?data.sections:[];
+ const items=sections.flatMap(s=>s.items.map(it=>({...it,section:s.label})));
+ document.getElementById('operations').hidden=items.length===0;
+ document.getElementById('operationsNav').hidden=items.length===0;
+ document.getElementById('operationsCards').innerHTML=items.map(it=>`<article class="card operation-card">
+ <span class="card-source">${esc(it.section)}</span><h3 class="card-title">${esc(pick(it,'title'))}</h3>
+ <p class="card-summary">${esc(pick(it,'summary'))}</p>
+ ${it.action?`<p class="operation-action"><b>${LANG==='en'?'Suggested action':'建议行动'}</b><br>${esc(pick(it,'action'))}</p>`:''}
+ ${(it.source_urls||[]).map((u,i)=>`<a class="card-link" href="${esc(u)}" target="_blank" rel="noopener noreferrer">${LANG==='en'?'Source':'来源'} ${i+1} ↗</a>`).join('')}
+ </article>`).join('');
+}
+
+function applySearch(){
+ const input=document.getElementById('newsSearch');
+ const query=input.value.trim().toLocaleLowerCase();
+ let matches=0;
+ document.querySelectorAll('.card').forEach(card=>{
+  const show=!query||card.textContent.toLocaleLowerCase().includes(query);
+  card.hidden=!show;if(show)matches++;
+ });
+ document.getElementById('searchCount').textContent=LANG==='en'?`${matches} cards`:`${matches} 张内容卡片`;
+ document.getElementById('searchEmpty').hidden=!query||matches>0;
+ input.placeholder=LANG==='en'?'Search titles, sources or keywords':'搜索标题、来源或关键词';
+}
+
+let navObserver = null;
+function observeNav(){
+  if(navObserver) navObserver.disconnect();
+  const buttons = [...document.getElementById('topnavLinks').querySelectorAll('button')];
+  const map = new Map();
+  buttons.forEach(b=>{ const el=document.getElementById(b.dataset.target); if(el) map.set(el,b); });
+  navObserver = new IntersectionObserver(es=>{
+    const hit = es.filter(e=>e.isIntersecting).sort((a,b)=>a.boundingClientRect.top-b.boundingClientRect.top)[0];
+    if(!hit) return;
+    buttons.forEach(b=>{ const active=b===map.get(hit.target); b.classList.toggle('active',active); if(active)b.setAttribute('aria-current','location');else b.removeAttribute('aria-current'); });
+  },{rootMargin:'-65px 0px -65% 0px',threshold:0});
+  map.forEach((_,el)=>navObserver.observe(el));
+}
+
+function bindNav(){
+  const buttons = [...document.getElementById('topnavLinks').querySelectorAll('button')];
+  buttons.forEach(b=>b.addEventListener('click',()=>{
+    const el = document.getElementById(b.dataset.target);
+    if(el) el.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'instant':'smooth',block:'start'});
+  }));
+  observeNav();
+
+  const top = document.getElementById('toTop');
+  top.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
+  window.addEventListener('scroll',()=>top.classList.toggle('show',window.scrollY>600),{passive:true});
+}
+
+function applyAll(){
+  SEQ = 0;
+  document.documentElement.lang = (LANG==='en') ? 'en' : 'zh-CN';
+  applyStatic();
+  renderHero();renderSources();renderAnchors();renderCross();renderAIHOT();renderMorning();renderFooter();
+  renderOperations();
+  applySearch();
+  observeNav();
+  document.getElementById('langNote').hidden = LANG !== 'en';
+  const btn = document.getElementById('langToggle');
+  if(btn) btn.textContent = (LANG==='en') ? '中文' : 'EN';
+}
+
+document.documentElement.classList.add('js-ready');
+applyAll();
+const lt = document.getElementById('langToggle');
+if(lt) lt.addEventListener('click', ()=> setLang(LANG==='en'?'zh':'en'));
+requestAnimationFrame(bindNav);
+document.getElementById('newsSearch').addEventListener('input',applySearch);
+document.getElementById('copyPrompt').addEventListener('click', async()=>{
+ const status=document.getElementById('copyStatus');
+ try {await navigator.clipboard.writeText(document.getElementById('practicePrompt').textContent);status.textContent=' 已复制';}
+ catch(e){status.textContent=' 无法访问剪贴板，请选中上方文字复制。';}
+});
+</script>
+</body>
+</html>
