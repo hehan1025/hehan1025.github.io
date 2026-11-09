@@ -1,0 +1,8 @@
+Three.js 0.160.1 — MIT License; see THREE-LICENSE.txt
+https://github.com/mrdoob/three.js
+world-atlas 2.0.2 — ISC License; see WORLD-ATLAS-LICENSE.txt
+https://github.com/topojson/world-atlas
+Geography: Natural Earth public-domain 1:110m land polygons.
+https://www.naturalearthdata.com/
+Map markers are approximate regional anchors inferred only from explicitly named places in each news title or summary. They are not precise event locations or live signals.
+Globe renderer and interface: original project implementation. No WorldMonitor code included.
